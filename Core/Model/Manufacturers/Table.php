@@ -2,6 +2,8 @@
 
 namespace Application\Manufacturers;
 
+use Application\Exception;
+
 class Table extends \Bluz\Db\Table
 {
 

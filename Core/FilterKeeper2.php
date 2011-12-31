@@ -290,6 +290,8 @@ final class FilterKeeper2 {
     {
         $this->selectTrigger($trigger);
 
+        // FIXME $key не может быть NULL, значит, надо проверить все вызовы этого метода, чтобы в них было передано 2 параметра
+        // и потом убрать из сигнатуры $key = null
         if($key !== null)
             switch($trigger){
                 case 'category_to_vendors':

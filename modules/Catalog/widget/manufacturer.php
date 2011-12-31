@@ -112,9 +112,25 @@ return
             }
         }
 
+        // закешировать производителей
         $vendors = [];
-        if (!is_null($категория)) {
-            // закешировать производителей
+        if (!is_null($поисковая_фраза)) {
+            // при перезагрузке страницы поиска
+            if( $vendors = $filterKeeper->clearContext()->selectContext('phrase')->setPhrase($поисковая_фраза)->selectFilterType('manufacturer')->getFilters() ){
+            } else {
+                // создать списко вендоров для поисковой фразы, т.е. для данного списка товаров
+                $vendors = Products\Table::getInstance()->getVendorsByProducts($products_str);
+                $filterKeeper->setFiltersVendor($vendors);
+            }
+        } elseif (!is_null($manufacturers_id) AND !is_null($категория) AND (!is_null($продукты) AND sizeof($продукты))) {
+            // при выборе производителя аяксом
+            if( $vendors = $filterKeeper->clearContext()->selectContext("category_to_vendors", $категория)->selectFilterType("manufacturer")->getFilters() ){
+            } else {
+                $vendors = Manufacturers\Table::getInstance()->getVendorsByCategory($категория);
+                $filterKeeper->setFiltersVendor($vendors);
+            }
+        } elseif (!is_null($категория)) {
+            // сюда входит при перезагрузке страницы каталога
             if ($vendors = $filterKeeper->clearContext()->selectContext("category_to_vendors", $категория)->selectFilterType("manufacturer")->getFilters()) {
             } else {
                 $vendors = Manufacturers\Table::getInstance()->getVendorsByCategory($категория);

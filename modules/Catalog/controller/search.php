@@ -1,6 +1,16 @@
 <?php
 
-return
+    /**
+     * @todo сделать, чтобы всегда выводились фильтры , а не пустой экран
+     *       и, чтобы, если задан производитель, а потом фильтр (и такие продукты есть), то имя производителя оставалось выбранным
+     *       Можно добавить как в каталоге фразу "Нет продуктов, удовлетворяющих условиям фильтрации"
+     * сейчас , если задан фильтр и после этого выбирается производитель, у которого нету соответсвующих продуктов,
+     * вываливает пустой экран.
+     * Если задан производитель, а потом выбран фильтр и таких продуктов у этого производителя нет,
+     * сбрасывает всех производителей и показывает продукты, удовлетворяющие фильтру
+     */
+
+    return
 
     function ($manufacturers_id = null, $direction = null) use ($view) {
         /**
@@ -31,7 +41,6 @@ return
          * array of subcategories
          */
         $filter_subcategory = null;
-
 
         if($is_ajax){
             $get_params = $app_object->getRequest()->getAllParams();
@@ -97,7 +106,6 @@ return
 
                             ";
         */
-
 
         $pr_query = "
                     SELECT p.products_id, products_name, manufacturers_id, products_quantity, products_shoppingcart_price, products_unit, products_seo_page_name,
@@ -190,7 +198,6 @@ return
                         }
                     }
 
-
                     if(sizeof($products_filtered)){
                         $tmp = array();
                         foreach($products as $product){
@@ -211,11 +218,12 @@ return
                 }
         }
 
+        //TODO вставить код для случая, когда задан фильтр по субкатегории
+
         $products_ids = array();
         foreach($products as $product){
             $products_ids[] = $product['products_id'];
         }
-
 
         $view->manufacturers_id = $manufacturers_id;
         $view->products = $products;

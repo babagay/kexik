@@ -63,7 +63,7 @@ function ($code, $message = '') use ($view) {
         default:
             $code = 500;
             $title = __("Ошибка");
-            $description = __("");
+            $description = __(" ");
             //$description = __("An unexpected error occurred with your request. Please try again later");
             break;
     }

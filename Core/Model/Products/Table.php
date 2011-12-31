@@ -126,4 +126,33 @@ class Table extends \Bluz\Db\Table
 
         return $index;
     }
+
+    /**
+     * @param $products sting|array(0:id1,1:id2,...)
+     * @return array
+     * @throws \Exception
+     */
+    function getVendorsByProducts($products)
+    {
+        if(is_string($products)){
+            $products_str = $products;
+        } elseif(is_array($products)) {
+            $products_str = implode(",", $products);
+        } else {
+            throw new \Exception(__CLASS__ . "::".__METHOD__.": "."Не верный тип данных");
+        }
+
+        $query = "
+            SELECT m.manufacturers_id,m.manufacturers_name
+            FROM {$this->table} p
+            JOIN manufacturers m ON m.manufacturers_id = p.manufacturers_id
+            WHERE products_id IN ($products_str)
+            GROUP BY m.manufacturers_id
+            ORDER BY m.manufacturers_name
+        ";
+
+        $vendors = app()->getDb()->fetchAll($query);
+
+        return $vendors;
+    }
 }
