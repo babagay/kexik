@@ -1,10 +1,10 @@
 <?php
 
 namespace Application\OrderProducts;
- 
+
 class Table extends \Bluz\Db\Table
 {
-     
+
 
     /**
      * Table
@@ -21,5 +21,5 @@ class Table extends \Bluz\Db\Table
 
 
 
-     
+
 }

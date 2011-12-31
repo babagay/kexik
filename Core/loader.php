@@ -1,4 +1,4 @@
-<?php  
+<?php
 // Root path, double level up
 $root = realpath(dirname(dirname(__FILE__)));
 define('PATH_ROOT', $root);

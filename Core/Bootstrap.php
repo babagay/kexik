@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Application;
 
@@ -81,7 +81,7 @@ class Bootstrap extends Application
 
         return $res;
     }
-    
+
     /**
      * denied
      *

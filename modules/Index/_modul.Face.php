@@ -1,12 +1,12 @@
 <?php
 /*
-Контроллер модуля. 
+Контроллер модуля.
 
-Унаследован от шаблона контроллеров модулей 
-Вызывает свою модель 
+Унаследован от шаблона контроллеров модулей
+Вызывает свою модель
 Вызывает свое представление
 
-Генерит хтмл или ошибку 
+Генерит хтмл или ошибку
 */
 
 class FaceModul extends BasicModulController implements BasicModulControllerInterface {
@@ -15,52 +15,52 @@ class FaceModul extends BasicModulController implements BasicModulControllerInte
     function __construct($registry = null){
     // [!] Вызов парент -конструктора обязателен
         parent::__construct();
-      
+
     }
     */
 
 
     // -------- Actions ----------
 
-    function actionFaceBasic(){ 
+    function actionFaceBasic(){
 
         // Можно поставить редирект
-        // header("Location:/about");    
-        
+        // header("Location:/about");
+
         // [пример]
-        // $this->view->submitButtonName = '78'; 
-        
-    
+        // $this->view->submitButtonName = '78';
+
+
         if( isset($_SERVER['HTTP_REFERER']) ){
-        // do nothing - зашли с сайта   
+        // do nothing - зашли с сайта
             //fb($_SERVER['HTTP_REFERER']);
         } else {
-                    
+
         }
-        
+
         $this->html = $this->view->render();
     } // --
-    
+
     function actionFaceAsd(){
         $this->html = 'actionFaceAsd-';
-    } // -- 
+    } // --
 
-  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

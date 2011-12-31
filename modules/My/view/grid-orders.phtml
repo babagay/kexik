@@ -43,14 +43,12 @@
             {#
             <th width="50px"><a href="{{ grid.order('orders_id', null, 'desc', false) }}">Id заказа</a></th>
             #}
-            <th width="120px"><a href="{{ grid.order('orders_id') }}">Id заказа</a></th>
-            <th width="120px"><a href="{{ grid.order('date_added') }}">Дата</a></th>
-            <th width="120px"><a href="{{ grid.order('address') }}">Адрес доставки</a></th>
-            <th width="120px"><a href="{{ grid.order('total') }}">Сумма</a></th>
-            <th width="120px"><a href="{{ grid.order('notes') }}">Замечания</a></th>
-            {#
-            <th width="160px">Действия</th>
-            #}
+            <th width="120px"><a href="{{ grid.order('orders_id') }}" class="header-1">Id заказа</a></th>
+            <th width="120px"><a href="{{ grid.order('date_added') }}" class="header-1">Дата</a></th>
+            <th width="120px"><a href="{{ grid.order('address') }}" class="header-1">Адрес доставки</a></th>
+            <th width="120px"><a href="{{ grid.order('total') }}" class="header-1">Сумма</a></th>
+            <th width="120px"><a href="{{ grid.order('notes') }}" class="header-1">Замечания</a></th>
+            <th width="160px"><a href="#" onclick="javascript:return false;" class="header-1">Действия</a></th>
         </tr>
         </thead>
         <tbody>
@@ -61,8 +59,13 @@
             <td>{{ row['address'] }}</td>
             <td>{{ row['total']|round(2) }}</td>
             <td>{{ row['notes'] }}</td>
-            {#
             <td class="controls">
+                <a href="кабинет/заказ/operation/clone/orders_id/{{ row['orders_id'] }}"
+                   class="btn btn-xs btn-default clone-order">Клонировать
+                    <i class="fa fa-edit"></i>
+                </a>
+
+                {#
                 <a href="{{ url('admin', 'download_doc', {'orders_id' : row['orders_id'], 'type': 'type_1'}) }}"
                    title="Сгенерировать форму Заказа" data-ajax-method="post" class="print form-1"><i
                         class="fa fa-print"></i></a>
@@ -83,10 +86,7 @@
                 {% endif %}
 
 
-                <a href="{{ grid.url('orders', 'edit', {'orders_id' : row['orders_id']}) }}"
-                   class="btn btn-xs btn-default edit-order">View
-                    <i class="fa fa-edit"></i>
-                </a>
+
                 <!--a href="{{ url('admin', 'user-crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
                     <i class="fa fa-times"></i>
                 </a-->
@@ -102,9 +102,8 @@
                     <i class="fa fa-table"></i>
                 </a>
                 {% endif %}
-
+                #}
             </td>
-            #}
         </tr>
         {% endfor %}
         </tbody>

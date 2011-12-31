@@ -12,7 +12,7 @@
  * var basePath = 'http://127.0.0.1/zoqa/'
 	$.post(basePath+"my/Base/вопрос/78", {asd: 'asd'}, function (res) {
     }, "json");
- */  
+ */
 // $_this = $this;
 
     /*
@@ -122,7 +122,7 @@ return
 
 		// change layout
 		$app_object->useLayout('front_end.phtml');
-	
+
 		// Такая конструкция загрузит шаблон
 		return 'Edit.phtml';
 		// Test.phtml грузится и так, по умолчанию

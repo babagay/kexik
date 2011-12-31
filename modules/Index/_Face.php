@@ -1,5 +1,5 @@
-<?php  
- 
+<?php
+
 class Face extends Model {
 
 
@@ -7,11 +7,11 @@ class Face extends Model {
 
 
     }
-    
-     
-    
+
+
+
 }
 
-    
- 
+
+
 ?>

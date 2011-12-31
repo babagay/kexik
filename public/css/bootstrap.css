@@ -4174,7 +4174,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   padding: 6px 12px;
   margin-left: -1px;
   line-height: 1.428571429;
-  color: #428bca;
+  color: #3bae68;
   text-decoration: none;
   background-color: #fff;
   border: 1px solid #ddd;
@@ -4207,8 +4207,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   z-index: 2;
   color: #fff;
   cursor: default;
-  background-color: #428bca;
-  border-color: #428bca;
+  background-color: #0c6432;
+  border-color: #0c6432;
 }
 .pagination > .disabled > span,
 .pagination > .disabled > span:hover,
@@ -5856,3 +5856,6 @@ td.visible-print {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+a.header-1 {
+    color: #748129;
+}

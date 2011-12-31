@@ -165,7 +165,7 @@ footer {
 /*/Bootstrap fix*/
 
 /* tree */
-@media only screen and (max-width: 2007px) { 
+@media only screen and (max-width: 2007px) {
 	body{
 		margin:0;
 		color:#444;

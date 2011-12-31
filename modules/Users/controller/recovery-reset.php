@@ -40,8 +40,8 @@ function ($id, $code = null, $password = null, $password2 = null) use ($view, $_
     }
 
     if($Id !== false) $id = $Id;
-    
-    
+
+
     // change layout
     $_this->useLayout('small.phtml');
 

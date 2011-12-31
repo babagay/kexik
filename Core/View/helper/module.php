@@ -21,7 +21,7 @@ return
     //$_this = \Core\Helper\Registry::getInstance()->view;
 
 
-    
+
     $request = app()->getRequest();
 
 

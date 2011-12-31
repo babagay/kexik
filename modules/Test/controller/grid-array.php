@@ -45,6 +45,6 @@ function () use ($view, $module, $controller) {
     fb( $grid->getLimit());
     fb($grid->getLimit() - sizeof($grid->getData())); // 0
     */
-    
+
     $view->emptyRows = $emptyRows;
 };

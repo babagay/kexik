@@ -57,4 +57,4 @@ class Layout extends \Core\View\View {
         return $this->content;
     }
 
-} 
+}

@@ -5,11 +5,11 @@
      * @author   Anton Shevchuk
      * @created  26.09.11 17:41
      * @return closure
-	 
-	   TODO 
+
+	   TODO
 	   Проверять, если запрос пришел НЕ через аджакс, блокировать или редиректить
 	   Такую защиту имеет смысл ставить на все замыкания, обрабатываемые ссылками (ссылка содержит href)
-	   
+
      */
     namespace Application;
 
@@ -28,8 +28,8 @@
              *
              * @var \Bluz\View\View $view
 			 *
-			 * Если здесь эхнуть var_dump($articles); 
-			 * И потом вернуть шаблон  return 'getheaders.phtml'; 
+			 * Если здесь эхнуть var_dump($articles);
+			 * И потом вернуть шаблон  return 'getheaders.phtml';
 			 * То ошибки не будет
              */
 
@@ -45,7 +45,7 @@
 			if(app()->getInstance()->getRequest()->getHeader('X-Requested-With') != 'XMLHttpRequest'){
 				//редирект
 			}
-			 
+
             $db =  app()->getDb();
 
             $группа = null;
@@ -73,8 +73,8 @@
             if($группа !== null) $where_group = " AND grp.name = '$группа'";
 
 
-			
-			
+
+
             // Сообщения
             /*
             if ($messages) {
@@ -117,14 +117,14 @@
             // TODO брать из параметра
             $order_by = "art.dateline";
             $order = "DESC";
-			
-			// 
+
+			//
 			$Articles = new \Core\Articles( array('группа' => $группа, 'offset' => $offset, 'limit' => $limit, 'order_by' => $order_by, 'order' => $order) );
 
-			$headers = $Articles->getHeaders(); 
-			
-			
-			
+			$headers = $Articles->getHeaders();
+
+
+
 			/*
             // Для обычных юзеров скрывать невидимые статьи c пометкой visibility = 0
             $can_edit = false;
@@ -210,7 +210,7 @@
             $article = null;
             $articles = $tmp_articles;
 			*/
-			
+
             $view->articles = $headers;
 
 

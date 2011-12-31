@@ -3,7 +3,7 @@
 
 
 
-{% if(user()) %} 
+{% if(user()) %}
     {% include  'partial/twig_nav-bar.phtml' %}
 {% endif %}
 
@@ -16,14 +16,14 @@
 <div>
 {% include  'partial/twig_aside.phtml' %}
  <div class="content-wrapper">
- 
+
     {% include  'partial/twig_aside_right.phtml' %}
-    
+
     {% include  'partial/twig_content.phtml' %}
-    
-    
+
+
   <!--  <div class="container">
-        <div class="row"> 
+        <div class="row">
 
             {# ТЕСТЫ }
 
@@ -44,20 +44,20 @@
                 <li>
                     <a href="/" class="bluz-tooltip" data-placement="bottom" data-original-title="{ __('Back to homepage') }">
                         <i class="fa fa-home"></i>
-                        {  __('Home')  } 
+                        {  __('Home')  }
                     </a>
                 </li>
                 {for crump in View.breadCrumbs}
-                
+
                     <li>
-                        {crump}                        
+                        {crump}
                     </li>
-                
+
                 {endfor}
             </ul>
             {% endif %}
         </div>
-        
+
         {{ getContent() }}-->
 
     </div>

@@ -3,7 +3,7 @@
  * тест
  */
 namespace Core;
- 
+
 class Asd{
 
     function __construct(){

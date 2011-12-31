@@ -23,7 +23,7 @@ class SelectGrid extends \Bluz\Grid\Grid
 
     /**
      * init
-     * 
+     *
      * @return self
      */
     public function init()
@@ -52,7 +52,7 @@ class SelectGrid extends \Bluz\Grid\Grid
          $this->setAdapter($adapter);
          $this->setDefaultLimit(25);
         //$this->setDefaultOrder()
-          
+
          $this->setAllowOrders(array('categories_id', 'categories_name', 'sort_order', 'date_added', 'last_modified', 'categories_level', 'categories_seo_page_name'));
          $this->setAllowFilters(array('categories_id', 'parent_id', 'categories_name', 'categories_seo_page_name'));
 

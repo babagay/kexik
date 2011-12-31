@@ -12,7 +12,7 @@ use Application\UsersActions;
 use Bluz\Application\Application;
 use Bluz\Crud\ValidationException;
 
- 
+
 class Crud extends \Bluz\Crud\Table
 {
 

@@ -38,7 +38,7 @@ return
 
 
 
-        $crumbs_arr =  array( 
+        $crumbs_arr =  array(
             __($title)
         );
 

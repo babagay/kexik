@@ -25,7 +25,7 @@ class SqlGrid extends \Bluz\Grid\Grid
 
     /**
      * init
-     * 
+     *
      * @return self
      */
     public function init()

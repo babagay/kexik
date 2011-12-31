@@ -1,37 +1,37 @@
-<?php  
- 
-class FaceView extends BasicModulView implements BasicViewInterface{ 
-// представление модуля 
+<?php
+
+class FaceView extends BasicModulView implements BasicViewInterface{
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ 
 
     function __construct(){
-       
-        parent::__construct(); 
-        
-        $this->view = View::getInstance(); // через этот объект - работать с парент шаблоном
-      
+
+        parent::__construct();
+
+        $this->view = View::getInstance(); // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+
         $this->basic_tpl = 'Face.tpl';
-        
+
     }
-    
-    function getView(){  
+
+    function getView(){
         return $this->view;
     }
-    
+
     function render($tpl = null){
-      
+
         if($tpl == null)
           $tpl = $this->basic_tpl;
-          
+
         parent::render($tpl);
-         
-         
+
+
         return $this->html;
-        
+
         //return $this->html = parent::render();
     }
-    
+
 }
 
-    
- 
+
+
 ?>

@@ -45,7 +45,7 @@ class Table extends \Bluz\Db\Table
 
     /**
      * getBasicRoles
-     * 
+     *
      * @return array
      */
     public function getBasicRoles()
@@ -78,7 +78,7 @@ class Table extends \Bluz\Db\Table
      */
     public function getUserRolesIdentity($userId)
     {
- 
+
         if(TABLE_PREFIX !== '')
             $this->prefix = TABLE_PREFIX . "_" ;
 

@@ -12,9 +12,9 @@
  * var basePath = 'http://127.0.0.1/zoqa/'
 	$.post(basePath+"my/Base/вопрос/78", {asd: 'asd'}, function (res) {
     }, "json");
- */  
+ */
 // $_this = $this;
- 
+
 return
     /**
      * @param string $question
@@ -29,23 +29,23 @@ return
         //$app_object = Application\Bootstrap::getInstance();
 		// Альтернатива $_this = $this;
         $app_object = app()->getInstance();
-		
-		 
+
+
 
         ///fb($app_object->getRequest()->getParams());
-       
-        
+
+
 
         // FIXME Если отсюда поппытаться переререть zoqa_title, эффект нулевой
         // $view->zoqa_title = '$answer';
         $app_object->getLayout()->title('');
 
         //return array('question' => $question, 'answer' => $answer);
-		
-		
+
+
 		// change layout
 		$app_object->useLayout('front_end.phtml');
-	
+
 		// Такая конструкция загрузит шаблон
 		// return 'Test.phtml';
 		// Test.phtml грузится и так, по умолчанию

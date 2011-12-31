@@ -48,11 +48,11 @@ class Module_OrderTotals_Custom extends Erp_Core_Abstract
         $totalsCriteria->add(OrdersTotalPeer::CLASS1, 'custom_subtotal');
         $orderTotals = OrdersTotalPeer::doSelectOne($totalsCriteria);
         if ($orderTotals) {
-            
+
             $this->order->orderInfo['totals']['ot_customsubtotal'] = array(
-                    'class' => 'ot_shipping' , 
-                    'title' => 'Zonetable' , 
-                    'value' => $orderTotals->getValue() , 
+                    'class' => 'ot_shipping' ,
+                    'title' => 'Zonetable' ,
+                    'value' => $orderTotals->getValue() ,
                     'text' => $orderTotals->getText() ,
                     'orders_id' => $orderTotals->getOrdersId()
             );

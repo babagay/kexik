@@ -54,7 +54,7 @@ return
             $app_object->redirectTo('', '');
 
         $params = $app_object->getRequest()->getParams();
-		 
+
 
         ///fb($app_object->getRequest()->getParams());
         $params = $app_object->getRequest()->getParams();
@@ -493,7 +493,7 @@ return
 
 		// change layout
 		$app_object->useLayout('front_end.phtml');
-	
+
 		// Такая конструкция загрузит шаблон
 		return 'Articles.phtml';
 		// Test.phtml грузится и так, по умолчанию

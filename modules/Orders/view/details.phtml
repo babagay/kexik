@@ -3,8 +3,13 @@
     <tbody>
     <tr>
         <td>Заказ </td>
-        <td>#{{ order.row.data.orders_id }} (<span class="order-status-highlite-{{ order.row.data.order_status }}">{{ order.row.data.order_status_str }}</span>)
-            <br> <span class="order-type-highlite-{{ order.row.data.order_type }}">{{ order.row.data.order_type_str }}</span></td>
+        <td>#{{ order.row.data.orders_id }}  (<span class="order-status-highlite-{{ order.row.data.order_status }}">{{ order.row.data.order_status_str }}</span>)
+            <br> <span class="order-type-highlite-{{ order.row.data.order_type }}">{{ order.row.data.order_type_str }}</span>
+            <br>
+            {% if(order.row.data.parent_id) %}
+                Родительский заказ: {{ order.row.data.parent_id }}
+            {% endif %}
+        </td>
     </tr>
     <tr>
         <td>Пользователь</td>

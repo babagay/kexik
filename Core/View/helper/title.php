@@ -2,9 +2,9 @@
 /**
  * @namespace
  */
-namespace Core\View\Helper; 
+namespace Core\View\Helper;
 
- 
+
 return
 
 
@@ -154,8 +154,8 @@ return
 
 
 
-      
+
       return '';
-      
-      
+
+
     };

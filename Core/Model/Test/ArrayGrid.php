@@ -21,7 +21,7 @@ class ArrayGrid extends \Bluz\Grid\Grid
     protected $uid = 'arr';
     /**
      * init
-     * 
+     *
      * @return self
      */
     public function init()

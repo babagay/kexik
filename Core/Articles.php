@@ -37,39 +37,39 @@ class Articles {
 
         return null;
     }
-	
+
 	function setParams(array $params)
 	{
 		$this->params = array_merge($this->params, $params);
-		
+
 		return $this;
 	}
-	
+
 	function getHeaders()
-	{		
+	{
 		$app_obj = app()->getInstance();
-	
+
         $db =  app()->getDb();
 
         $группа = null;
-			
+
 		$where_condition =  " WHERE art.articles_id > 0 "; // WHERE 1 "; //
 		$where = " where t.articles_id > 0 ";
-		 
+
 		$offset = 0;
-		$limit = 5;	
-		
+		$limit = 5;
+
 		$order_by = "art.dateline";
 		$order = "DESC";
-		
+
 		$having = '';
-		
+
 		if( (string)$this->order_by != '' ) $order_by = $this->order_by;
 		if( (string)$this->order != '' ) $order = $this->order;
 		if( (string)$this->offset != '' ) $offset = $this->offset;
 		if( (string)$this->limit != '' ) $limit = $this->limit;
 		if( (string)$this->группа != '' ) $группа = $this->группа;
-		
+
 		// Для обычных юзеров скрывать невидимые статьи c пометкой visibility = 0
 		$can_edit = false;
 		$user = app()->getAuth()->getIdentity();
@@ -79,13 +79,13 @@ class Articles {
 			$where_condition .= " AND  art.visibility = 1 ";
 			$where .= " AND  t.visibility = 1 ";
 		}
-		
-		
+
+
         if($группа !== null){
 			//$where_condition .= " AND grp.name = '$группа'";
 			$having = " HAVING group_name = '$группа' ";
 		}
-		
+
 		// [!] запрос не работал из-за JOIN'a
 			// В оператор JOIN фильтр по группе не включишь, поэтому результаты могут быть кривые
 			// Вопрос: как учесть фильтр по группе? Например, отказаться от JOIN'а
@@ -97,8 +97,8 @@ class Articles {
 			JOIN (select t.articles_id FROM {$this->table} t $where  ORDER BY $order_by $order LIMIT $offset,$limit ) as tbl ON tbl.articles_id = art.articles_id 
 			$where_condition
             ";
-			 
-			 
+
+
 		$запрос = "SELECT art.*, grp.name group_name
 			FROM {$this->table} art
 			LEFT JOIN {$this->table_group} grp ON grp.groups_id = art.groups_id
@@ -107,19 +107,19 @@ class Articles {
 			ORDER BY $order_by $order
 			LIMIT $offset,$limit
 			";
-			 
+
 		$articles = $db->fetchAll($запрос);
-		 
+
 
 		if($articles === false)
 			throw new \Bluz\Application\Exception\ApplicationException("Ресурс не найден",404);
 
 		if(is_array($articles) AND count($articles) == 0)
-			throw new \Bluz\Application\Exception\ApplicationException("Нет статей",404);	
-			
-			
+			throw new \Bluz\Application\Exception\ApplicationException("Нет статей",404);
+
+
 		if( !is_array($articles) ){ return false; }
-		
+
 		foreach($articles as $article){
                 // if( (int)$article['visibility'] !== 1 ) continue;
 
@@ -149,42 +149,42 @@ class Articles {
                 $tmp_articles[$ind]['link'] = $link;
                 $tmp_articles[$ind]['intro'] =  $intro;
                 $tmp_articles[$ind]['group_link'] = 'блог/группа/' . $article['group_name'];
- 
+
 
                 $ind++;
             }
-			
+
 		unset($articles);
 		$article = null;
-		$headers = $tmp_articles;	
-		
+		$headers = $tmp_articles;
+
 		return $headers;
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	}
-} 
+}

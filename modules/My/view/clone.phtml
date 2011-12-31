@@ -1,0 +1,20 @@
+<script>
+    require(["jquery"],  function ($) {
+
+        setTimeout(function(){
+            $("a.clone_order").off().on("click",function(){ return false; });
+            $("table.grid th a").off().on("click",function(){ return false; });
+        },1000);
+
+        $("a.clone_order").hide()
+
+        var box = "<div class=\"alert {{ alert_class }} fade in\">" +
+                    "<a href=\"#\" class=\"close\" data-dismiss=\"alert\">&times;</a>"+
+                    "<strong>{{ message_type }}!</strong> {{ message }} "+
+                   "</div>";
+
+        $("#load").append("div").html(box);
+
+        setTimeout(function(){ window.location = "{{ baseUrl() }}кабинет/мои_заказы" },3000);
+    });
+</script>

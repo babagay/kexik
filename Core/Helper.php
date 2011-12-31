@@ -1,6 +1,6 @@
 <?php
 /*
- * тест 
+ * тест
  */
 class Core_Helper{
 

@@ -2,7 +2,7 @@
 
 namespace Application\Manufacturers;
 
-use Application\Exception; 
+use Application\Exception;
 use Bluz\Auth\AbstractRowEntity;
 use Bluz\Auth\AuthException;
 

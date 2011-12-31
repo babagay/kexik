@@ -225,8 +225,8 @@ return
 
 
         ///fb($app_object->getRequest()->getParams());
-       
-        
+
+
 
         // FIXME Если отсюда поппытаться переререть zoqa_title, эффект нулевой
         // $view->zoqa_title = '$answer';
@@ -237,7 +237,7 @@ return
 
 		// change layout
 		$app_object->useLayout('front_end.phtml');
-	
+
 		// Такая конструкция загрузит шаблон
 		// return 'Test.phtml';
 		// Test.phtml грузится и так, по умолчанию

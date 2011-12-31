@@ -1,11 +1,11 @@
 <?php
 /**
- [приложение для Yandex API - фото] 
+ [приложение для Yandex API - фото]
  ID: 7f3041fe0bf14bae935bcffab540f04e
 Пароль: 561d7c1a26fc4396a127e36c8a8c4613
 Callback URL: https://oauth.yandex.ru/verification_code
 
- [приложение для Yandex API - Паблик фото] 
+ [приложение для Yandex API - Паблик фото]
  ID: f8d97173c0394aedaba85f45a4c5a4eb
 Пароль: 6dd3122b52974d939b8f5ac75eaa773e
 Callback URL: https://oauth.yandex.ru/verification_code

@@ -17,5 +17,5 @@ function () {
     /**
      * @var \Application\Bootstrap $this
      */
-     
+
 };

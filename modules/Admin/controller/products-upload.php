@@ -39,11 +39,11 @@
              * id = 51, тогда запись начнется с 52-го
              * Т.о., надо указать последний успешно внесенный продукт
              */
-            
+
             //$id = 586059;
-            
-            if( (int)$id === 0) $id = null;           
-            
+
+            if( (int)$id === 0) $id = null;
+
             $operate_the_product = false;
 
             $number_of_operatedproducts = -1;
@@ -107,7 +107,7 @@
 
             $logger = new \Bluz\Logger\MyLogger();
             $logger->products("Import started at " . date('Y-m-d H:i:s'));
-            
+
             if($parse_category == 1){
                $logger->products("Category parsing is enabled");
             } else {
@@ -236,7 +236,7 @@
                                     break;
                                 }
                               } else {
-                              // manufacturers_name отсутсвует - FIXME: узнать, как это возникает 
+                              // manufacturers_name отсутсвует - FIXME: узнать, как это возникает
                               }
                             }
                             if($current_manufacturer != '') {

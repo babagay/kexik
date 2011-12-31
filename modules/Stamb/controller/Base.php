@@ -23,7 +23,7 @@ return
         throw new \Bluz\Application\Exception\ApplicationException("Такого продукта нет",404);
         return $app_object->dispatch('catalog','products', array('продукт' => $param_4));
          *
-         
+
 
 
 

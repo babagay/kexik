@@ -11,4 +11,4 @@ namespace Core\View;
 
 class View extends \Bluz\View\View  {
 
-} 
+}

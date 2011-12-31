@@ -35,7 +35,6 @@ class Acl extends Options
     {
         if ($privilege) {
             $user = app()->getAuth()->getIdentity();
-
             //fb($user);
             //fb($user->hasPrivilege($module, $privilege));
 

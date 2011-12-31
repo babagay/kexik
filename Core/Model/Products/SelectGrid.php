@@ -22,7 +22,7 @@ class SelectGrid extends \Bluz\Grid\Grid
 
     /**
      * init
-     * 
+     *
      * @return self
      */
     public function init()

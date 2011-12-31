@@ -20,17 +20,17 @@ return
      */
     function () use ($view) {
         /**
-         * @var Вместо Application $this используй $app_object = Application\Bootstrap::getInstance();
+         * @var Вместо Application $this используй $app = Application\Bootstrap::getInstance();
          * или так: app()->getRequest();
          * @var View $view
          */
         //$app_object = Application\Bootstrap::getInstance();
-        $app_object = app()->getInstance();
+        $app = app()->getInstance();
 
         $uri_param_2 = app()->getRequest()->get(2);
 
         // change layout
-        $app_object->useLayout('front_end.phtml');
+        $app->useLayout('front_end.phtml');
 
         switch ($uri_param_2) {
             case 'мой_профиль':
@@ -39,6 +39,9 @@ return
             case 'мои_заказы':
                 return app()->dispatch('my', 'orders');
                 break;
+            case 'заказ':
+                return app()->dispatch('my', 'order', app()->getRequest()->getParams());
+                break;
             default:
                 break;
         }
@@ -46,7 +49,7 @@ return
 
         $title = 'Личный кабинет';
 
-        $app_object->getLayout()->title($title);
+        $app->getLayout()->title($title);
 
 
         $crumbs_arr = array(
@@ -55,5 +58,5 @@ return
         );
 
 
-        $app_object->getLayout()->breadCrumbs($crumbs_arr);
+        $app->getLayout()->breadCrumbs($crumbs_arr);
     };
