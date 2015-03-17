@@ -1,0 +1,270 @@
+{{ photoList }}
+{{ str_test }}
+
+
+
+{% if( article ) %}
+    <div id="article">
+<h2> HELLO </h2>
+        <input name="articles_id" type="hidden" value="{{ article.articles_id }}"  />
+        <input name="groups_id" type="hidden" value="{{ article.groups_id }}"  />
+
+        {% if( edit_link ) %}
+            <div class="article-edit-box btn-group">
+
+                {#  Такая кнопка работает, но ожидает ответ в виде JSON
+                    <a class="ajax" href="blog/ajax/operations/articles_id/{{ article.articles_id }}/operation/unhide">Открыть</a>
+                #}
+
+                {% if( visibility == 1 ) %}
+                     <a class="load btn btn-default do-hide" id="toggle-visibility" data-ajax-target="#feedback-message-2" href="blog/ajax/operations/articles_id/{{ article.articles_id }}/operation/hide">Скрыть</a>
+                {% else %}
+                     <a class="load btn btn-default do-unhide" id="toggle-visibility" data-ajax-target="#feedback-message-2" href="blog/ajax/operations/articles_id/{{ article.articles_id }}/operation/unhide">Открыть</a>
+                {% endif %}
+
+                <a class="confirm btn btn-default"  data-confirm="Перейти в режим редактирования статьи?" href="{{ edit_link }}">Редактировать</a>
+            </div>
+        {% endif %}
+
+        <div class="box-header-header">
+            <span class="hg-2"><h4>{{ article.group_name }}</h4></span>
+            <span class="ht MuseoSansCyrl-500"><h2>{{ article.title }}</h2></span>
+
+        </div>
+        <div class="box-header-date">
+            <span class="hd">{{ article.dateline }}</span>
+        </div>
+
+
+        <div style="clear: both;"></div>
+
+
+        <hr />
+
+        <div class="box-intro article"> <p>   {{ article.intro }} </p>
+        </div>
+
+        {% if( article.cover ) %}
+         <img class="cover" src="{{article.cover}}" />
+        {% endif %}
+
+        <div style="clear: both;"></div>
+
+        <div class="body">    {{ article.body }}
+        </div>
+
+
+
+
+         {#   {{ article.visibility }} #}
+
+        {# Перенести в виджет
+        {% if( article.images ) %}
+            {% for img in article.images %}
+                <img src="{{img}}" />
+            {% endfor %}
+        {% endif %}
+        #}
+
+            {{ article.comments_num }}
+            {{ article.comments }}
+
+    </div>
+
+
+{% elseif( articles ) %} {# Вывод заголовков статей #}
+
+<input type="hidden" value="2" name="articles_frame_counter" />
+<input type="hidden" value="{{ frame }}" name="frame" />
+
+<div id="article-items">
+    {% include  'getheaders.phtml' %}
+</div>
+
+{# TODO вставить условие, чтобы не выводить кнопки при малом количестве статей #}
+<div class="btn-group">
+    <a id="ajax-callback-more" class="btn btn-default" href="{{publicUrl()}}/blog/ajax/getheaders">Ещё</a>
+</div>
+
+{% endif %}
+
+<!--canvas id="myCanvas" width="578" height="200"></canvas-->
+<script>
+    /*
+    var canvas = document.getElementById("myCanvas");
+    var context = canvas.getContext("2d");
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+    var radius = 70;
+
+    context.beginPath();
+    context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+    context.fillStyle = "green";
+    context.fill();
+    context.lineWidth = 5;
+    context.strokeStyle = "#003300";
+    context.stroke();
+*/
+    // ------
+
+
+
+    //set-up - probably only needs to be done once
+    var scratchCanvas = document.createElement("canvas");
+    scratchCanvas.width = 100;
+    scratchCanvas.height = 100;
+    scratchCanvas.name = "scratchCanvas";
+    var scratchCtx = scratchCanvas.getContext("2d");
+    var cropLeft = 12
+    var cropTop = 12
+    var wid = 120
+    var hei = 120
+    var newWidth = 120
+    var newHeight = 120
+
+    var img = new Image();
+    function roundedImage(x,y,width,height,radius){
+        scratchCtx.beginPath();
+        scratchCtx.moveTo(x + radius, y);
+        scratchCtx.lineTo(x + width - radius, y);
+        scratchCtx.quadraticCurveTo(x + width, y, x + width, y + radius);
+        scratchCtx.lineTo(x + width, y + height - radius);
+        scratchCtx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        scratchCtx.lineTo(x + radius, y + height);
+        scratchCtx.quadraticCurveTo(x, y + height, x, y + height - radius);
+        scratchCtx.lineTo(x, y + radius);
+        scratchCtx.quadraticCurveTo(x, y, x + radius, y);
+        scratchCtx.closePath();
+    }
+
+
+    // --
+
+    img.onload = function(){
+        scratchCtx.save();
+        roundedImage(10,10,102,77,10);
+        scratchCtx.clip();
+        scratchCtx.drawImage(img,10,10,102,77);
+        scratchCtx.restore();
+    }
+    img.src="https://dl.dropboxusercontent.com/u/139992952/stackoverflow/sky-bg2.jpg";
+
+
+    //drawing code
+    scratchCtx.clearRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+
+    scratchCtx.globalCompositeOperation = "source-over" ; //default
+
+    scratchCtx.drawImage(img, 10,10,102,77);
+
+    //As long as we can represent our clipping region as a single path,
+    //we can perform our clipping by using a non-default composite operation.
+    //You can think of destination-in as "write alpha". It will not touch
+    //the color channel of the canvas, but will replace the alpha channel.
+    //(Actually, it will multiply the already drawn alpha with the alpha
+    //currently being drawn - meaning that things look good where two anti-
+    //aliased pixels overlap.)
+    //
+    //If you can't represent the clipping region as a single path, you can
+    //always draw your clip shape into yet another scratch canvas.
+
+    scratchCtx.fillStyle = "#fff"; //color doesn't matter, but we want full opacity
+    scratchCtx.globalCompositeOperation = "destination-in";
+    scratchCtx.beginPath();
+    scratchCtx.arc(50, 50, 50, 0, 2 * Math.PI, true);
+    scratchCtx.closePath();
+    scratchCtx.fill();
+
+    //Now that we have a nice, cropped image, we can draw it in our
+    //actual canvas. We can even draw it over top existing pixels, and
+    //everything will look great!
+    scratchCtx.drawImage(img, cropLeft, cropTop, wid-2*cropLeft, hei-2*cropTop, 0, 0, newWidth, newHeight);
+
+
+
+    require(["jquery", "bluz.notify"], function($, notify) {
+        $(function(){
+
+            /*
+            // Если Я использую класс 'ajax'
+            $("#ajax-callback-more")
+                .on("success.ajax.bluz", function(event, data, textStatus, jqXHR){
+                    notify.addSuccess("Event `success.ajax.bluz` is fired");
+
+
+                })
+                .on("error.ajax.bluz", function(event, jqXHR, textStatus, errorThrown){
+                    notify.addSuccess("Event `error.ajax.bluz` is fired")
+                });
+            */
+
+
+            $("#toggle-visibility")
+                .on("success.ajax.bluz", function(event, data, textStatus, jqXHR){
+                    notify.addSuccess(data);
+
+                    setTimeout(function(){
+                        $("#feedback-message-2").html("");
+
+                        if( $("#toggle-visibility").hasClass("do-hide") ) {
+                            $("#toggle-visibility").addClass("do-unhide")
+                            $("#toggle-visibility").removeClass("do-hide")
+                            $("#toggle-visibility").text("{{ __("Открыть") }}");
+                        } else {
+                            $("#toggle-visibility").text("{{ __("Скрыть") }}");
+                            $("#toggle-visibility").removeClass("do-unhide")
+                            $("#toggle-visibility").addClass("do-hide")
+                        }
+                    },30);
+                });
+
+            // Если Я использую самостоятельный обработчик
+            $("#ajax-callback-more").off().on("click",function(event, data, textStatus, jqXHR){
+
+                var articles_frame_counter = $("input[name=articles_frame_counter]").val();
+                var frame = $("input[name=frame]").val();
+
+                var data = {}
+                data["articles_frame_counter"] = articles_frame_counter; // frame number
+                data["frame"] = frame; // frmae capacity
+                data["uri"] = window.location.href;
+
+                $.ajax({
+                    type: "POST",
+                    data: data,
+                    url: $(this).attr("href"),
+                    context: document.body,
+                    dataType: "html"
+                }).done(function(response,status,responseObj) {
+                    $( this ).addClass( "done" );
+                    if(status == "success"){
+                        /*
+                        // responseObj.responseText - is response
+                        if(response.response == "ok"){
+                            // console.log("ок")
+                            // var $div = bluz_ajax.createModal("content") // не работает
+                        } else {
+                            // console.log("Ошибка данных")
+                        }
+                        */
+
+                        if(responseObj.status != 200){
+                           // notify.addError("Error 404")
+                        }
+
+                        articles_frame_counter = $("input[name=articles_frame_counter]").val();
+                        articles_frame_counter++;
+                        $("input[name=articles_frame_counter]").val(articles_frame_counter)
+
+                        $("#article-items").append(response)
+                    }
+                });
+                return false;
+            });
+
+        });
+    });
+
+
+</script>
+

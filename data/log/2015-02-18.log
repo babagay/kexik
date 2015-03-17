@@ -1,0 +1,74 @@
+
+[09:42:49]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[09:48:59]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[09:51:44]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[09:52:42]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[09:53:49]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[09:55:53]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[09:56:44]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[09:57:35]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[10:43:45]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[10:43:54]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[10:44:30]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[10:46:30]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[10:46:56]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[10:47:11]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[10:47:23]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[10:53:26]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[11:08:04]	syntax error, unexpected 'if' (T_IF)
+C:\wamp\www\kex\modules\Blog\controller\Base.php#107
+
+[11:08:04]	[type]: 4  syntax error, unexpected 'if' (T_IF) [file]: C:\wamp\www\kex\modules\Blog\controller\Base.php [line]: 107 
+[11:17:48]	syntax error, unexpected 'if' (T_IF)
+C:\wamp\www\kex\modules\Blog\controller\Base.php#111
+
+[11:17:48]	[type]: 4  syntax error, unexpected 'if' (T_IF) [file]: C:\wamp\www\kex\modules\Blog\controller\Base.php [line]: 111 
+[11:18:05]	syntax error, unexpected 'if' (T_IF)
+C:\wamp\www\kex\modules\Blog\controller\Base.php#111
+
+[11:18:05]	[type]: 4  syntax error, unexpected 'if' (T_IF) [file]: C:\wamp\www\kex\modules\Blog\controller\Base.php [line]: 111 
+[11:18:13]	syntax error, unexpected 'if' (T_IF)
+C:\wamp\www\kex\modules\Blog\controller\Base.php#108
+
+[11:18:13]	[type]: 4  syntax error, unexpected 'if' (T_IF) [file]: C:\wamp\www\kex\modules\Blog\controller\Base.php [line]: 108 
+[11:19:44]	syntax error, unexpected 'if' (T_IF)
+C:\wamp\www\kex\modules\Blog\controller\Base.php#154
+
+[11:19:44]	[type]: 4  syntax error, unexpected 'if' (T_IF) [file]: C:\wamp\www\kex\modules\Blog\controller\Base.php [line]: 154 
+[11:20:00]	syntax error, unexpected 'if' (T_IF)
+C:\wamp\www\kex\modules\Blog\controller\Base.php#155
+
+[11:20:00]	[type]: 4  syntax error, unexpected 'if' (T_IF) [file]: C:\wamp\www\kex\modules\Blog\controller\Base.php [line]: 155 
+[11:20:15]	syntax error, unexpected 'if' (T_IF)
+C:\wamp\www\kex\modules\Blog\controller\Base.php#156
+
+[11:20:15]	[type]: 4  syntax error, unexpected 'if' (T_IF) [file]: C:\wamp\www\kex\modules\Blog\controller\Base.php [line]: 156 
+[11:21:26]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[11:21:50]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[11:22:32]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[11:29:12]	[type]: 8  Undefined variable: options [file]: C:\wamp\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[11:59:14]	[type]: 8  Undefined variable: options [file]: C:\wamp\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[12:00:12]	[type]: 8  Undefined variable: options [file]: C:\wamp\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[12:07:30]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[12:21:05]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[12:25:50]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[12:30:00]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[12:30:55]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[12:34:09]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[13:03:07]	Class 'MyLogger' not found
+C:\wamp\www\kex\modules\Blog\controller\Base.php#136
+
+[13:03:07]	[type]: 1  Class 'MyLogger' not found [file]: C:\wamp\www\kex\modules\Blog\controller\Base.php [line]: 136 
+[13:04:12]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[13:23:06]	Maximum execution time of 30 seconds exceeded
+C:\wamp\www\kex\lib\PHPExcel\Classes\PHPExcel\Worksheet.php#1339
+
+[13:23:06]	[type]: 1  Maximum execution time of 30 seconds exceeded [file]: C:\wamp\www\kex\lib\PHPExcel\Classes\PHPExcel\Worksheet.php [line]: 1339 
+[13:26:58]	Allowed memory size of 134217728 bytes exhausted (tried to allocate 32 bytes)
+C:\wamp\www\kex\lib\PHPExcel\Classes\PHPExcel\Worksheet.php#1220
+
+[13:26:58]	[type]: 1  Allowed memory size of 134217728 bytes exhausted (tried to allocate 32 bytes) [file]: C:\wamp\www\kex\lib\PHPExcel\Classes\PHPExcel\Worksheet.php [line]: 1220 
+[13:34:47]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[16:04:57]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[16:18:41]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[16:26:16]	[type]: 8  Undefined variable: options [file]: C:\wamp\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 

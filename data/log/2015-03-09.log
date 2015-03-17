@@ -1,0 +1,60 @@
+
+[06:41:18]	[type]: 8  Undefined variable: categories_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 269 
+[06:42:07]	[type]: 8  Undefined variable: categories_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 269 
+[06:43:20]	[type]: 8  Undefined variable: categories_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 269 
+[06:45:49]	[type]: 8  Undefined variable: categories_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 271 
+[06:52:57]	[type]: 8  Undefined variable: categories_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 271 
+[06:53:20]	syntax error, unexpected ')'
+C:\wamp2\www\kex\Core\Bootstrap.php#21
+
+[06:53:20]	[type]: 4  syntax error, unexpected ')' [file]: C:\wamp2\www\kex\Core\Bootstrap.php [line]: 21 
+[06:54:02]	[type]: 8  Undefined variable: categories_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 271 
+[06:57:33]	[type]: 8  Undefined variable: categories_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 271 
+[07:02:04]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[07:03:08]	[type]: 8  Undefined variable: categories_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 273 
+[07:07:59]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[07:08:32]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[07:09:33]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[07:11:38]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[07:12:24]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[07:14:49]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[07:15:03]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[07:16:05]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[07:17:43]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[07:27:46]	Call to undefined method Twig_Loader_Filesystem::setGlobalParam()
+C:\wamp2\www\kex\lib\bluz\View\View.php#442
+
+[07:27:46]	[type]: 1  Call to undefined method Twig_Loader_Filesystem::setGlobalParam() [file]: C:\wamp2\www\kex\lib\bluz\View\View.php [line]: 442 
+[07:29:06]	Call to undefined method Twig_Loader_Filesystem::setGlobalParam()
+C:\wamp2\www\kex\lib\bluz\View\View.php#442
+
+[07:29:06]	[type]: 1  Call to undefined method Twig_Loader_Filesystem::setGlobalParam() [file]: C:\wamp2\www\kex\lib\bluz\View\View.php [line]: 442 
+[07:35:19]	Call to undefined method Twig_Loader_Filesystem::setGlobalParam()
+C:\wamp2\www\kex\lib\bluz\View\View.php#484
+
+[07:35:19]	[type]: 1  Call to undefined method Twig_Loader_Filesystem::setGlobalParam() [file]: C:\wamp2\www\kex\lib\bluz\View\View.php [line]: 484 
+[07:35:48]	Call to undefined method Twig_Loader_Filesystem::setGlobalParam()
+C:\wamp2\www\kex\lib\bluz\View\View.php#484
+
+[07:35:48]	[type]: 1  Call to undefined method Twig_Loader_Filesystem::setGlobalParam() [file]: C:\wamp2\www\kex\lib\bluz\View\View.php [line]: 484 
+[08:10:38]	Call to undefined method Twig_Loader_Filesystem::setGlobalParam()
+C:\wamp2\www\kex\lib\bluz\View\View.php#485
+
+[08:10:38]	[type]: 1  Call to undefined method Twig_Loader_Filesystem::setGlobalParam() [file]: C:\wamp2\www\kex\lib\bluz\View\View.php [line]: 485 
+[08:11:10]	Call to undefined method Twig_Environment::setGlobalParam()
+C:\wamp2\www\kex\lib\bluz\View\View.php#485
+
+[08:11:10]	[type]: 1  Call to undefined method Twig_Environment::setGlobalParam() [file]: C:\wamp2\www\kex\lib\bluz\View\View.php [line]: 485 
+[08:14:27]	Cannot access protected property Twig_Environment::$extensions
+C:\wamp2\www\kex\lib\bluz\View\View.php#485
+
+[08:14:27]	[type]: 1  Cannot access protected property Twig_Environment::$extensions [file]: C:\wamp2\www\kex\lib\bluz\View\View.php [line]: 485 
+[08:16:46]	[type]: 8  Undefined variable: debug [file]: C:\wamp2\www\kex\lib\bluz\Application\Application.php [line]: 268 
+[08:17:09]	[type]: 8  Undefined variable: debug [file]: C:\wamp2\www\kex\lib\bluz\Application\Application.php [line]: 268 
+[08:57:07]	[type]: 8  Undefined variable: debug [file]: C:\wamp2\www\kex\lib\bluz\Application\Application.php [line]: 268 
+[09:41:26]	[type]: 8  Undefined variable: categories_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 270 
+[19:21:13]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[19:23:17]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[19:23:56]	[type]: 8  Undefined variable: asc [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 115 
+[19:25:18]	[type]: 8  Undefined variable: asc [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 115 
+[19:26:35]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 

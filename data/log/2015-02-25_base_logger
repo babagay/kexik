@@ -1,0 +1,2 @@
+[2015-02-25 21:09:43] base_logger.ERROR: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1 [] []
+[2015-02-25 21:20:07] base_logger.ERROR: Controller not found 'catalog/%D1%84%D1%8B%D0%B2%D1%81%D0%B0' [C:\wamp2\www\kex/modules/Catalog/controller/%D1%84%D1%8B%D0%B2%D1%81%D0%B0.php] [] []

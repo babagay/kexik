@@ -1,0 +1,62 @@
+{# Родительский шаблон #}
+{% include 'partial/twig_header.phtml' %}
+
+{# include  'partial/twig_aside.phtml' #}
+
+
+
+{# @todo: черный навбар показывать только админу. Коричневый навбар показывать и авторизованным и неавторизованным. Админу не показывать #}
+{% if(user('acl','system', 'Management')) %}
+    {% include  'partial/twig_nav-bar.phtml' %}
+{% else %}
+    {# include  'partial/twig_navbar_front.phtml' #}
+{% endif %}
+<div class="content-wrapper _layout-small">
+    {# include  'partial/twig_aside_right.phtml' #}
+
+    <div id="content" class="backend">
+        <div class="content-text">
+
+            {#
+            {% if(breadCrumbs()) %}
+            <ul class="breadcrumb">
+                {% for crumb in breadCrumbs() %}
+                {% if(loop.revindex == 1 ) %}
+                <li class="active">{{ crumb }}</li>
+                {% else %}
+                <li> {{ crumb }} </li>
+                {% endif %}
+
+                {% if (loop.revindex != 1) %}
+                {% if(loop.length > 1) %}
+
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+            #}
+
+            <!--form name="state">
+                <input type="hidden" name="filter-categories_id" value="{{ filter_categories_id }}">
+                <input type="hidden" name="filter-manufacturers_id" value="eq-">
+                <input type="hidden" name="order" value="asc-products_shopping_cart_price">
+                <input type="hidden" name="default_order_field" value="products_shopping_cart_price">
+                <input type="hidden" name="page" value="1">
+            </form-->
+
+            <div id="content_box">
+
+                {{ getContent() }}
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+{% include 'partial/twig_footer.phtml' %}
+

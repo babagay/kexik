@@ -1,0 +1,45 @@
+{% include 'partial/twig_header.phtml' %}
+{% if(user()) %}
+    {% include  'partial/twig_nav-bar.phtml' %}
+{% endif %}
+    <div class="container">
+        <div class="row">
+
+            {# ТЕСТЫ #}
+
+            {# Не пашет #}
+            {{ Layout.test() }}
+
+            {# Установка переменной #}
+            {% set foo = '138' %}
+
+            {{ request.get(1) }}
+
+            {{ view.asd('set asd var') }}
+
+
+            {# TODO проброс View в twig #}
+            {% if (View.breadCrumbs)  %}
+            <ul class="breadcrumb">
+                <li>
+                    <a href="/" class="bluz-tooltip" data-placement="bottom" data-original-title="{ __('Back to homepage') }">
+                        <i class="fa fa-home"></i>
+                        {  __('Home')  } 
+                    </a>
+                </li>
+                {for crump in View.breadCrumbs}
+                
+                    <li>
+                        {crump}                        
+                    </li>
+                
+                {endfor}
+            </ul>
+            {% endif %}
+        </div>
+        
+        {{ getContent() }}
+        
+        
+    </div>
+{% include 'partial/twig_footer.phtml' %}

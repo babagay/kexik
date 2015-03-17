@@ -1,0 +1,58 @@
+
+
+<form class="" method="post" action="/blog/Edit/group/operation/add" enctype="application/x-www-form-urlencoded">
+    <fieldset>
+        <span>Название</span>
+        {% if( group ) %}
+            <input type="hidden" name="groups_id" value="{{ group.groups_id }}" />
+        {% else %}
+            <input type="hidden" name="groups_id" />
+        {% endif %}
+
+        {% if( group ) %}
+            <input type="text" name="name" value="{{ group.name }}" />
+        {% else %}
+            <input type="text" name="name" />
+        {% endif %}
+
+        {{ groups_select }}
+
+        <button type="submit">Сохранить</button>
+    </fieldset>
+    </form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Статей</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    {% for group in groups %}
+    <tbody>
+    <tr>
+        <td>{{ group.groups_id|e }} </td>
+        <td>{{ group.name|e }}</td>
+        <td>
+            {% if( group.num > 0 ) %}
+                <a href="/blog/Articles/groups_id/{{ group.groups_id|e }}/operation/show"> {{ group.num }}</a>
+            {% else %}
+                {{ group.num }}
+            {% endif %}
+
+        </td>
+        <td>
+            {% if( group.num == 0 ) %}
+                <a class="" href="/blog/Edit/group/{{ group.groups_id|e }}/operation/delete">Удалить</a>
+            {% endif %}
+            <a class="" href="/blog/Edit/group/{{ group.groups_id|e }}/operation/edit">Изменить</a>
+        </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+

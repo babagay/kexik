@@ -1,0 +1,35 @@
+{#
+/**
+ * @var \Bluz\Grid\Grid $grid
+ */
+#}
+{#
+    <?php if ($grid->pages() > 1 && sizeof($grid->getData()) < $grid->getLimit()) :
+    $emptyRows = $grid->getLimit() - sizeof($grid->getData()); ?>
+
+#}
+
+
+
+{#
+    <?php endif; ?>
+#}
+
+
+{#
+grid.next и др методы не работает при вызове аяксом
+Видимо, в одном случае грид - это объект , а вдругом массив
+
+#}
+
+
+
+{% if(emptyRows) > 0 %}
+<table class="table grid">
+    {% for item in 1..emptyRows %}
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}

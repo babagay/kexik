@@ -1,0 +1,59 @@
+<script>
+    require(["bluz.grid"]);
+</script>
+
+<div class="clearfix" data-spy="grid" data-grid="{{ attribute(grid, 'getUid')  }}" ">
+
+{{ partial('grid/filter-search.phtml', {'grid': grid}) }}
+
+
+
+{{ partial('grid/limit.phtml', {'grid': grid}) }}
+
+    <table class="table grid">
+        <thead>
+        <tr>
+            <th width="120px"><a href="{{ grid.order('products_id', null, 'desc', false) }}">Артикул</a></th>
+            <th width="120px"><a href="{{ grid.order('products_barcode') }}">Штрихкод</a></th>
+            <th width="120px"><a href="{{ grid.order('products_name') }}">Наименование</a></th>
+            <th width="120px"><a href="{{ grid_order_4 }}">Единица измерения</a></th>
+            <th width="120px"><a href="{{ grid.order('products_shopping_cart_price') }}">Розница</a></th>
+            <th width="120px"><a href="{{ grid.order('products_price_wholesale') }}">Опт</a></th>
+            <th width="120px"><a href="{{ grid.order('products_quantity') }}">Количество</a></th>
+            <th width="120px"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in attribute(grid, 'getData') %}
+        <tr>
+            <td>{{ row['products_id'] }}</td>
+            <td>{{ row['products_barcode'] }}</td>
+            <td>{{ row['products_name'] }}</td>
+            <td>{{ row['products_unit'] }}</td>
+            <td>{{ row['products_shopping_cart_price'] }}</td>
+            <td>{{ row['products_price_wholesale'] }}</td>
+            <td>{{ row['products_quantity'] }}</td>
+            <td class="controls">
+                <a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="btn btn-xs btn-primary dialog" data-ajax-method="get">
+                    <i class="fa fa-pencil"></i>
+                </a>
+                <a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
+                    <i class="fa fa-times"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+{{ partial('grid/empty-rows.phtml', {'grid': grid}) }}
+{{ partial('grid/pagination.phtml', {'grid': grid}) }}
+{{ partial('grid/total.phtml', {'grid': grid}) }}
+
+
+
+</div>
+

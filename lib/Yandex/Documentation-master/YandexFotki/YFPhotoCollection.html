@@ -1,0 +1,916 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class YFPhotoCollection</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name"><img src="../media/images/Class_logo.png"
+														alt=" Class"
+														title=" Class"
+														style="vertical-align: middle"> YFPhotoCollection</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Класс, который позволяет вам работать с коллекцией фотографий</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> SilentImp &lt;<a href="mailto:ravenb@mail.ru">ravenb@mail.ru</a>&gt;</li>
+				<li><span class="field">link:</span> <a href="http://code.websaints.net/">http://code.websaints.net/</a></li>
+				<li><span class="field">link:</span> <a href="http://silentimp.habrahabr.ru/">http://silentimp.habrahabr.ru/</a></li>
+				<li><span class="field">link:</span> <a href="http://twitter.com/SilentImp/">http://twitter.com/SilentImp/</a></li>
+				<li><span class="field">throws:</span> YFException|YFRquestException|YFXMLException</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_YFPhotoCollection.php.html">/YFPhotoCollection.php</a> (line <span class="field">20</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																																								<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">string</span>
+					<a href="#$albumId" title="details" class="var-name">$albumId</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">string</span>
+					<a href="#$nextPageUrl" title="details" class="var-name">$nextPageUrl</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">string</span>
+					<a href="#$photoList" title="details" class="var-name">$photoList</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">string</span>
+					<a href="#$token" title="details" class="var-name">$token</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">string</span>
+					<a href="#$url" title="details" class="var-name">$url</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																																																																<div class="method-definition">
+					<img src="../media/images/Constructor.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$token</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$album_id</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">array</span>
+										<a href="#addPhoto" title="details" class="method-name">addPhoto</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$args</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">array</span>
+										<a href="#addPhotoEx" title="details" class="method-name">addPhotoEx</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$pub_channel</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$app_platform</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$app_version</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$title</span> = <span class="var-default">null</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$tags</span> = <span class="var-default">array()</span>], [<span class="var-type">int</span>&nbsp;<span class="var-name">$yaru</span> = <span class="var-default">1</span>], [<span class="var-type">$access_type</span>&nbsp;<span class="var-name">$access_type</span> = <span class="var-default">&quot;public&quot;</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$album</span> = <span class="var-default">null</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$disable_comments</span> = <span class="var-default">false</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$xxx</span> = <span class="var-default">false</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$hide_orig</span> = <span class="var-default">false</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$storage_private</span> = <span class="var-default">false</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$token</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#deletePhotoById" title="details" class="method-name">deletePhotoById</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$photoId</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#deletePhotoByTitle" title="details" class="method-name">deletePhotoByTitle</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$photoTitle</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#deletePhotosByTitle" title="details" class="method-name">deletePhotosByTitle</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$photoTitle</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../YandexFotki/YFPhoto.html">YFPhoto</a></span>
+										<a href="#getAlbum" title="details" class="method-name">getAlbum</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$page</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$index</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">array|<a href="../YandexFotki/YFPhoto.html">YFPhoto</a></span>
+										<a href="#getList" title="details" class="method-name">getList</a>
+										()
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">array|<a href="../YandexFotki/YFPhoto.html">YFPhoto</a></span>
+										<a href="#getPage" title="details" class="method-name">getPage</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$page</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">YHPhoto</span>
+										<a href="#getPhotoById" title="details" class="method-name">getPhotoById</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$photoId</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">YHPhoto</span>
+										<a href="#getPhotoByTitle" title="details" class="method-name">getPhotoByTitle</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$photoTitle</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">array|YHPhoto</span>
+										<a href="#getPhotosByTitle" title="details" class="method-name">getPhotosByTitle</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$title</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#next" title="details" class="method-name">next</a>
+											(<span class="var-type">array</span>&nbsp;<span class="var-name">$args</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/PrivateMethod.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#query" title="details" class="method-name">query</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>)
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#search" title="details" class="method-name">search</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$args</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#searchEx" title="details" class="method-name">searchEx</a>
+											([<span class="var-type">strging</span>&nbsp;<span class="var-name">$order</span> = <span class="var-default">&quot;updated&quot;</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$offset_time</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$offset_id</span> = <span class="var-default">&quot;&quot;</span>], [<span class="var-type">int</span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">100</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$token</span> = <span class="var-default">null</span>])
+									</div>
+											</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			
+<a name="var$albumId" id="$albumId"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$albumId</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">55</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Идентификатор альбома, если применимо</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$nextPageUrl" id="$nextPageUrl"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$nextPageUrl</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">41</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">URL следующей страницы коллекции</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$photoList" id="$photoList"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$photoList</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">48</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Массив, содержащий страницы(свой массив для каждой страницы), содержащие фотографии коллекции</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$token" id="$token"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$token</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">27</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Токен, подтверждающий аутентификацию пользователя</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$url" id="$url"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$url</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">34</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Адрес коллекции</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+														<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Constructor.png" />
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">66</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Конструктор коллекции</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			__construct
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$token</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$album_id</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$url</span><span class="var-description">: адрес коллекции</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$token</span><span class="var-description">: числовой идентификатор альбома</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$album_id</span><span class="var-description">: токен, подтверждающий аутентификацию пользователя. Не обязательный аргумент. Если не задан, то в коллекции будут показаны только ресурсы с уровнем доступа &quot;для всех&quot;</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddPhoto" id="addPhoto"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">addPhoto</span> (line <span class="line-number">260</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Метод является оберткой для add_photo и должен упростить работу с его аргументами.</p>
+<p class="description"><p>В случае успеха возвращает ассоциативный массив. Если yaru==0, то возвращается array('image_id'=&gt;photo_id), где {photo_id} - численный идентификатор фотографии. Если yaru==1 то возвращается array('image_id'=&gt;photo_id,'post_id'=&gt;post_id), где {photo_id} - идентификатор фотографии, а {post_id} - идентификатор поста на Я.ру.</p></p>
+	<ul class="tags">
+				<li><span class="field">throws:</span> YFException|YFRequestException</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			addPhoto
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$args</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$args</span><span class="var-description">: ассоциативный массив, в котором хранятся аргументы, значения которых отличаются от значений по умолчанию. Ключи ассоциативного массива: path, channel, platform, version, title, tags, yaru, access, album, comments, xxx, hide, private, token. Точное описание аргументов смотрите в описании метода add_photo.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddPhotoEx" id="addPhotoEx"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">addPhotoEx</span> (line <span class="line-number">372</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Добавляет ноую фотографию в коллекцию</p>
+<p class="description"><p>В случае успеха возвращает ассоциативный массив. Если yaru==0, то возвращается array('image_id'=&gt;photo_id), где {photo_id} - численный идентификатор фотографии. Если yaru==1 то возвращается array('image_id'=&gt;photo_id,'post_id'=&gt;post_id), где {photo_id} - идентификатор фотографии, а {post_id} - идентификатор поста на Я.ру.</p></p>
+	<ul class="tags">
+				<li><span class="field">throws:</span> YFException|YFRequestException</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			addPhotoEx
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$pub_channel</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$app_platform</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$app_version</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$title</span> = <span class="var-default">null</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$tags</span> = <span class="var-default">array()</span>], [<span class="var-type">int</span>&nbsp;<span class="var-name">$yaru</span> = <span class="var-default">1</span>], [<span class="var-type">$access_type</span>&nbsp;<span class="var-name">$access_type</span> = <span class="var-default">&quot;public&quot;</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$album</span> = <span class="var-default">null</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$disable_comments</span> = <span class="var-default">false</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$xxx</span> = <span class="var-default">false</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$hide_orig</span> = <span class="var-default">false</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$storage_private</span> = <span class="var-default">false</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$token</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$path</span><span class="var-description">: путь к файлу, содержащему изображения</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$pub_channel</span><span class="var-description">: Уникальное имя-маркер клиентского приложения, осуществляющего загрузку фотографии.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$app_platform</span><span class="var-description">: Дополнительная информация о платформе клиентского приложения, осуществляющего загрузку.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$app_version</span><span class="var-description">: Версия клиентского приложения, осуществляющего загрузку.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$title</span><span class="var-description">: Название фотографии. Не может быть пустой строкой.</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$tags</span><span class="var-description">: Массив содержащий теги (метки), уточняющие смысл фотографии.</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$yaru</span><span class="var-description">: Флаг публикации фотографии на странице пользователя на Я.ру. Допустимые значения: &quot;1&quot; - опубликовать (по умолчанию); &quot;0&quot; - не опубликовывать.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$album</span><span class="var-description">: Идентификатор альбома для загрузки фотографии. Альбом должен существовать.</span>			</li>
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$disable_comments</span><span class="var-description">: Флаг запрета комментариев. Значение по умолчанию: false.</span>			</li>
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$xxx</span><span class="var-description">: Флаг «только для взрослых» (можно только установить, снять нельзя). Значение по умолчанию: false.</span>			</li>
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$hide_orig</span><span class="var-description">: Флаг запрета публичного доступа к оригиналу фотографии. Значение по умолчанию: false. Если данный флаг установлен в true, автор не сможет получить оригинал фотографии при помощи API Фоток. Для этого нужно воспользоваться возможностями сервиса Яндекс.Фотки.</span>			</li>
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$storage_private</span><span class="var-description">: Флаг, закрывающий доступ к фотографии по URL со страниц вне домена Яндекс.Фоток. Значение по умолчанию: false.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$token</span><span class="var-description">: токен, подтверждающий аутентификацию пользователя. Обязательный аргумент.</span>			</li>
+					<li>
+				<span class="var-type">$access_type</span>
+				<span class="var-name">$access_type</span><span class="var-description">: Уровень доступа к фотографии. Допустимые значения: public (по умолчанию) - для всех; friends - для друзей; private - для себя.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddeletePhotoById" id="deletePhotoById"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">deletePhotoById</span> (line <span class="line-number">193</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Удаляет фотографию с указанным идентификатором</p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../YandexFotki/YFPhoto.html">YFPhoto</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			deletePhotoById
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$photoId</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$photoId</span><span class="var-description">: идентификатор фотографии, которую вы хотите удалить</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddeletePhotoByTitle" id="deletePhotoByTitle"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">deletePhotoByTitle</span> (line <span class="line-number">239</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Удаляет первую фотографию с указанным названием. Внимание! Фотографии сами не исчезают из коллекции. Не забудьте ее обновить. Удаленная фотография при вызова метода is_dead аозвращает true.</p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../YandexFotki/YFPhoto.html">YFPhoto</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			deletePhotoByTitle
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$photoTitle</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$photoTitle</span><span class="var-description">: Название фотогрфии, который вы хотите удалить</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddeletePhotosByTitle" id="deletePhotosByTitle"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">deletePhotosByTitle</span> (line <span class="line-number">214</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Удаляет фотографии с указанным названием. Внимание! Будут удалены все фотографии с этим заголовком. Фотографии сами не исчезают из коллекции. Не забудьте ее обновить. Удаленная фотография при вызова метода is_dead аозвращает true.</p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../YandexFotki/YFPhoto.html">YFPhoto</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			deletePhotosByTitle
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$photoTitle</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$photoTitle</span><span class="var-description">: Название фотогрфии, который вы хотите удалить</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$limit</span><span class="var-description">: Максимальное количество фотографий, которые будут удалены. Необязательный параметр.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetAlbum" id="getAlbum"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">getAlbum</span> (line <span class="line-number">110</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Возвращает фотографию</p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../YandexFotki/YFPhoto.html">YFPhoto</a></li>
+				<li><span class="field">throws:</span> YFException</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../YandexFotki/YFPhoto.html">YFPhoto</a></span>
+		<span class="method-name">
+			getAlbum
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$page</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$index</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$page</span><span class="var-description">: номер страницы</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$index</span><span class="var-description">: номер альбома на странице</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetList" id="getList"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">getList</span> (line <span class="line-number">80</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Возвращает коллекцию альбомов</p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../YandexFotki/YFPhoto.html">YFPhoto</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array|<a href="../YandexFotki/YFPhoto.html">YFPhoto</a></span>
+		<span class="method-name">
+			getList
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetPage" id="getPage"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">getPage</span> (line <span class="line-number">93</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Возвращает страницу коллекции альбомов</p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../YandexFotki/YFPhoto.html">YFPhoto</a></li>
+				<li><span class="field">throws:</span> YFException</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array|<a href="../YandexFotki/YFPhoto.html">YFPhoto</a></span>
+		<span class="method-name">
+			getPage
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$page</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$page</span><span class="var-description">: номер страницы</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetPhotoById" id="getPhotoById"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">getPhotoById</span> (line <span class="line-number">173</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Ищет в коллекции фотографию по заданному id</p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../YandexFotki/YFPhoto.html">YFPhoto</a></li>
+				<li><span class="field">throws:</span> YFException</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">YHPhoto</span>
+		<span class="method-name">
+			getPhotoById
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$photoId</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$photoId</span><span class="var-description">: идентификатор фотографии, которую вы хотите найти</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetPhotoByTitle" id="getPhotoByTitle"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">getPhotoByTitle</span> (line <span class="line-number">153</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Осуществляет поиск по коллекции фотографии с заданным заголовком. Возвращает первую найденую. Если поиск не дал результата, то вызовет исключение.</p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../YandexFotki/YFPhoto.html">YFPhoto</a></li>
+				<li><span class="field">throws:</span> YFException</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">YHPhoto</span>
+		<span class="method-name">
+			getPhotoByTitle
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$photoTitle</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$photoTitle</span><span class="var-description">: название фотографии. Обязательный аргумент.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetPhotosByTitle" id="getPhotosByTitle"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">getPhotosByTitle</span> (line <span class="line-number">129</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Осуществляет поиск по коллекции фотографий с заданным заголовком. Возвращает массив найденых соответствий.</p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../YandexFotki/YFPhoto.html">YFPhoto</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array|YHPhoto</span>
+		<span class="method-name">
+			getPhotosByTitle
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$title</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$title</span><span class="var-description">: название фотографии. Обязательный аргумент.</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$limit</span><span class="var-description">: максимально допустимое количество элементов выборки. Если установлено, то по достижении указанного числа найденных фотографий поиск будет завершен. В противном случае будут проверены все альбомы выборки на всех страницах. Если равно 0, то игнорируется.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodnext" id="next"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">next</span> (line <span class="line-number">515</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Получает следующую страницу коллекции. Если ее нет или вы предварительно не вызвали метод search, выполняющий поиск по коллекции, то метод вызовет исключение</p>
+	<ul class="tags">
+				<li><span class="field">throws:</span> YFException|YFRequestException|YFXMLException</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			next
+		</span>
+					(<span class="var-type">array</span>&nbsp;<span class="var-name">$args</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$args</span><span class="var-description">: ассоциативный массив, в котором хранятся аргументы, значения которых отличаются от значений по умолчанию. Ключи ассоциативного массива: order, time, id, limit, token. Точное описание аргументов смотрите в описании метода search</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodquery" id="query"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/PrivateMethod.png" />
+		<span class="method-title">query</span> (line <span class="line-number">609</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Метод непосредственно осуществляет запрос к серверу на получение коллекции</p>
+	<ul class="tags">
+				<li><span class="field">throws:</span> YFRequestException|YFXMLException</li>
+				<li><span class="field">access:</span> private</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			query
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$url</span><span class="var-description">: URL содержащий адрес коллекции, параметры сортировки, смещение и количество элементов на странице</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsearch" id="search"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">search</span> (line <span class="line-number">530</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Метод является оберткой для search и должен упростить работу с его аргументами.</p>
+	<ul class="tags">
+				<li><span class="field">throws:</span> YFRequestException|YFXMLException</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			search
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$args</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$args</span><span class="var-description">: ассоциативный массив, в котором хранятся аргументы, значения которых отличаются от значений по умолчанию. Ключи ассоциативного массива: order, time, id, limit, token. Точное описание аргументов смотрите в описании метода search</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsearchEx" id="searchEx"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">searchEx</span> (line <span class="line-number">577</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Выполняет поиск по коллекции с заданными условиями</p>
+	<ul class="tags">
+				<li><span class="field">throws:</span> YFRequestException|YFXMLException</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			searchEx
+		</span>
+					([<span class="var-type">strging</span>&nbsp;<span class="var-name">$order</span> = <span class="var-default">&quot;updated&quot;</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$offset_time</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$offset_id</span> = <span class="var-default">&quot;&quot;</span>], [<span class="var-type">int</span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">100</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$token</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">strging</span>
+				<span class="var-name">$order</span><span class="var-description">: Порядок отображения элементов выдачи. Допустимые значения: updated (по умолчанию) - по времени последнего изменения, от новых к старым; rupdated - по времени последнего изменения, от старых к новым; published - по времени загрузки (для фотографии) или создания (для альбома), от новых к старым; rpublished - по времени загрузки (для фотографии) или создания (для альбома), от старых к новым; created - по времени создания согласно EXIF-данным, от новых к старым; rcreated - по времени создания согласно EXIF-данным, от старых к новым.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$offset_time</span><span class="var-description">: Время создания ресурса  в формате UTC с точностью до секунды. Исключение: ссылки с order равным created или rcreated, в которых время указывается без часового пояса.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$offset_id</span><span class="var-description">: Численный идентификатор ресурса на Яндекс.Фотках.</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$limit</span><span class="var-description">: Количество элементов на странице выдачи.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$token</span><span class="var-description">: Токен, подтверждающий аутентификацию пользователя. Если не задан, используется токен, который был передан конструктору. Если не задан и он, то метод вызовет исключение.</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+	
+	<p class="notes" id="credit">
+		Documentation generated on Thu, 22 Apr 2010 14:43:45 +0300 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

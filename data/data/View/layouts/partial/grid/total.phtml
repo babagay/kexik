@@ -1,0 +1,17 @@
+{#
+<?php
+/**
+ * @var \Bluz\Grid\Grid $grid
+ */
+?>
+#}
+
+{% set pages_total = grid.pages %}
+
+<ul class="pager pull-left">
+    <li>
+        <a href="{{ grid.reset() }}">{{ __('Total') }}
+            <strong>{{ grid.total }}</strong> {{ _n('record', 'records', grid.total) }}
+            {{ _n("on #{pages_total} page", "on #{pages_total} pages", grid.pages, "<strong> #{grid.pages} </strong>") }}</a>
+    </li>
+</ul>

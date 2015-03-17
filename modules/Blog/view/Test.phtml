@@ -1,0 +1,94 @@
+TPL modules/Blog/view/Test.phtml
+<hr />
+
+<h3>Пример аджакса 1</h3>
+<pre>
+    var basePath = 'http://babagay.ru/blog/Test/'
+        $.post(basePath+"asd/10", {asd: 'asd'}, function (res) {
+
+          $("#res_1").html(res ) // ожидаем html
+
+          $("#res_1").html(res.zxc ) // ожидаем массив
+
+        }, "json");
+</pre>
+
+<p>У такого запроса Accept = application/json, а результат будет в виде json-массива</p>
+
+<div id="res_1"></div>
+
+<hr />
+
+<h3>Пример аджакса 2</h3>
+
+<pre>
+
+    </pre>
+
+<a href="/blog/Test/asd/1" class="dialog">Результат - в попап 1</a><br>
+
+<p></p>
+
+<hr />
+
+<h3>Пример аджакса 3</h3>
+<pre>
+
+    </pre>
+
+<a href="/blog/Test/asd/2" class="dialog">Результат - в попап 2</a><br>
+
+<p>У такого запроса Accept = text/html, поэтому в замыкании можно эхать</p>
+
+<hr />
+
+<h3>Пример аджакса 4</h3>
+<pre>
+
+    </pre>
+
+<a href="/blog/Test/asd/3" class="dialog">Результат - в попап</a><br>
+
+<p>У такого запроса Accept = text/html, поэтому в замыкании можно эхать</p>
+
+<hr />
+
+<h3>Пример аджакса 5</h3>
+<pre>
+    </pre>
+<a href="/blog/Test/asd/4" class="ajax">Click Me!</a><br>
+<p>У такого запроса Accept = json<br>
+    $app_object->getMessages()->addNotice('Notice Text');
+</p>
+<hr />
+
+<h3>Пример аджакса 6</h3>
+<pre>
+    </pre>
+<a href="/Blog/Test/asd/4/messages/Mess" class="ajax btn btn-default data-ajax-method">test call</a><br>
+<p>У такого запроса Accept = json </p>
+<hr />
+
+<h3>Пример аджакса 7</h3>
+<pre>
+    </pre>
+<a href="/test/ajax/asd/4/messages/zxc" id="ajax-callback-2" class="btn btn-default ajax">AJAX call to test</a><br>
+<p>У такого запроса Accept = json,<br>
+но возвращает он html <br>
+    [?] Почему у этого запроса по истечении появляются окна с сообщениями
+</p>
+<hr />
+
+<h3>Пример аджакса 8</h3>
+<pre>
+    </pre>
+<a href="/Blog/Test/asd/4/messages/zxc" id="ajax-callback-2" class="btn btn-default ajax">AJAX call to Blog</a><br>
+<p>У такого запроса Accept = json </p>
+<hr />
+
+<a href="/blog/Test/asd/1" class="confirm" data-confirm="Are you sure?">Простой переход с подтверждением</a><br>
+<a href="/blog/Test/asd/4" class="ajax confirm" data-id="3" data-ajax-method="DELETE">Click Me! DELETE</a><br>
+
+
+
+

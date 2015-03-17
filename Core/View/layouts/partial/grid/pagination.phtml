@@ -1,0 +1,49 @@
+
+{% set grid_pages = attribute(grid, 'pages' ) %}
+
+{% if(products_name_filter != '') %}
+    {% set filter_str = '/sql-filter-products_name/like-' ~ products_name_filter %}
+{% else %}
+    {% set filter_str = '' %}
+{% endif %}
+
+{#<?php if ($grid->pages() > 1) : ?>#}
+{% if grid_pages > 1 %}
+    <ul class="pagination pull-right">
+        {% if attribute(grid, 'prev' ) %}
+            <li><a href="{{ grid.prev }}">&laquo;</a></li>
+        {% else %}
+            <li class="disabled"><a href="#" onclick="javascript:return false;">&laquo;</a></li>
+        {% endif %}
+
+        {#
+            <?php if ($prev = $grid->prev()) : ?><li><a href="<?=$prev?>">&laquo;</a></li>
+            <?php else : ?> <li class="disabled"><a href="#" onclick="javascript:return false;">&laquo;</a></li>
+            <?php endif; ?>
+        #}
+
+        {# for p in grid.pages #}
+        {% for i in 1..attribute(grid, 'pages') %}
+            {% set page = i %}
+            <li {% if( attribute(grid, 'getPage') == page ) %}class="active" {% endif %}>
+
+                <a href="{{  attribute(grid, 'z_page', {'page': page}) }}{{ filter_str }}">{{ page }}</a>
+
+            </li>
+            {#
+            <?php for ($page = 1; $page <= $grid->pages(); $page++) : ?>
+                <li <?=($page==$grid->getPage()?'class="active"':'') ?>><a href="<?=$grid->page($page)?>"><?=$page?></a></li>
+            <?php endfor; ?>
+            #}
+        {% endfor %}
+
+        {# <?php if ($next = $grid->next()) : ?><li><a href="<?=$next?>">&raquo;</a></li> #}
+        {% if grid.next() %}
+            <li><a href="{{ grid.next }}">&raquo;</a></li>
+        {% else %}
+            <li class="disabled"><a href="#" onclick="javascript:return false;">&raquo;</a></li>
+        {% endif %}
+    </ul>
+{% else %}
+
+{% endif %}

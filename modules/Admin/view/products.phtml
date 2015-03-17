@@ -1,0 +1,28 @@
+<FORM ENCTYPE="multipart/form-data" ACTION="{{ baseUrl('/admin/products-upload') }}" METHOD=POST  target="upload_target">
+
+    <input type="file" name="products_list">
+
+    <input type="hidden" name="asd" value="1">
+
+    <p class="btn-toolbar">
+        <!--input type="button" class="btn btn-primary" value="Insert" onClick="return savePage()"-->
+        <input type="submit" class="btn btn-primary" value="Залить" >
+    </p>
+</FORM>
+
+<iframe id="upload_target" name="upload_target"   style="width:0;height:0;border:0px solid #fff;"></iframe>
+
+<script>
+
+    require(["jquery"],  function ($) {
+
+
+        $("#upload_target").load(function(e){
+            $("div[data-spy=grid] .pagination li.active a").click();
+        });
+
+    });
+
+    </script>
+
+{{ dispatch('admin', 'grid-products') }}

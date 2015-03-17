@@ -1,0 +1,7 @@
+[01-Dec-2014 11:05:43 UTC] PHP Warning:  require_once(../../core/YFUser.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory in /home/babagayr/public_html/lib/Yandex/example.php on line 6
+[01-Dec-2014 11:05:43 UTC] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required '../../core/YFUser.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/babagayr/public_html/lib/Yandex/example.php on line 6
+[01-Dec-2014 11:10:25 UTC] PHP Warning:  require_once(../../core/YFUser.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory in /home/babagayr/public_html/lib/Yandex/example2.php on line 6
+[01-Dec-2014 11:10:25 UTC] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required '../../core/YFUser.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/babagayr/public_html/lib/Yandex/example2.php on line 6
+[01-Dec-2014 12:25:54 UTC] PHP Fatal error:  Class 'YFUser' not found in /home/babagayr/public_html/lib/Yandex/example2.php on line 14
+[03-Dec-2014 17:04:13 UTC] PHP Fatal error:  Class 'YFUser' not found in /home/babagayr/public_html/lib/Yandex/example2.php on line 14
+[03-Dec-2014 17:15:53 UTC] PHP Fatal error:  Class 'YFUser' not found in /home/babagayr/public_html/lib/Yandex/example2.php on line 14

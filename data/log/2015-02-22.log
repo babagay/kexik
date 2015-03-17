@@ -1,0 +1,43 @@
+
+[20:05:40]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:06:51]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:08:10]	There is no closure in file C:\wamp2\www\kex\modules\Blog\controller\Base.php
+#0 C:\wamp2\www\kex\lib\bluz\Router\Router.php(71): Bluz\Application\Application->reflection('C:\wamp2\www\ke...')
+#1 C:\wamp2\www\kex\lib\bluz\Application\Application.php(619): Bluz\Router\Router->__construct()
+#2 C:\wamp2\www\kex\lib\bluz\Application\Application.php(735): Bluz\Application\Application->getRouter()
+#3 C:\wamp2\www\kex\index.php(114): Bluz\Application\Application->process()
+#4 {main}
+
+[20:10:42]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:10:56]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:10:58]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:11:12]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:11:30]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:12:54]	syntax error, unexpected T_USE, expecting T_FUNCTION
+C:\wamp2\www\kex\lib\bluz\Db\Query\Insert.php#19
+
+[20:12:54]	[type]: 4  syntax error, unexpected T_USE, expecting T_FUNCTION [file]: C:\wamp2\www\kex\lib\bluz\Db\Query\Insert.php [line]: 19 
+[20:16:05]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:18:11]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:23:08]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:39:05]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:41:15]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:41:39]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:42:58]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:45:36]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:47:15]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:52:37]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:54:10]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[20:54:11]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[21:03:14]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[21:03:15]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[21:07:24]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[21:07:25]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[21:11:18]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[21:11:20]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[21:15:27]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[21:15:28]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[21:15:52]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[21:15:53]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[21:20:11]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[21:20:12]	[type]: 8  Undefined variable: options [file]: C:\wamp2\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 

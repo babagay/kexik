@@ -1,0 +1,126 @@
+{# Родительский шаблон #}
+{% include 'partial/twig_header_front.phtml' %}
+
+{% include  'partial/twig_aside.phtml' %}
+
+
+
+{# @todo: черный навбар показывать только админу. Коричневый навбар показывать и авторизованным и неавторизованным. Админу не показывать #}
+{% if(user('acl','system', 'Management')) %}
+    {% include  'partial/twig_nav-bar.phtml' %}
+{% else %}
+    {# include  'partial/twig_navbar_front.phtml' #}
+{% endif %}
+    <div class="content-wrapper _layout-small">
+        {% include  'partial/twig_aside_right.phtml' %}
+
+        <div id="content">
+            <div class="content-text">
+                {#
+                <div class="slider">
+                    <img src="{{ baseUrl('public/images/napitki.png') }}">
+                </div>
+                #}
+
+                {% if(breadCrumbs()) %}
+                <ul class="breadcrumb">
+                    {% for crumb in breadCrumbs() %}
+                    {% if(loop.revindex == 1 ) %}
+                    <li class="active">{{ crumb }}</li>
+                    {% else %}
+                    <li> {{ crumb }} </li>
+                    {% endif %}
+
+                    {% if (loop.revindex != 1) %}
+                    {% if(loop.length > 1) %}
+                    {# — #}
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <form name="state">
+                    <input type="hidden" name="filter-categories_id" value="{{ filter_categories_id }}">
+                    <input type="hidden" name="filter-manufacturers_id" value="eq-">
+                    <input type="hidden" name="order" value="asc-products_shopping_cart_price">
+                    <input type="hidden" name="default_order_field" value="products_shopping_cart_price">
+                    <input type="hidden" name="page" value="1">
+                </form>
+
+                <div id="content_box">
+
+                {{ getContent() }}
+
+                </div>
+
+            </div>
+        </div>
+
+        {# @var closure $content #}
+        {# Ищет шаблон сначала в Core/View/templates, modules/Dashboard/view #}
+        {#
+        <div class="row">
+           <div class="col-md-9 front">
+
+            {{ getContent() }}
+           </div>
+
+            <div class="col-md-3 front">
+                {{ widget('blog','images',[1,2]) }}
+            </div>
+        </div>
+        #}
+
+    </div>
+
+{% include 'partial/twig_footer.phtml' %}
+
+
+
+{#
+<?php /** @var \Bluz\View\Layout $this */ ?>
+<?php $this->headStyle($this->baseUrl('css/dashboard.css')); ?>
+<?php require_once 'partial/header.phtml'; ?>
+<?php require_once 'partial/nav-bar.phtml'; ?>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="nav-dashboard" data-spy="affix" data-offset-top="60">
+                    <ul class="nav nav-tabs nav-stacked" >
+                        <li <?=($this->module('pages')?'class="active"':'')?>><?= $this->ahref('<i class="fa fa-edit fa-fw"></i> '.__('Pages'), ['pages', 'grid', [], true]) ?></li>
+                        <li <?=($this->module('users')?'class="active"':'')?>><?= $this->ahref('<i class="fa fa-user fa-fw"></i> '.__('Users'), ['users', 'grid', [], true]) ?></li>
+                        <li <?=($this->module('media')?'class="active"':'')?>><?= $this->ahref('<i class="fa fa-picture-o fa-fw"></i> '.__('Media'), ['media', 'grid', [], true]) ?></li>
+                        <li <?=($this->module('categories')?'class="active"':'')?>><?= $this->ahref('<i class="fa fa-folder-o fa-fw"></i> '.__('Categories'), ['categories', 'tree', [], true]) ?></li>
+                        <li <?=($this->module('options')?'class="active"':'')?>><?= $this->ahref('<i class="fa fa-th-list fa-fw"></i> '.__('Options'), ['options', 'grid', [], true]) ?></li>
+                  </ul>
+                    <ul class="nav nav-tabs nav-stacked">
+                        <li <?=($this->module('cache')?'class="active"':'')?>><?= $this->ahref('<i class="fa fa-hdd-o fa-fw"></i> '.__('Cache'), ['cache', 'index', [], true]) ?></li>
+                        <li <?=($this->module('acl')?'class="active"':'')?>><?= $this->ahref('<i class="fa fa-lock fa-fw"></i> '.__('Permissions'), ['acl', 'index', [], true]) ?></li>
+                        <li <?=($this->module('system')?'class="active"':'')?>><?= $this->ahref('<i class="fa fa-wrench fa-fw"></i> '.__('System'), ['system', 'index', [], true]) ?></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="/" class="bluz-tooltip" data-placement="bottom" data-original-title="<?=__('Back to homepage')?>">
+                            <i class="fa fa-home fa-fw"></i>
+                            <?=__('Home')?>
+                        </a>
+                    </li>
+                    <?php if ($this->breadCrumbs()) foreach ($this->breadCrumbs() as $crump):?>
+                        <li>
+                            <?php echo $crump?>
+                        </li>
+                    <?php endforeach;?>
+                </ul>
+                <?php
+                /* @var closure $content */
+                echo $this->getContent();
+                ?>
+            </div>
+        </div>
+    </div>
+<?php require_once 'partial/footer.phtml'; ?>
+#}

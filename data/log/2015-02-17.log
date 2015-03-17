@@ -1,0 +1,19 @@
+
+[12:09:11]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[12:09:24]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[12:09:34]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[15:06:45]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[15:06:53]	Class 'PHPExcel_IOFactory' not found
+C:\wamp\www\kex\modules\Blog\controller\Base.php#52
+
+[15:06:53]	[type]: 1  Class 'PHPExcel_IOFactory' not found [file]: C:\wamp\www\kex\modules\Blog\controller\Base.php [line]: 52 
+[15:08:40]	Class 'PHPExcel_IOFactory' not found
+C:\wamp\www\kex\modules\Blog\controller\Base.php#52
+
+[15:08:40]	[type]: 1  Class 'PHPExcel_IOFactory' not found [file]: C:\wamp\www\kex\modules\Blog\controller\Base.php [line]: 52 
+[15:10:01]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[15:11:37]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[15:15:34]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[15:24:02]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[15:25:37]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[17:38:27]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 

@@ -1,0 +1,130 @@
+{# <?php
+/**
+ * @var \Bluz\Grid\Grid $grid
+ */
+    #}
+<script>
+    // use data-spy="grid" for use AJAX for reload grid
+    // metka-123
+    require(["bluz.grid"]);
+</script>
+
+ <div class="clearfix" data-spy="grid" data-grid="{{ attribute(grid, 'getUid')  }}" >
+
+
+
+
+    <p>
+    Filters:<br/>
+        {% set filter1 = grid.filter('id','gt', 30) %}
+        {% set filter2 = grid.filter('id','lt', 70) %}
+        {% set filter3 = grid.filter('id','ne', 5, false) %}
+        {% set filter4 = grid.filter('status','eq', 'active') %}
+        {% set filter5 = grid.filter('status','eq', 'active', false) %}
+
+        <a href="{{ filter1  }}">Id &gt; 30</a> <br/>
+        <a href="{{ filter2 }}">Id &lt; 70</a> <br/>
+        <a href="{{ filter3 }}">AND Id != 5</a> <br/>
+        <a href="{{ filter4 }}">All Active Users</a> <br/>
+
+    {# 2 варианта работают идентично! #}
+        <a href="{{ filter5 }}">AND Active Users</a> <br/>
+        <a href="{{ attribute(grid, 'filter', {'column' : 'status', 'filter' : 'eq', 'value' : 'active', 'reset' : 0 }) }}">AND Active Users</a> <br/>
+    </p>
+
+     <div class="input-group">
+        <a href="{{ url('test', 'crud') }}" class="btn btn-primary pull-left dialog" data-ajax-method="get">Create</a>
+    </div>
+
+    <ul class="pagination pagination-small pull-right">
+        <li class="disabled"><a href="#">{{ __('Limit') }}</a></li>
+
+        <li {% if grid_getLimit == 5 %} class="active" {% endif %}><a href="{{ grid_limit_5 }}">5</a></li>
+        <li {% if grid_getLimit == 25 %} class="active" {% endif %}><a href="{{ grid_limit_25 }}">25</a></li>
+        <li {% if grid_getLimit == 50 %} class="active" {% endif %}><a href="{{ grid_limit_50 }}">50</a></li>
+        <li {% if grid_getLimit == 100 %} class="active" {% endif %}><a href="{{ grid_limit_100 }}">100</a></li>
+    </ul>
+
+    <table class="table grid">
+        <thead>
+                <tr>
+        <th width="120px"><a href="{{ grid_order_1 }}">Id</a></th>
+        <th width="120px"><a href="{{ grid_order_2 }}">name</a></th>
+        <th width="120px"><a href="{{ grid_order_3 }}">Status</a></th>
+        <th width="120px"></th>
+                    </tr>
+              </thead>
+                <tbody>
+        {# Вызов grid->getData()) #}
+         {% for row in attribute(grid, 'getData') %}
+            <tr>
+                        <td>{{ row['id'] }}</td>
+                        <td>{{ row['name'] }}</td>
+                        <td>{{ row['status'] }}</td>
+                        <td class="controls">
+                            <a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="btn btn-xs btn-primary dialog" data-ajax-method="get">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                            <a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </td>
+                    </tr>
+         {% endfor %}
+         </tbody>
+        </table>
+
+
+        {% if( attribute(grid, 'pages') > 1 ) %}
+            <ul class="pagination pull-right">
+            {% if( prev ) %}
+                <li><a href="{{ prev }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><a href="#" onclick="javascript:return false;">&laquo;</a></li>
+            {% endif %}
+
+            {% for i in 1..attribute(grid, 'pages') %}
+            {# * {{ i }} #}
+                {% set page = i %}
+                <li {% if( attribute(grid, 'getPage') == page ) %}class="active" {% endif %}>
+
+                {# Так ошибки не было, но не работало #}
+                {# <a href="{{ attribute(grid, 'page', {'page':'2'} ) }}">{{ page }}</a> #}
+                    <a href="{{ pages_link[i] }}">{{ page }}</a>
+                </li>
+            {% endfor %}
+
+            {% if( next ) %}
+                <li><a href="{{ next }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><a href="#" onclick="javascript:return false;">&raquo;</a></li>
+            {% endif %}
+            </ul>
+        {% endif %}
+
+
+
+
+        <ul class="pager pull-left">
+            <li>
+                <a href="{{ attribute(grid, 'reset') }}">{{ __('Total') }}:
+             <strong>{{  attribute(grid, 'total') }}</strong>
+               {{ _n('record', 'records', attribute(grid, 'total') ) }}
+                {{ _n('on %s page', 'on %s pages',  attribute(grid, 'pages'), attribute(grid, 'pages')) }}</a>
+        </li>
+        </ul>
+
+            {# работает #}
+            {# attribute(grid, 'Page') #}
+                {# Не работает #}
+            {# attribute(grid, 'Page', '1') #}
+</div>
+
+
+
+
+
+
+
+
+

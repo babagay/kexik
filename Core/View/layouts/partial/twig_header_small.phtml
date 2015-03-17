@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
+    <meta charset="UTF-8"/>
+    <title>{{ title() }}</title>
+    <base href="{{ baseUrl() }}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="profile" href="http://gmpg.org/xfn/11"/>
+    <link rel="stylesheet" href="{{ baseUrl('/public/css/bootstrap.css') }}" />
+
+
+    <link rel="icon"  href="{{ baseUrl('favicon.png') }}" type="image/png" />
+    <script src="{{ baseUrl('/public/js/require.js') }}"></script>
+
+    {%
+        set http_host = getRequest()
+    %}
+
+    {% if(http_host.server.HTTP_HOST == 'localhost')  %}
+    <script src="{{ baseUrl('/public/js/config_local.js') }}"></script>
+
+    {% else %}
+    <script src="{{ baseUrl('/public/js/config.js') }}"></script>
+    {% endif %}
+
+
+    {{ headScript() }}
+    {{ headStyle() }}
+    {{ link() }}
+    {{ meta() }}
+
+    {# <script src="{{ baseUrl('/public/js/modernizer.js') }}"></script> #}
+
+</head>
+<body class="front-end" data-spy="scroll" data-bluz-module="{{ module() }}" data-bluz-controller="{{ controller() }}">
+
+
+
+
+
+
+
+

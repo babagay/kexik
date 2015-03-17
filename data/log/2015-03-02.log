@@ -1,0 +1,5 @@
+
+[16:27:13]	Call to a member function hasPrivilege() on a non-object
+C:\wamp2\www\kex\modules\Admin\controller\categories.php#49
+
+[16:27:13]	[type]: 1  Call to a member function hasPrivilege() on a non-object [file]: C:\wamp2\www\kex\modules\Admin\controller\categories.php [line]: 49 

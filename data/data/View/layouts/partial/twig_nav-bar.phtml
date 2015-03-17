@@ -1,0 +1,61 @@
+{# /** @var \Bluz\View\Layout $this */ #}
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">{{ __('Test project') }}</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="fa fa-bar"></span>
+                    <span class="fa fa-bar"></span>
+                    <span class="fa fa-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li {% if(module('Index')) %}class="active"{% endif %}>
+                        {{ ahref('Home', ['index', 'index']) }}
+                    </li>
+                    <li {% if(module('my')) %}class="active"{% endif %}>
+
+                        {{ ahref('My', ['my', 'base']) }}
+                    </li>
+                    <li {% if(module('dashboard')) %}class="active"{% endif %}>
+                      {{ ahref('Dashboard', ['dashboard', 'index']) }}
+                    </li>
+                    <li {% if(module('test')) %}class="active"{% endif %}>
+                        {{ ahref('Test', ['test', '']) }}
+                    </li>
+                </ul>
+
+                {% if( user() ) %}
+                {# if ($identity = $this->user()) #}
+                  
+                    {% set info = user('info') %}
+                
+                    <p class="navbar-text navbar-right"> 
+                     
+                        Logged in as {{   ahref(info.login, ['users', 'profile', {'id':info.id}] )  }}
+                        
+                        ({{   ahref('Sign Out', ['users', 'signout'])  }})
+                        
+                        {#  
+                           {{ ahref( user('info').login,['users', 'profile', [id:user('info').id] ]) }}
+                        <?php echo __('Logged in as %s', $this->ahref($identity->login, array('users', 'profile', array('id' => $identity->id)))); ?>
+                        (<?php echo  $this->ahref(__('Sign Out'), array('users', 'signout')); ?>)
+                        #}
+                    </p>
+                {% else %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>{{ ahref(__('Sign In'), ["users", "signin"] ) }}</li>
+                    </ul>
+                {% endif %}
+
+ 
+
+
+                <div id="loading"></div>
+            </div>
+        </div>
+    </div>
+</div>
+

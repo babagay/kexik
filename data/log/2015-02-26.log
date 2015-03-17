@@ -1,0 +1,30 @@
+
+[18:01:53]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[18:01:54]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[18:01:55]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[18:02:01]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 192 
+[18:02:04]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 192 
+[18:02:24]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 192 
+[18:12:36]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[18:14:16]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[18:25:16]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[18:27:50]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 192 
+[18:27:57]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 192 
+[18:28:13]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 192 
+[23:16:37]	[type]: 8  Undefined index: parent_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 49 
+[23:17:44]	[type]: 8  Undefined index: parent_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 49 
+[23:18:14]	[type]: 8  Undefined index: parent_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 49 
+[23:18:19]	[type]: 8  Undefined index: parent_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 49 
+[23:18:36]	[type]: 8  Undefined index: parent_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 49 
+[23:19:11]	[type]: 8  Undefined index: categories_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 57 
+[23:20:10]	[type]: 8  Undefined index: categories_id [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 57 
+[23:20:34]	[type]: 8  Undefined index: categories_seo_page_name [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 43 
+[23:22:25]	[type]: 8  Undefined index: categories_seo_page_name [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 43 
+[23:24:41]	[type]: 8  Undefined index: categories_seo_page_name [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 43 
+[23:33:19]	[type]: 8  Undefined index: categories_seo_page_name [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 43 
+[23:35:20]	[type]: 8  Undefined index: categories_seo_page_name [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 43 
+[23:42:23]	[type]: 2  array_merge() [<a href='function.array-merge'>function.array-merge</a>]: Argument #1 is not an array [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 114 
+[23:42:38]	[type]: 2  array_merge() [<a href='function.array-merge'>function.array-merge</a>]: Argument #1 is not an array [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 114 
+[23:43:30]	[type]: 2  array_merge() [<a href='function.array-merge'>function.array-merge</a>]: Argument #1 is not an array [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 114 
+[23:43:58]	[type]: 2  array_merge() [<a href='function.array-merge'>function.array-merge</a>]: Argument #1 is not an array [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 113 
+[23:44:12]	[type]: 2  array_merge() [<a href='function.array-merge'>function.array-merge</a>]: Argument #1 is not an array [file]: C:\wamp2\www\kex\modules\Catalog\controller\products.php [line]: 113 

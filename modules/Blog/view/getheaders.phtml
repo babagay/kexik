@@ -1,0 +1,43 @@
+{% if( articles ) %}
+
+    {% for article in articles %}
+
+        <div class="item-articleheader">
+            <div class="box-header-image">
+                {% if( article.cover ) %}
+                    <div class="box-cover">
+                        <img class="articles-cover-small thumbnail" src="{{ article.cover }}" />
+                    </div>
+                {% endif %}
+            </div>
+            <div class="box-header-header">
+        <span class="ht MuseoSansCyrl-500">
+        <h2>{{ article.title }}</h2>
+        </span>
+        <span class="hg">
+        <a href="{{ article.group_link }}">
+            <h4>{{ article.group_name }}</h4>
+        </a>
+        </span>
+            </div>
+            <div class="box-header-date">
+                <span class="hd">{{ article.dateline }}</span>
+            </div>
+            <div style="clear: both;"></div>
+            <hr>
+            <div class="box-intro">
+                <p>{{ article.intro }} </p>
+            </div>
+        </div>
+
+        <div class="box-button">
+            <a href="{{ article.link }}" >
+                <button type="button" class="btn btn-w3r">Читать</button>
+            </a>
+        </div>
+
+        <div style="clear: both;"></div>
+
+    {% endfor %}
+
+{% endif %}

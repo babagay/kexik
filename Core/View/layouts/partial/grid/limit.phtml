@@ -1,0 +1,32 @@
+{# Всегда работает #}
+{# <h2>{{ grid.limit(50) }}</h2> #}
+
+{# Всегда работает #}
+{# <h2>{{ attribute(grid, 'z_limit', {'key' : 25} ) }}</h2> #}
+
+{# Всегда работает, но выдвет 3 #}
+{# <h2>{{ attribute(grid, 'limit', {'key' : 50} ) }}</h2> #}
+
+{% set grid_limit = attribute(grid, 'getLimit' ) %}
+
+{% if(products_name_filter != '') %}
+    {% set filter_str_pgn = '/sql-filter-products_name/like-' ~ products_name_filter %}
+{% else %}
+    {% set filter_str_pgn = '' %}
+{% endif %}
+
+<ul class="pagination pagination-small pull-right">
+    <li class="disabled"><a href="#">{{ __('Количество строк') }}</a></li>
+
+    <li {% if grid_limit == 3 %} class="active" {% endif %}><a href="{{ attribute(grid, 'z_limit', {'key' : 3} ) }}">3</a></li>
+    <li {% if grid_limit == 5 %} class="active" {% endif %}><a href="{{ attribute(grid, 'z_limit', {'key' : 5} ) }}">5</a></li>
+    <li {% if grid_limit == 25 %} class="active" {% endif %}><a href="{{ attribute(grid, 'z_limit', {'key' : 25} ) }}">25</a></li>
+    <li {% if grid_limit == 50 %} class="active" {% endif %}><a href="{{ grid.z_limit(50) }}">50</a></li>
+    <li {% if grid_limit == 100 %} class="active" {% endif %}><a href="{{ grid.z_limit(100) }}">100</a></li>
+    <li {% if grid_limit == 500 %} class="active" {% endif %}><a href="{{ grid.z_limit(500) }}">500</a></li>
+
+    {#
+        <li <?=(($grid->getLimit()==50)?'class="active"':'')?>><a href="<?=$grid->limit(50)?>">50</a></li>
+        <li <?=(($grid->getLimit()==100)?'class="active"':'')?>><a href="<?=$grid->limit(100)?>">100</a></li>
+    #}
+</ul>

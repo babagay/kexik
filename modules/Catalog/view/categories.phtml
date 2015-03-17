@@ -1,0 +1,26 @@
+
+{% for group in categories %}
+    <div>
+
+        <input type="hidden" name="categories_id" value="{{ group.categories_id }}">
+        <input type="hidden" name="categories_description" value="{{ group.categories_description }}">
+        <input type="hidden" name="categories_image" value="{{ group.categories_image }}">
+        <input type="hidden" name="parent_id" value="{{ group.parent_id }}">
+        <input type="hidden" name="sort_order" value="{{ group.sort_order }}">
+        <input type="hidden" name="date_added" value="{{ group.date_added }}">
+        <input type="hidden" name="categories_status" value="{{ group.categories_status }}">
+        <input type="hidden" name="categories_level" value="{{ group.categories_level }}">
+        <input type="hidden" name="categories_seo_page_name" value="{{ group.categories_seo_page_name }}">
+
+        {% if( category_parent ) %} {% set parent = '/' ~ category_parent  %}
+        {% else %} {% set parent = '' %} {% endif %}
+
+        {% if(group.categories_seo_page_name) %}
+            {{ ahref(  group.categories_name, ['каталог' ~ parent, group.categories_seo_page_name]) }}
+        {% else %}
+          {{ ahref(  group.categories_name, ['каталог' ~ parent, group.categories_id]) }}
+        {% endif %}
+
+
+    </div>
+{% endfor %}

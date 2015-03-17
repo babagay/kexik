@@ -1,0 +1,71 @@
+object(Core\Model\Test\SqlGrid)#46 (16) {
+  ["uid":protected]=>
+  string(3) "sql"
+  ["adapter":protected]=>
+  object(Bluz\Grid\Source\SqlSource)#47 (2) {
+    ["source":protected]=>
+    string(18) "SELECT * FROM test"
+    ["filters":protected]=>
+    array(7) {
+      ["eq"]=>
+      string(1) "="
+      ["ne"]=>
+      string(2) "!="
+      ["gt"]=>
+      string(1) ">"
+      ["ge"]=>
+      string(2) ">="
+      ["lt"]=>
+      string(1) "<"
+      ["le"]=>
+      string(2) "<="
+      ["like"]=>
+      string(4) "like"
+    }
+  }
+  ["data":protected]=>
+  NULL
+  ["prefix":protected]=>
+  string(4) "sql-"
+  ["module":protected]=>
+  string(4) "test"
+  ["controller":protected]=>
+  string(8) "grid-sql"
+  ["params":protected]=>
+  array(1) {
+    ["id"]=>
+    int(5)
+  }
+  ["page":protected]=>
+  int(1)
+  ["limit":protected]=>
+  int(15)
+  ["defaultLimit":protected]=>
+  int(15)
+  ["defaultOrder":protected]=>
+  NULL
+  ["orders":protected]=>
+  array(0) {
+  }
+  ["allowOrders":protected]=>
+  array(3) {
+    [0]=>
+    string(4) "name"
+    [1]=>
+    string(2) "id"
+    [2]=>
+    string(6) "status"
+  }
+  ["filters":protected]=>
+  array(0) {
+  }
+  ["allowFilters":protected]=>
+  array(2) {
+    [0]=>
+    string(6) "status"
+    [1]=>
+    string(2) "id"
+  }
+  ["options":protected]=>
+  NULL
+}

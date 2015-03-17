@@ -1,0 +1,79 @@
+{# <?php
+/**
+ * @var \Bluz\Grid\Grid $grid
+ */
+?> #}
+
+<div class="clearfix" data-spy="grid" data-grid="{{ grid.getUid }}">
+    <script>
+        // use data-spy="grid" for use AJAX for reload grid
+        require(["bluz.grid"]);
+    </script>
+    <p>
+        Filters:<br/>
+        <a href="{{ grid.filter('id', 'gt', 3) }}">Id &gt; 3</a> <br/>
+        <a href="{{ grid.filter('id', 'lt', 9) }}">Id &lt; 9</a> <br/>
+        <a href="{{ grid.filter('id', 'ne', 5, false) }}">AND Id != 5</a>
+    </p>
+
+    {{ partial('grid/total.phtml', {'grid' : grid} ) }}
+    {{ partial('grid/limit.phtml', {'grid' : grid} ) }}
+
+    {#
+
+    {% if grid is iterable %}
+    <b>variable is an array or a traversable object</b>
+    {% else %}
+    <b>YYY</b>
+    {% endif %}
+
+    {% if grid[0] is not defined %}
+        ={{ grid }}=
+    {% else %}
+        -{{ grid[0] }}-
+    {% endif %}
+
+    #}
+
+    {# Так работает всегда. Но только внутри тэгов #}
+    {# <h2>{{ grid.order('id', null, 'desc', false) }}</h2> #}
+
+    {# Так работает, если zxc() это метод класса Grid #}
+    {# <h2>{{ grid.asd }}</h2>
+        <h2>{{ grid.zxc(2) }}</h2>
+        <h2>{{ attribute(grid, 'zxc', {'key' : 3} ) }}</h2>
+    #}
+
+    {# Так работает, если Getlimit() это хедпер в Grid/Helper/Getlimit.php #}
+    {#  <h2>{{ attribute(grid, 'getlimit', {'key' : 3} ) }}</h2> #}
+
+    <table class="table grid">
+        <thead>
+            <tr>
+                <th width="40px"><a href="{{ grid.order('id', null, 'desc', false) }}">Id</a></th>
+                <th><a href="{{ grid.order('name') }}">Name</a></th>
+                <th><a href="{{ grid.order('email') }}">Email</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            {# <?php foreach($grid->getData() as $row) : ?> #}
+            {% for row in grid.getData %}
+            <tr>
+                <td>{{ row['id'] }}</td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.email }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {{ partial('grid/empty-rows.phtml', {'grid': grid}) }}
+    {{ partial('grid/pagination.phtml', {'grid': grid}) }}
+    {{ partial('grid/total.phtml', {'grid': grid}) }}
+
+    {#
+    <?= $this->partial('grid/empty-rows.phtml', ['grid'=>$grid]) ?>
+    <?= $this->partial('grid/pagination.phtml', ['grid'=>$grid]) ?>
+    <?= $this->partial('grid/total.phtml', ['grid'=>$grid]) ?>
+    #}
+</div>

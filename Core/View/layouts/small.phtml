@@ -1,0 +1,22 @@
+{# Родительский шаблон #}
+{% include 'partial/twig_header_small.phtml' %}
+{% if(user('acl','system', 'Management')) %}
+    {% include  'partial/twig_nav-bar.phtml' %}
+{% else %}
+    {# include  'partial/twig_nav-bar-small.phtml' #}
+{% endif %}
+
+
+
+    <div class="container layout-small">
+        <div class="container">
+           
+            {# @var closure $content #}
+			{# Ищет шаблон сначала в Core/View/templates, modules/Dashboard/view #}
+            {{ getContent() }}
+            
+        </div>
+    </div>
+
+
+{% include 'partial/twig_footer.phtml' %}

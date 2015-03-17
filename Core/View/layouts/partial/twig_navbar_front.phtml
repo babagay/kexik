@@ -1,0 +1,92 @@
+
+
+<div class="front-header-wrapper">
+    <div class="navbar navbar-inverse front navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">
+                        <img src="/public/images/logo.png" />
+                    </a>
+                    {#
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="fa fa-bar">sdc</span>
+                        <span class="fa fa-bar">sdc</span>
+                        <span class="fa fa-bar">sdc</span>
+                    </button>
+                    #}
+                </div>
+                <div class="navbar-collapse collapse">
+                    <nav class="pt-effect-1">
+                        <a href="блог" {% if(module('blog')) %}class="active"{% endif %}>Статьи</a>
+                        <a href="автор" {% if(module('autor')) %}class="active"{% endif %}>Автор</a>
+                    </nav>
+
+                    {#
+                    <!--section class="color-1">
+                        <nav class="pt-effect-1">
+                            <a href="#">Статьи</a>
+                            <a href="#">Автор</a>
+                        </nav>
+                    </section-->
+
+                    #}
+
+                    <p class="navbar-text navbar-left breadcrumbs">
+                        {% if(breadCrumbs()) %}
+                            {% for crumb in breadCrumbs() %}
+                                {{ crumb }}
+                            {% if (loop.revindex != 1) %}
+                                {% if(loop.length > 1) %}
+                                    —
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </p>
+
+                    {% if( user('info') ) %}
+
+                    {% set info = user('info') %}
+
+                    {#
+                    <p class="navbar-text navbar-right">
+                        Logged in as {{   ahref(info.login, ['users', 'profile', {'id':info.id}] )  }}
+                        ({{   ahref('Sign Out', ['users', 'signout'])  }})
+                    </p>
+                    #}
+
+                    {% else %}
+
+                    <ul class="nav navbar-nav navbar-right">
+                        {# <li>{{ ahref(__('Sign In'), ["users", "signin"] ) }}</li> #}
+                        <li><a href="#">Поиск</a></li>
+                    </ul>
+                    {% endif %}
+
+
+
+
+                    <div id="loading"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div  class="oak-list-yellow"></div>
+</div>
+
+
+{#
+<div  class="sign-in front">
+    {% set info = user('info') %}
+    {% if(info.id > 0) %}
+    <a href="/users/profile/id/{{ info.id }}"> {{ info.login }} </a> | <a href="/users/signout">Выход</a>
+    {% else %}
+    <a href="вход">Вход</a>
+    {% endif %}
+</div>
+#}
+
+<div  class="oak-list"></div>
+
+

@@ -1,0 +1,182 @@
+<h3>Hello, {{ username }}</h3>
+<p>This is page consist many examples, all of them you can find in test module</p>
+<h3>Controller features</h3>
+<ul>
+    <li>{{ ahref('Controller &rarr; Closure', ['test', 'closure']) }}</li>
+    <li>{{ ahref('Controller &rarr; Disable View', ['test', 'no-view']) }}</li>
+    <li>{{ ahref('Reflection Data', ['test', 'reflection']) }}</li>
+</ul>
+<hr/>
+<ul>
+    <li>{{ ahref('CRUD', ['test', 'grid-sql']) }} &mdash; Create, Read, Update and Delete examples</li>
+    <li>{{ ahref('Backbone', ['test', 'backbone']) }} &mdash; working too</li>
+</ul>
+
+<h3>CLI</h3>
+<p>
+For test CLI you can run <code>`php ./bin/cli.php --uri 'test/cli' --env='dev'`</code>.
+You can find source code at <code>`application/modules/test/controllers/cli.php`</code>
+</p>
+
+<h3>Packages</h3>
+<ul>
+    <li>{{ ahref('Cache View', ['test', 'cache-view']) }}</li>
+    <li>{{ ahref('Cache Data', ['test', 'cache-data', {'id' : 1}]) }}</li>
+    <li>{{ ahref('DB Operations', ['test', 'db']) }}</li>
+    <li>{{ ahref('DB Query Builders', ['test', 'db-query']) }}</li>
+    <li>{{ ahref('DB Relations', ['test', 'db-relations']) }}</li>
+    <li>{{ ahref('DB Table', ['test', 'db-table']) }}</li>
+    <li>{{ ahref('Events', ['test', 'events']) }}</li>
+    <li>{{ ahref('Routers', ['test', 'route']) }}</li>
+    <li>{{ ahref('Session', ['test', 'session']) }}</li>
+    <li>{{ ahref('Grid with Array source', ['test', 'grid-array']) }}</li>
+    <li>{{ ahref('Grid with Select source', ['test', 'grid-select']) }}</li>
+    <li>{{ ahref('Grid with SQL source', ['test', 'grid-sql']) }}</li>
+    <li>{{ ahref('Grid with custom route', ['test', 'grid-route', {'alias' : 'example'}]) }}</li>
+    <li>{{ ahref('Mailer', ['test', 'mailer']) }}</li>
+    <li>{{ ahref('View Partials', ['test', 'view-partial']) }}</li>
+    <li>{{ ahref('View Form Helpers', ['test', 'view-helpers']) }}</li>
+</ul>
+<hr/>
+<ul>
+    <li>{{ ahref('Options', ['test', 'options']) }} &mdash; example of usage module Options from another module</li>
+</ul>
+<hr/>
+
+<h3>Magic AJAX calls</h3>
+<p>Try AJAX calls over GET/POST/PUT/DELTE HTTPs methods</p>
+<div class="btn-group">
+    {{ ahref('GET', ['test', 'ajax'], {'class' : 'ajax btn btn-default', 'data-ajax-method' : 'GET'}) }}
+    {{ ahref('POST', ['test', 'ajax'], {'class' : 'ajax btn btn-default', 'data-ajax-method' : 'POST'}) }}
+    {{ ahref('PUT', ['test', 'ajax'], {'class' : 'ajax btn btn-default', 'data-ajax-method' : 'PUT'}) }}
+    {{ ahref('DELETE', ['test', 'ajax'], {'class' : 'ajax btn btn-default', 'data-ajax-method' : 'DELETE'}) }}
+</div>
+<hr/>
+<div class="btn-group">
+    <a href="/test/ajax" id="ajax-callback" class="btn btn-default ajax">AJAX call with fired trigger</a>
+</div>
+<hr/>
+<p>Example of JavaScript:</p>
+<pre>
+    require(["jquery", "bluz.notify"], function($, notify) {
+        $(function(){
+            $('#ajax-callback')
+                .on('success.ajax.bluz', function(event, data, textStatus, jqXHR){
+                    notify.addSuccess("Event `success.ajax.bluz` is fired")
+                })
+                .on('error.ajax.bluz', function(event, jqXHR, textStatus, errorThrown){
+                    notify.addSuccess("Event `error.ajax.bluz` is fired")
+                });
+        });
+    });
+</pre>
+<script>
+    require(["jquery", "bluz.notify"], function($, notify) {
+        $(function(){
+            $("#ajax-callback")
+                .on("success.ajax.bluz", function(event, data, textStatus, jqXHR){
+                    notify.addSuccess("Event `success.ajax.bluz` is fired")
+                })
+                .on("error.ajax.bluz", function(event, jqXHR, textStatus, errorThrown){
+                    notify.addSuccess("Event `error.ajax.bluz` is fired")
+                });
+        });
+    });
+</script>
+<hr/>
+<div class="btn-group">
+    {{ ahref('Ajax + Messages', ['test', 'ajax'], {'class' : 'ajax btn btn-default', 'data-messages' : true}) }}
+    {{ ahref('Ajax + Confirm', ['test', 'ajax'], {'class' : 'ajax confirm btn btn-danger'}) }}
+    {{ ahref('Loading', ['test', 'ajax-html'], {'class' : 'load btn btn-default', 'data-ajax-target' : '#load'}) }}
+    {{ ahref('Confirm', ['index', 'index'], {'class' : 'confirm btn btn-default', 'data-confirm' : 'Confirm?'}) }}
+</div>
+<hr/>
+
+<h3>Access denied</h3>
+<div class="btn-group">
+    <a href="/test/privilege" class="btn btn-default bluz-tooltip ajax" data-toggle="tooltip" title="Return error message">Denied page, AJAX call</a>
+    <a href="/test/privilege" class="btn btn-default bluz-tooltip dialog" data-toggle="tooltip" title="Return error dialog">Denied page, dialog</a>
+</div>
+<hr/>
+
+<h3>Exceptions</h3>
+<ul>
+    <li>{{ ahref('Throw exception from controller', ['test', 'exception']) }}</li>
+    <li>{{ ahref('Throw exception from view', ['test', 'exception-view']) }}</li>
+</ul>
+<hr/>
+
+<h3>Dispatch controller</h3>
+<pre>
+    dispatch('test', 'closure')
+</pre>
+<div id="load">
+    {{ dispatch('test', 'closure') }}
+</div>
+
+<h3>Call widget</h3>
+<pre>
+     widget('test', 'lorem')
+    widget('blog','images',[1,2])
+</pre>
+<div>
+    {{ widget('test', 'lorem') }}
+
+</div>
+
+<h3>Call API method</h3>
+<pre>
+      api('test', 'example', [4]) - так работает, н овыдает ошибку API "Array/": API not found 'Array/'
+      api_closure('test', 'example', [4]) - так работает без ошибок
+</pre>
+<div>
+    {{ api_closure('test', 'example', [4]) }}
+</div>
+
+<h3>Wrong controller</h3>
+<pre>
+     dispatch('test', 'not-found')
+</pre>
+<div>
+    {{ dispatch('test', 'not-found') }}
+</div>
+
+<h3>Wrong widget</h3>
+<pre>
+     widget('test', 'not-found')
+</pre>
+<div>
+    {{ widget('test', 'not-found') }}
+</div>
+
+<h3>Wrong without priveleges</h3>
+<pre>
+     widget('test', 'acl-denied')
+</pre>
+<div>
+    {{ widget('test', 'acl-denied') }}
+</div>
+
+<h3>Wrong API method</h3>
+<pre>
+     api('test', 'not-found')
+</pre>
+<div>
+    {{ api('test', 'not-found') }}
+</div>
+
+<h3>Dispatch grid based on array</h3>
+<pre>
+     dispatch('test', 'grid-array')
+</pre>
+<div>
+    {{ dispatch('test', 'grid-array') }}
+</div>
+
+<h3>Dispatch grid based on SQL</h3>
+<pre>
+     dispatch('test', 'grid-sql')
+</pre>
+<div>
+    {{ dispatch('test', 'grid-sql') }}
+</div>

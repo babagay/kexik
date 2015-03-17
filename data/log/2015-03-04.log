@@ -1,0 +1,8 @@
+
+[17:32:59]	[type]: 8  Undefined variable: method [file]: C:\wamp2\www\kex\Core\View\ZoqaTwigExtension.php [line]: 493 
+[17:54:18]	Call to a member function hasPrivilege() on a non-object
+C:\wamp2\www\kex\modules\Admin\controller\categories.php#49
+
+[17:54:18]	[type]: 1  Call to a member function hasPrivilege() on a non-object [file]: C:\wamp2\www\kex\modules\Admin\controller\categories.php [line]: 49  <img src="{{ baseUrl("public/images" ~ ) }}"> <img src="{{ baseUrl("public/images" ~ ) }}">
+[18:38:14]	[type]: 8  Undefined variable: sub_category_html [file]: C:\wamp2\www\kex\modules\Index\widget\mainmenu.php [line]: 71 
+[18:39:01]	[type]: 8  Undefined variable: sub_category_html [file]: C:\wamp2\www\kex\modules\Index\widget\mainmenu.php [line]: 71 

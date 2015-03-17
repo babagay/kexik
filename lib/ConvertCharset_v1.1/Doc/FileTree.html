@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>HelpGenerator Menu</title>
+<link rel="stylesheet" type="text/css" href="styles/interface.css"/>
+<link rel="stylesheet" type="text/css" href="tools/xtree.css"/>
+<script src="tools/classTree.js"></script>
+</head>
+<body bgcolor="#FFFFFF" topmargin="1" leftmargin="1" rightmargin="1" bottommargin="1">
+<a href="FileTree.html">Files</a> - Classes: <a href="ClassTree.html">Tree</a> - <a href="ClassList.html">List</a> - <a href="FunctionList.html">Functions</a>
+<div class="separator"></div>
+<script language="Javascript">
+
+if (document.getElementById) {
+
+  var tree = new WebFXTree('PHPEdit Help Index', 'tools/Legend.html');
+  tree.setBehavior('classic');
+  tree.openIcon = 'images/help-book.gif';
+  tree.icon = 'images/help-book.gif';
+
+	var fileIDAZD1IC = new WebFXTreeItem('!How to Upgrade', 'file.!How to Upgrade.html');
+	fileIDAZD1IC.openIcon = 'images/file.png';
+	fileIDAZD1IC.icon = 'images/file.png';
+
+    
+			tree.add(fileIDAZD1IC);
+		
+	var fileIDAJE1IC = new WebFXTreeItem('ChangeLog', 'file.ChangeLog.html');
+	fileIDAJE1IC.openIcon = 'images/file.png';
+	fileIDAJE1IC.icon = 'images/file.png';
+
+    
+			tree.add(fileIDAJE1IC);
+		
+	var fileIDA0F1IC = new WebFXTreeItem('ConvertCharset.class.full.php', 'file.ConvertCharset.class.full.php.html');
+	fileIDA0F1IC.openIcon = 'images/file.png';
+	fileIDA0F1IC.icon = 'images/file.png';
+
+    
+    	var class_fileIDAKG1IC_ConvertCharset = new WebFXTreeItem('ConvertCharset', 'class.ConvertCharset.html');
+    	class_fileIDAKG1IC_ConvertCharset.openIcon = 'images/class.gif';
+    	class_fileIDAKG1IC_ConvertCharset.icon = 'images/class.gif';
+    	fileIDA0F1IC.add(class_fileIDAKG1IC_ConvertCharset);
+    
+			tree.add(fileIDA0F1IC);
+		
+	var fileIDALI2IC = new WebFXTreeItem('Demo - About', 'file.Demo - About.html');
+	fileIDALI2IC.openIcon = 'images/file.png';
+	fileIDALI2IC.icon = 'images/file.png';
+
+    
+			tree.add(fileIDALI2IC);
+		
+	var fileIDA1I2IC = new WebFXTreeItem('License', 'file.License.html');
+	fileIDA1I2IC.openIcon = 'images/file.png';
+	fileIDA1I2IC.icon = 'images/file.png';
+
+    
+			tree.add(fileIDA1I2IC);
+		
+	var fileIDAGD1IC = new WebFXTreeItem('Thans To', 'file.Thans To.html');
+	fileIDAGD1IC.openIcon = 'images/file.png';
+	fileIDAGD1IC.icon = 'images/file.png';
+
+    
+			tree.add(fileIDAGD1IC);
+		
+  document.write(tree);
+}
+</script>
+<div class="separator"></div>
+</body>
+</html>

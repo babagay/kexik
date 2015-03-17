@@ -1,0 +1,9 @@
+
+[14:16:42]	syntax error, unexpected T_CLASS
+C:\wamp2\www\kex\modules\Catalog\widget\manufacturer.php#61
+
+[14:16:42]	[type]: 4  syntax error, unexpected T_CLASS [file]: C:\wamp2\www\kex\modules\Catalog\widget\manufacturer.php [line]: 61 
+[17:14:22]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[17:46:31]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[17:54:28]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[19:16:32]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 

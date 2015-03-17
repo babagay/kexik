@@ -1,0 +1,5 @@
+
+[10:09:15]	[type]: 8  Undefined offset: 0 [file]: C:\wamp2\www\kex\Core\View\helper\title.php [line]: 32 
+[11:32:01]	[type]: 8  Undefined variable: method [file]: C:\wamp2\www\kex\Core\View\ZoqaTwigExtension.php [line]: 509 
+[12:49:51]	[type]: 4096  Argument 1 passed to Bluz\Grid\Grid::getParams() must be an array, string given, called in C:\wamp2\www\kex\lib\bluz\Grid\Grid.php on line 495 and defined [file]: C:\wamp2\www\kex\lib\bluz\Grid\Grid.php [line]: 433 
+[15:24:33]	[type]: 8  Undefined variable: method [file]: C:\wamp2\www\kex\Core\View\ZoqaTwigExtension.php [line]: 509 

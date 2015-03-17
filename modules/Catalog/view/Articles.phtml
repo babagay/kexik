@@ -1,0 +1,489 @@
+{# http://markusslima.github.io/bootstrap-filestyle/ - стиль загрузчика файлов #}
+
+
+
+
+<form name="add-edit-article-form" class="form-horizontal" method="post" action="/blog/Articles/operation/add" enctype="application/x-www-form-urlencoded">
+    <fieldset>
+        {# Можно сделать метод populate() для формы #}
+        <legend>Статья</legend>
+
+
+        {% if(showarticle_link) %}
+        <div class="show-article">
+            <span class="_input-group-addon">
+                <a href="{{ showarticle_link }}" class="btn btn-default"> <i class="glyphicon glyphicon-calendar fa fa-eye"></i></a>
+                </span>
+        </div>
+        {% endif %}
+
+        <div class="control-group">
+            <label class="control-label" for="descriptor">Дата публикации</label>
+            <div class="controls">
+                <div class="input-prepend input-group">
+                 <span class="add-on input-group-addon">
+					   <i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                    {% if( article ) %}
+                        <input name="daterange" class="form-control" value="{{ article.dateline }}" />
+                    {% else %}
+                        <input class="form-control" name="daterange" />
+                    {% endif %}
+                </div>
+                <p class="help-block">Если нужно указать альтернативную дату публикации</p>
+            </div>
+        </div>
+
+
+
+
+        {% if( article ) %}
+            <input type="hidden" name="articles_id" value="{{ article.articles_id }}" />
+        {% else %}
+            <input type="hidden" name="articles_id" />
+        {% endif %}
+
+        {#% if( article ) %}
+            <input type="hidden" name="groups_id" value="{{ article.groups_id }}" />
+        {% else %}
+            <input type="hidden" name="groups_id" />
+        {% endif %#}
+
+        <div class="control-group">
+            <label class="control-label" for="title">Название</label>
+                <div class="controls">
+                    {% if( article ) %}
+                        <input type="text" name="title" id="title" value="{{ article.title }}" />
+                    {% else %}
+                        <input type="text" name="title" id="title" />
+                    {% endif %}
+                    <p class="help-block">Название статьи</p>
+                </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="descriptor">Уникальный ключ</label>
+            <div class="controls">
+                {% if( article ) %}
+                    <input type="text" name="descriptor" id="descriptor" value="{{ article.descriptor }}" />
+                {% else %}
+                    <input type="text" name="descriptor" id="descriptor" />
+                {% endif %}
+                <p class="help-block"></p>
+                </div>
+        </div>
+
+        <div  class="control-group">
+            <label class="control-label" for="groups_id">Группа</label>
+            <div class="controls">
+                {#% if( is_null(operation) ) %}
+
+                {% else %}
+
+                {% endif %#}
+                {{ groups_select }}
+                <p class="help-block"></p>
+                </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="intro">Короткая аннотация</label>
+            <div class="controls">
+                {% if( article ) %}
+                <textarea name="intro" id="intro">{{ article.intro }}</textarea>
+                {% else %}
+                <textarea name="intro" id="intro"></textarea>
+                {% endif %}
+                <p class="help-block"></p>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="cover">Титульная картинка</label>
+            <div class="controls">
+                {% if( article ) %}
+                <input type="text" name="cover" id="cover" value="{{ article.cover }}" />
+                {% else %}
+                <input type="text" name="cover" id="cover" />
+                {% endif %}
+                <p class="help-block">ссылка</p>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="images">Список картинок</label>
+            <div class="controls">
+                {% if( article ) %}
+                <textarea name="images" id="images">{{ article.images }}</textarea>
+                {% else %}
+                <textarea name="images"  id="images"></textarea>
+                {% endif %}
+                <p class="help-block"> ссылки через точку с запятой</p>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="images_icons">Пиктограммы картинок</label>
+            <div class="controls">
+                {% if( article ) %}
+                <textarea name="images_icons" id="images_icons">{{ article.images_icons }}</textarea>
+                {% else %}
+                <textarea name="images_icons"  id="images_icons"></textarea>
+                {% endif %}
+                <p class="help-block"> ссылки через точку с запятой</p>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="body">Статья</label>
+            <div class="controls">
+                {% if( article ) %}
+                    <textarea name="body" id="body">{{ article.body }}</textarea>
+                {% else %}
+                    <textarea name="body" id="body"></textarea>
+                {% endif %}
+                <p class="help-block"> </p>
+            </div>
+        </div>
+
+        <div>
+
+        </div>
+
+        {% if( apply_btn == 1 ) %}
+            <div class="btn-wrapper">
+                <button id="btn-apply" type="submit" link="blog/Articles/articles_id/{{ article.articles_id }}/operation/apply" class="btn btn-default ajax">Применить</button>
+            </div>
+        {% endif %}
+
+        <div>        <button type="submit" class="btn btn-success">Сохранить статью</button></div>
+
+
+
+
+
+
+    </fieldset>
+    </form>
+
+<hr/>
+<form action="/blog/Articles/operation/add-image" enctype="multipart/form-data" method="post" id="title-image-form" class="form-horizontal">
+    <fieldset>
+        <div class="control-group">
+            <label class="control-label" for="">Титульная картинка</label>
+            <div class="controls">
+                <div style="display:none" id="imgloadstatus"><img alt="Загрузка...." src="public/images/loader.gif"></div>
+                <div id="imgloadbutton">
+                    <input type="file" id="title-image" name="title-image" class="filestyle" data-icon="true" data-buttonText="Выбрать файл">
+                </div>
+                <p class="help-block">Заглавная картинка статьи</p>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<div id="preview"></div>
+
+<hr/>
+<form action="/blog/Articles/operation/add-multiimage" enctype="multipart/form-data" method="post" id="add-multiimage-form" class="form-horizontal">
+    <fieldset>
+        <div class="control-group">
+            <label class="control-label" for="">Иллюстрации</label>
+            <div class="controls">
+                <div style="display:none" id="imgloadstatus-2"><img alt="Загрузка...." src="public/images/loader.gif"></div>
+                <div id="imgloadbutton-2">
+                    <input type="file" id="illustration" name="illustration" class="filestyle" data-icon="true" data-buttonText="Выбрать файл">
+                </div>
+                <p class="help-block">Дополнительные иллюстрации к статье</p>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<div id="preview-2"></div>
+
+<!--hr/>
+
+Test ajax
+<hr/>
+
+<div>
+    <a href="/Blog/Test/asd/1/messages/Mess" class="ajax btn btn-default data-ajax-method">test</a>
+</div>
+
+<hr/>
+
+<div class="btn-group">
+    <a href="/test/ajax/asd/1/messages/zxc" id="ajax-callback-2" class="btn btn-default ajax">AJAX call (WORKS)</a>
+</div>
+
+<div class="mess-1"></div>
+<hr/-->
+
+<script>
+
+
+    require(["moment",   "daterangepicker"],  function (moment,  daterangepicker) {
+    /**
+     *  https://github.com/dangrossman/bootstrap-daterangepicker#readme
+     */
+        $("input[name=\"daterange\"]").daterangepicker({
+            singleDatePicker: true,
+            format: "DD-MM-YYYY"
+        }, function(start, end, label) {
+           // console.log(start.toISOString(), end.toISOString(), label);
+        });
+
+    });
+
+/*
+    require(["jquery", "calendar"],  function ($) {
+
+        setTimeout(function(){
+                 var calendar = $("#calendar").calendar(
+                 {
+                 tmpl_path: "/public/tmpls/",
+                 events_source: function () { return []; },
+                 language: "ru-RU",
+                     events_source: [
+                         {
+                             "id": 293,
+                             "title": "Event 1",
+                             "url": "http://example.com",
+                             "class": "event-important",
+                             "start": 12039485678000, // Milliseconds
+                             "end": 1234576967000 // Milliseconds
+                         }
+                     ]
+                 });
+        },2000);
+
+    });
+*/
+
+
+        require(["jquery", "jquery.form", "bluz", "filestyle"],  function ($, jqueryform, bluz, filestyle) {
+
+        $("#title-image").off("click").on("change", function(){
+
+            $("#preview").html("");
+
+            $("#title-image-form").ajaxForm({
+                target: "#preview",
+                beforeSubmit:function(){
+                    //console.log("s");
+                    $("#imgloadstatus").show();
+                    $("#imgloadbutton").hide();
+                },
+                success:function(){
+                    //console.log("z");
+                    $("#imgloadstatus").hide();
+                    $("#imgloadbutton").show();
+                },
+                error:function(){
+                    //console.log("d");
+                    $("#imgloadstatus").hide();
+                    $("#imgloadbutton").show();
+                },
+                complete:function(respObj){
+
+                    if(respObj.statusText == "OK"){
+                        if(respObj.    responseJSON.ahref){
+                            $("form[name=add-edit-article-form] input[name=cover]").val(respObj.responseJSON.ahref);
+                            $("#preview").html("<img src="+respObj.responseJSON.ahref+" style=height:150px; />")
+                        }
+                    }
+
+                    $("#imgloadstatus").hide();
+                    $("#imgloadbutton").show();
+                }
+            }).submit();
+        });
+
+        $("#illustration").off("click").on("change", function(){
+
+            var preview_html = $("#preview-2").html();
+
+            $("#add-multiimage-form").ajaxForm({
+                target: "#preview-2",
+                beforeSubmit:function(){
+                    //console.log("s");
+                    $("#imgloadstatus-2").show();
+                    $("#imgloadbutton-2").hide();
+                },
+                success:function(){
+                    console.log("z");
+                    $("#imgloadstatus-2").hide();
+                    $("#imgloadbutton-2").show();
+                },
+                error:function(){
+                    //console.log("d");
+                    $("#imgloadstatus-2").hide();
+                    $("#imgloadbutton-2").show();
+                },
+                complete:function(respObj){
+                    if(respObj.statusText == "OK"){
+                        if(respObj.responseJSON.ahref && respObj.responseJSON.ahref_small){
+                            // TODO взять содержимое images и добавить ;ahref
+                           // $("form[name=add-edit-article-form] input[name=images]").val(respObj.responseJSON.ahref);
+                            var images = bluz.trim($("form[name=add-edit-article-form] #images").val());
+                            var images_icons = bluz.trim($("form[name=add-edit-article-form] #images_icons").val());
+
+                            if(images != "") images += ";"
+                            if(images_icons != "") images_icons += ";"
+
+                            images += respObj.responseJSON.ahref
+                            images_icons += respObj.responseJSON.ahref_small
+
+                            $("form[name=add-edit-article-form] #images").val(images)
+                            $("form[name=add-edit-article-form] #images_icons").val(images_icons)
+
+                            //var preview_html = $("#preview-2").html();
+                            //$("#preview-2").html(preview_html + "<img src="+respObj.responseJSON.ahref_small+" style=height:150px; />")
+                            $("#preview-2").append(preview_html + "<img src="+respObj.responseJSON.ahref_small+" style=height:150px; />")
+                        }
+                    }
+                    $("#imgloadstatus-2").hide();
+                    $("#imgloadbutton-2").show();
+                }
+            }).submit();
+        });
+
+    });
+
+
+    require(["jquery", "bluz.ajax"], function($, bluz_ajax) {
+
+
+
+
+
+        $("#btn-apply").on("click",function(event, data, textStatus, jqXHR){
+
+            var data = {};
+            var data = $("form[name=add-edit-article-form] input, form[name=add-edit-article-form] select, form[name=add-edit-article-form] textarea").each(function(i,t){
+                var name = this.name
+                var value = $(this).val()
+                data[name] = value
+            });
+
+
+            $.ajax({
+                type: "POST",
+                data: data,
+                url: $(this).attr("link"),
+                context: document.body,
+                dataType: "json"
+            }).done(function(response,status,responseObj) {
+                $( this ).addClass( "done" );
+                if(status == "success"){
+                    // responseObj.responseText - is response
+                    //$(".mess-1").html(response)
+                    //console.log(response)
+                    if(response.response == "ok"){
+                        console.log("Данные сохранены")
+                        // var $div = bluz_ajax.createModal("content") // не работает
+                    } else {
+                        console.log("Ошибка сохранения данных")
+                    }
+                }
+            });
+
+            return false;
+        });
+    });
+
+        require(["jquery", "bluz.notify"], function($, notify) {
+        $(function(){
+            $("#ajax-callback-2")
+                .on("success.ajax.bluz", function(event, data, textStatus, jqXHR){
+                    notify.addSuccess("Event `success.ajax.bluz` is fired")
+                })
+                .on("error.ajax.bluz", function(event, jqXHR, textStatus, errorThrown){
+                    notify.addSuccess("Event `error.ajax.bluz` is fired")
+                });
+        });
+    });
+
+
+</script>
+
+
+
+<table class="table table-striped art-grid-1">
+    <thead>
+        <tr>
+            <th>
+                {% if( sort_direction == 'asc' ) %}
+                    <a href="/blog/Articles{{ url_nonsort }}/sort/articles_id/direction/desc">ID</a>
+                {% else %}
+                    <a href="/blog/Articles{{ url_nonsort }}/sort/articles_id/direction/asc">ID</a>
+                {% endif %}
+            </th>
+            <th>
+                {% if( sort_direction == 'asc' ) %}
+                <a href="/blog/Articles{{ url_nonsort }}/sort/title/direction/desc">Название</a>
+                {% else %}
+                <a href="/blog/Articles{{ url_nonsort }}/sort/title/direction/asc">Название</a>
+                {% endif %}
+            </th>
+            <th>
+                {% if( sort_direction == 'asc' ) %}
+                <a href="/blog/Articles{{ url_nonsort }}/sort/group_name/direction/desc">Группа</a>
+                {% else %}
+                <a href="/blog/Articles{{ url_nonsort }}/sort/group_name/direction/asc">Группа</a>
+                {% endif %}
+            </th>
+            <th>
+                {% if( sort_direction == 'asc' ) %}
+                <a href="/blog/Articles{{ url_nonsort }}/sort/dateline/direction/desc">Опубликована</a>
+                {% else %}
+                <a href="/blog/Articles{{ url_nonsort }}/sort/dateline/direction/asc">Опубликована</a>
+                {% endif %}
+            </th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    {% for article in articles %}
+
+    {% if( article.visibility == 1 ) %}
+         {% set aclass = "a-visible" %}
+         {% set sclass = "s-visible" %}
+    {% else %}
+         {% set aclass = "" %}
+         {% set sclass = "" %}
+    {% endif %}
+
+
+    <tr>
+        <td>
+            {% if( article.visibility == 1 ) %}
+                <a class="btn btn-mini pull-left a-visible" href="блог/статья/{{ article.articles_id }}">{{ article.articles_id }}</a>
+            {% else %}
+                {{ ahref(article.articles_id, ['блог/статья', article.articles_id],{"class" : "btn btn-mini pull-left"}) }}
+            {% endif %}
+        </td>
+        <td>
+            {% if( article.visibility == 1 ) %}
+                <span class="strong">{{ article.title|e }}</span>
+            {% else %}
+                {{ article.title|e }}
+            {% endif %}
+        </td>
+        <td> <span class="{{ sclass }}">{{ article.group_name|e }}</span> </td>
+        <td> <span class="{{ sclass }}">{{ article.dateline }}</span>       </td>
+        <td>
+                <a class="confirm {{ aclass }}" href="/blog/Articles/articles_id/{{ article.articles_id|e }}/operation/delete">Удалить</a>
+                <a class="{{ aclass }}" href="/blog/Articles/articles_id/{{ article.articles_id|e }}/operation/edit">Изменить</a>
+            {% if( article.visibility == 1 ) %}
+                <a class="{{ aclass }}" href="/blog/Articles/articles_id/{{ article.articles_id|e }}/operation/hide{{ non_operation_url }}">Скрыть</a>
+            {% else %}
+                <a class="{{ aclass }}" href="/blog/Articles/articles_id/{{ article.articles_id|e }}/operation/unhide{{ non_operation_url }}">Открыть</a>
+            {% endif %}
+        </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+

@@ -1,0 +1,27 @@
+{#
+<!--
+
+$( window ).resize(function() {
+  $( "body" ).prepend( "<div>" + $( window ).width() + "</div>" );
+});
+
+$(document).ready(function() {
+var $winheight = $(window).height(); 
+
+$(".source-image").attr({ height: $winheight });
+$(window).bind("resize", function(){
+var $winheight = $(window).height();
+$(".source-image").attr({ height: $winheight });
+
+-->
+	<div id="wrapper">
+		<div class="island" > <div class="menu-container"> <a href="блог" class="blog_enter-link"> Блог </a> </div> </div>
+		<div class="island-2" > <div class="menu-container"> <a href="автор" class="autor_enter-link"> Автор </a> </div> </div>
+		<div class="tree" > <img  src="/public/images/tree.png" width="553px" _height="500px"/></div>
+	</div>
+#}
+
+
+
+ 
+ 

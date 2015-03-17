@@ -1,0 +1,62 @@
+{{ dispatch('admin','grid-categories') }}
+
+{#
+<form class="" method="post" action="{{ baseUrl('/admin/categories/operation/add') }}" enctype="application/x-www-form-urlencoded">
+    <fieldset>
+        <span>Название</span>
+        {% if( categories ) %}
+        <input type="hidden" name="categories_id" value="{{ categories.categories_id }}" />
+        {% else %}
+        <input type="hidden" name="categories_id" />
+        {% endif %}
+
+        {% if( categories ) %}
+        <input type="text" name="categories_name" value="{{ categories.categories_name }}" />
+        {% else %}
+        <input type="text" name="categories_name" />
+        {% endif %}
+
+        {{ categorys_select }}
+
+        <button type="submit">Сохранить</button>
+    </fieldset>
+</form>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Продуктов</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    {% for category in categories %}
+    <tbody>
+    <tr>
+        <td>{{ category.categories_id|e }} </td>
+        <td>{{ category.categories_name|e }}</td>
+        <td>
+            {% if( category.num > 0 ) %}
+            {% set link_1 = '/blog/Articles/categories_id/' ~ category.categories_id ~ '/operation/show' %}
+                 <a href="{{ baseUrl(link_1) }}"> {{ category.num }}</a>
+            {% else %}
+            {{ category.num }}
+            {% endif %}
+
+        </td>
+        <td>
+            {% if( category.num == 0 ) %}
+                {% set link_2 = '/blog/Edit/category/' ~ category.categories_id ~ '/operation/delete' %}
+                <a class="" href="{{ baseUrl(link_2) }}">Удалить</a>
+            {% endif %}
+                {% set link_3 = '/blog/Edit/category/' ~ category.categories_id ~ '/operation/edit' %}
+                <a class="" href="{{ baseUrl(link_3) }}">Изменить</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+#}
+

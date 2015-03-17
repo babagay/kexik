@@ -1,0 +1,1 @@
+[2015-03-08 19:39:04] base_logger.ERROR: Controller not found 'catalog/productsfilter-categories_id=eq-&filter-manufacturers_id=eq-&order=asc-products_shopping_cart_price&page=1' [C:\wamp2\www\kex/modules/Catalog/controller/productsfilter-categories_id=eq-&filter-manufacturers_id=eq-&order=asc-products_shopping_cart_price&page=1.php] [] []

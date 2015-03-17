@@ -1,0 +1,89 @@
+
+[10:08:06]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:08:06]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:12:03]	[type]: 8  Undefined variable: options [file]: C:\wamp\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[10:13:29]	[type]: 8  Undefined variable: options [file]: C:\wamp\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[10:15:24]	Allowed memory size of 536870912 bytes exhausted (tried to allocate 64 bytes)
+C:\wamp\www\kex\lib\FirePHP\firephp-core\lib\FirePHPCore\FirePHP.class.php#1364
+
+[10:15:24]	[type]: 1  Allowed memory size of 536870912 bytes exhausted (tried to allocate 64 bytes) [file]: C:\wamp\www\kex\lib\FirePHP\firephp-core\lib\FirePHPCore\FirePHP.class.php [line]: 1364 
+[10:22:00]	[type]: 8  Undefined variable: options [file]: C:\wamp\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[10:23:27]	[type]: 8  Undefined variable: options [file]: C:\wamp\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[10:24:01]	[type]: 8  Undefined variable: options [file]: C:\wamp\www\kex\lib\PHPExcel\Classes\PHPExcel\Settings.php [line]: 384 
+[10:27:11]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:30:33]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:31:50]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:32:10]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:32:47]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:33:19]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:33:22]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:33:36]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:34:46]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:35:05]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:35:22]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:35:40]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:36:08]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:36:10]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:36:18]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:36:34]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:44:41]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:45:30]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:45:55]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:46:34]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:47:32]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[10:48:31]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[10:58:00]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\15\7c\f75358550f62731dbfa4dcc865ae63594a485c869a5bfcf1309eff039bbd.php [line]: 75 
+[11:12:26]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[11:26:58]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[11:27:20]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 190 
+[11:44:41]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 190 
+[11:52:24]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 190 
+[11:53:07]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 190 
+[17:25:06]	There is no closure in file C:\wamp\www\kex\modules\Admin\controller\categories.php
+#0 C:\wamp\www\kex\lib\bluz\Router\Router.php(71): Bluz\Application\Application->reflection('C:\wamp\www\kex...')
+#1 C:\wamp\www\kex\lib\bluz\Application\Application.php(619): Bluz\Router\Router->__construct()
+#2 C:\wamp\www\kex\lib\bluz\Application\Application.php(735): Bluz\Application\Application->getRouter()
+#3 C:\wamp\www\kex\index.php(114): Bluz\Application\Application->process()
+#4 {main}
+
+[17:26:39]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 190 
+[17:26:43]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 190 
+[17:27:23]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 190 
+[17:28:28]	There is no closure in file C:\wamp\www\kex\modules\Admin\controller\products.php
+#0 C:\wamp\www\kex\lib\bluz\Router\Router.php(71): Bluz\Application\Application->reflection('C:\wamp\www\kex...')
+#1 C:\wamp\www\kex\lib\bluz\Application\Application.php(619): Bluz\Router\Router->__construct()
+#2 C:\wamp\www\kex\lib\bluz\Application\Application.php(735): Bluz\Application\Application->getRouter()
+#3 C:\wamp\www\kex\index.php(114): Bluz\Application\Application->process()
+#4 {main}
+
+[17:28:51]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 190 
+[17:33:23]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 190 
+[17:33:26]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 190 
+[17:34:08]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 190 
+[17:36:27]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 190 
+[17:36:42]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:37:12]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:37:55]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\data\cache\d0\be\096be9455be404e7738e9b2bcd01b7afb59c4442ddba7f7f2c394e6fd516.php [line]: 190 
+[17:38:02]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:38:29]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:39:11]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:40:37]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:43:45]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:44:35]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:45:58]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:48:24]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:48:38]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:48:50]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:50:33]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:51:16]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:51:44]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:53:37]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:54:59]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[17:57:47]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[18:00:44]	[type]: 8  Array to string conversion [file]: C:\wamp\www\kex\lib\bluz\View\Helper\Attributes.php [line]: 38 
+[20:39:15]	[type]: 8  Undefined variable: method [file]: C:\wamp2\www\kex\Core\View\ZoqaTwigExtension.php [line]: 491 
+[21:01:48]	[type]: 8  Undefined variable: method [file]: C:\wamp2\www\kex\Core\View\ZoqaTwigExtension.php [line]: 491 
+[21:56:11]	Using $this when not in object context
+C:\wamp2\www\kex\modules\Admin\controller\grid-products.php#35
+
+[21:56:11]	[type]: 1  Using $this when not in object context [file]: C:\wamp2\www\kex\modules\Admin\controller\grid-products.php [line]: 35 

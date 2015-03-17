@@ -1,0 +1,151 @@
+{# /** @var \Bluz\View\Layout $this */ #}
+
+ <aside id="main-nav">
+            <nav>
+                {{ widget('index', 'mainmenu') }}
+                {#
+                <ul id="main-navigation">
+                    <li>
+                        <img src="public/images/drinks.png">
+                        <a href="" >
+                            <span class="jsCaller" param="0">Напитки</span>
+                        </a>
+                        <div class="submenu-wrapper">
+                            <div id="submenu">
+                                <img class="holder" src="public/images/напитки-подменю.jpg"/>
+                                <ul >
+                                    <li><a href="">Чай</a></li>
+                                    <li><a href="">Кофе</a></li>
+                                    <li><a href="">Какао</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li><img src="public/images/fruint.png">
+                        <a href="" >
+                            <span class="jsCaller" param="1">Фрукты</span>
+                          </a>
+                        <div class="submenu-wrapper">
+                            <div id="submenu">
+                                <img class="holder" src="public/images/фрукты-подменю.jpg"/>
+                                <ul >
+                                    <li><a href="">Яблоко</a></li>
+                                    <li><a href="">Апельсин</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li><img src="public/images/cakes.png"><a href="" ><span class="jsCaller" param="2">Сладости</span></a>
+                        <div class="submenu-wrapper">
+                            <div id="submenu">
+                                <img class="holder" src="public/images/сладости-подменю.jpg"/>
+                                <ul >
+                                    <li><a href="">Чай</a></li>
+                                    <li><a href="">Кофе</a></li>
+                                    <li><a href="">Какао</a></li>
+                                    <li><a href="">Прочее</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li><img src="public/images/gigiena.png"><a href="" ><span class="jsCaller" param="3">Гигиена</span></a>
+                        <div class="submenu-wrapper">
+                            <div id="submenu">
+                                <img class="holder" src="public/images/гигиена-подменю.jpg"/>
+                                <ul >
+                                    <li><a href="">Чай</a></li>
+                                    <li><a href="">Кофе</a></li>
+                                    <li><a href="">Какао</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li><img src="public/images/household.png"><a href=""><span class="jsCaller" param="4">Быт.химия</span></a>
+                        <div class="submenu-wrapper">
+                            <div id="submenu">
+                                <img class="holder" src="public/images/бытовая-химия-подменю.jpg"/>
+                                <ul >
+                                    <li><a href="">Чай</a></li>
+                                    <li><a href="">Кофе</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li><img src="public/images/grocery.png"><a href=""><span class="jsCaller" param="5">Бакалея</span></a>
+                        <div class="submenu-wrapper">
+                            <div id="submenu">
+                                <img class="holder" src="public/images/бакалея-подменю.jpg"/>
+                                <ul >
+                                    <li><a href="">Чай</a></li>
+                                    <li><a href="">Кофе</a></li>
+                                    <li><a href="">Какао</a></li>
+                                    <li><a href="">Прочее</a></li>
+                                    <li><a href="">Прочее</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li><img src="public/images/milk.png"><a href=""><span class="jsCaller" param="6">Молочка</span></a>
+                        <div class="submenu-wrapper">
+                            <div id="submenu">
+                                <img class="holder" src="public/images/молочка-подменю.jpg"/>
+                                <ul >
+                                    <li><a href="">Чай</a></li>
+                                    <li><a href="">Кофе</a></li>
+                                    <li><a href="">Какао</a></li>
+                                    <li><a href="">Прочее</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li><img src="public/images/frozen.png"><a href=""><span class="jsCaller" param="7">Заморозка</span></a>
+                        <div class="submenu-wrapper">
+                            <div id="submenu">
+                                <img class="holder" src="public/images/замарозка-подменю.jpg"/>
+                                <ul >
+                                    <li><a href="">Чай</a></li>
+                                    <li><a href="">Кофе</a></li>
+                                    <li><a href="">Какао</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li><img src="public/images/egg.png"><a href=""><span class="jsCaller" param="8">Масло, Яйца</span></a>
+                        <div class="submenu-wrapper">
+                            <div id="submenu">
+                                <img class="holder" src="public/images/яйцо-подменю.jpg"/>
+                                <ul >
+                                    <li><a href="">Чай</a></li>
+                                    <li><a href="">Кофе</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li><img src="public/images/stationary.png"><a href=""><span class="jsCaller" param="9">Канцтовары</span></a>
+                        <div class="submenu-wrapper">
+                            <div id="submenu">
+                                <img class="holder" src="public/images/молочка-подменю.jpg"/>
+                                <ul >
+                                    <li><a href="">Чай</a></li>
+                                    <li><a href="">Кофе</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li><img src="public/images/water.png"><a href=""><span class="jsCaller" param="10">Соки, Вода</span></a>
+                        <div class="submenu-wrapper">
+                            <div id="submenu">
+                                <img class="holder" src="public/images/вода-подменю.jpg"/>
+                                <ul >
+                                    <li><a href="">Чай</a></li>
+                                    <li><a href="">Кофе</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                #}
+            </nav>
+        </aside>
+
+
