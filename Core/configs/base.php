@@ -103,10 +103,13 @@ return array(
     "virtual_modules" => array(
         "виртуальный" => array('my', 'my_virtual_controller'),
         "вход" => array('users', 'signin'),
+        "выход" => array('users', 'signout'),
+        "регистрация" => array('users', 'signup'),
         "блог" => array('blog', 'Base'),
         "автор" => array('autor', 'Base'),
         "каталог" => array('catalog', 'Base'),
         "авторизация" => array('facebook', 'auth'),
-        "cabinet" => array('my', 'base'),
+        "кабинет" => array('my', 'Base'),
+        "корзина" => array('basket', 'Base'),
     ),
 );

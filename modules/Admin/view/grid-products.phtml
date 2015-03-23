@@ -17,8 +17,8 @@
             <th width="120px"><a href="{{ grid.order('products_barcode') }}">Штрихкод</a></th>
             <th width="120px"><a href="{{ grid.order('products_name') }}">Наименование</a></th>
             <th width="120px"><a href="{{ grid_order_4 }}">Единица измерения</a></th>
-            <th width="120px"><a href="{{ grid.order('products_shopping_cart_price') }}">Розница</a></th>
-            <th width="120px"><a href="{{ grid.order('products_price_wholesale') }}">Опт</a></th>
+            <th width="120px"><a href="{{ grid.order('products_shoppingcart_price') }}">Розница</a></th>
+            <th width="120px"><a href="{{ grid.order('products_price') }}">Опт</a></th>
             <th width="120px"><a href="{{ grid.order('products_quantity') }}">Количество</a></th>
             <th width="120px"></th>
         </tr>
@@ -30,8 +30,8 @@
             <td>{{ row['products_barcode'] }}</td>
             <td>{{ row['products_name'] }}</td>
             <td>{{ row['products_unit'] }}</td>
-            <td>{{ row['products_shopping_cart_price'] }}</td>
-            <td>{{ row['products_price_wholesale'] }}</td>
+            <td>{{ row['products_shoppingcart_price'] }}</td>
+            <td>{{ row['products_price'] }}</td>
             <td>{{ row['products_quantity'] }}</td>
             <td class="controls">
                 <a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="btn btn-xs btn-primary dialog" data-ajax-method="get">

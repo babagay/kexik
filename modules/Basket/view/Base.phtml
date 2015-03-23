@@ -1,0 +1,361 @@
+{% if(empty_basket) %}
+Корзина пуста
+{% else %}
+    <div class="wrapper-goods">
+        {% if(step != 4) %}
+        <div class="basket-navigation">
+            <div class="button-basket active">Корзина</div>
+            <div class='separator'></div>
+            <div class="button-adress">Адрес</div>
+            <div class='separator'></div>
+            <div class="button-type-of-payment">Тип оплаты</div>
+        </div>
+        {% endif %}
+
+        <input type="hidden" name="step" value="{{ step }}">
+
+        {% if(step == 1) %}
+            {% if(products) %}
+            <table class='title'>
+                <tr>
+                    <td>Фото</td>
+                    <td>Наименование</td>
+                    <td>Цена</td>
+                    <td>Количество</td>
+                    <td>Стоимость</td>
+                </tr>
+            </table>
+            <div class='white'>
+                <table id="basket-items">
+                    {% for product in products %}
+                        <tr class="product-item">
+                            <td><!--div class="image-box"><img src="{{ baseUrl('public/images/goods1.jpg') }}"></div--></td>
+                            <td>{{ product.products_name }}</td>
+                            <td>{{ product.products_shoppingcart_price }} грн.</td>
+                            <td>
+                                <input type="hidden" name="products_id" value="{{ product.products_id }}">
+                                <input type="hidden" name="products_shoppingcart_price" value="{{ product.products_shoppingcart_price }}">
+                                <div class="number-arrow">
+                                    <div class="arrow dec"><img src="{{ baseUrl('public/images/arrow-dec.png') }}" ></div >
+                                    <input type="number" min="1" value="{{ product.products_num }}" class="num">
+                                    <div class="arrow inc"><img src="{{ baseUrl('public/images/arrow-inc.png') }}"></div >
+                                </div>
+                            </td>
+                            <td><span class="products_total">{{ product.products_total }}</span> грн.</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endif %}
+        {% elseif(step == 2) %}
+            <h4>Адрес доставки</h4>
+            <div class='white note'>
+                <textarea id="address_dostavki">{{ address_dostavki }}</textarea>
+            </div>
+        {% elseif(step == 3) %}
+            С текущего баланса
+            <br> Сумма: {{ total }}
+
+            {% if(total_discounted) %}
+                Сумма со скидкой: {{ total_discounted }}
+            {% endif %}
+
+        {% elseif(step == 4) %}
+            Спасибо за заказ!
+        {% endif %}
+
+
+        {% if(step != 4) %}
+        <div class="basket-navigation-second">
+            <!--button class="button-basket">В Каталог</button-->
+            <button class="button-adress clear-basket"> Очистить Корзину </button>
+            <a href="{{ next_step_link }}" next_step="{{ next_step }}" class="next_step">{{ next_step_head }}</a>
+        </div>
+        {% endif %}
+    </div>
+{% endif %}
+
+<script>
+
+
+    require(["jquery", "bluz.notify"], function($, notify) {
+        $(function(){
+
+            $(".next_step").off()
+                .on("click",function(e){
+                    var next_step = $(this).attr("next_step");
+                    var step = $("input[name=step]").val() * 1
+
+                    var data = {}
+                    var url = "корзина"
+                    data["step"] = next_step
+
+                    if(step == 2){
+                        var address_dostavki = $("#address_dostavki").val()
+                        data["address_dostavki"] = address_dostavki
+                    }
+
+                    if(step == 3){
+                        // Передать способ оплаты
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        data: data,
+                        url: url,
+                        context: document.body,
+                        dataType: "html"
+                    }).done(function(response,status,responseObj) {
+                            $( this ).addClass( "done" );
+                            if(status == "success"){
+                                $("#content_box").html(response)
+                                /*
+                                // responseObj.responseText - is response
+                                if(response.response == "ok"){
+                                    ///console.log("ок")
+
+                                    // var $div = bluz_ajax.createModal("content") // не работает
+                                } else {
+                                    // console.log("Ошибка данных")
+                                }
+                                */
+
+                                if(responseObj.status != 200){
+                                    // notify.addError("Error 404")
+                                } else {
+                                    var data = {}
+                                    /* $.ajax({
+                                        type: "POST",
+                                        data: data,
+                                        url: "users/ajax/get_credit",
+                                        context: document.body,
+                                        dataType: "json"
+                                    }).done(function(response,status,responseObj) {
+                                            $( this ).addClass( "done" );
+                                            if(status == "success"){
+                                                $("#users_credit").html(response.credit)
+                                            }
+                                        });
+                                        */
+                                    if(step == 3){
+
+                                        $.ajax({
+                                            type: "POST",
+                                            data: data,
+                                            url: "users/widget/cabinet",
+                                            context: document.body,
+                                            dataType: "html"
+                                        }).done(function(response,status,responseObj) {
+                                                if(status == "success"){
+                                                    $(".widget.wg-cabinet").html(response)
+                                                }
+                                         });
+                                     }
+                                }
+
+                                // $("#article-items").append(response)
+                            }
+                        });
+
+                    return false;
+                });
+
+            $(".arrow.inc").off()
+                .on("click",function(e){
+                    var num = $(this).closest(".product-item").find("input.num").val();
+                    num++
+                    $(this).closest(".product-item").find("input.num").val(num)
+                    var products_shoppingcart_price = $(this).closest(".product-item").find("input[name=products_shoppingcart_price]").val()
+
+                    $(this).closest(".product-item").find(".products_total").html( Math.round(products_shoppingcart_price * num * 100)/100 )
+
+                    var data = {}
+                    var url = "basket/ajax/modify_basket"
+                    data["products_id"] = $(this).closest(".product-item").find("input[name=products_id]").val()
+
+                    data["mode"] = "update"
+                    data["products_num"] = num
+
+                    $.ajax({
+                        type: "POST",
+                        data: data,
+                        url: url,
+                        context: document.body,
+                        dataType: "json"
+                    }).done(function(response,status,responseObj) {
+                            $( this ).addClass( "done" );
+                            if(status == "success"){
+
+
+                            }
+                        });
+
+                    return false;
+                });
+
+            $(".arrow.dec").off()
+                .on("click",function(e){
+                    var num = $(this).closest(".product-item").find("input.num").val();
+                    num--
+                    if( num < 0 ) num = 0;
+                    $(this).closest(".product-item").find("input.num").val(num)
+                    var products_shoppingcart_price = $(this).closest(".product-item").find("input[name=products_shoppingcart_price]").val()
+
+                    $(this).closest(".product-item").find(".products_total").html( Math.round(products_shoppingcart_price * num * 100)/100 )
+
+                    var data = {}
+                    var url = "basket/ajax/modify_basket"
+                    data["products_id"] = $(this).closest(".product-item").find("input[name=products_id]").val()
+
+
+                    data["mode"] = "update"
+                    data["products_num"] = num
+
+                    $.ajax({
+                        type: "POST",
+                        data: data,
+                        url: url,
+                        context: document.body,
+                        dataType: "json"
+                    }).done(function(response,status,responseObj) {
+                            $( this ).addClass( "done" );
+                            if(status == "success"){
+
+
+                            }
+                        });
+
+                    return false;
+                });
+
+                $(".clear-basket").off()
+                .on("click", function(event, arrdata, textStatus, jqXHR){
+                    var data = {}
+                    var url = "basket/ajax/modify_basket"
+
+                    data["mode"] = "clear"
+
+                    $.ajax({
+                        type: "POST",
+                        data: data,
+                        url: url,
+                        context: document.body,
+                        dataType: "json"
+                    }).done(function(response,status,responseObj) {
+                            $( this ).addClass( "done" );
+                            if(status == "success"){
+
+                                 if(response.response == "ok"){
+                                  ///console.log("ок")
+                                     //$("#basket-items").html("")
+
+                                     var data = {}
+                                     data["step"] = 1
+
+                                     $.ajax({
+                                         type: "POST",
+                                         data: data,
+                                         url: "корзина",
+                                         context: document.body,
+                                         dataType: "html"
+                                     }).done(function(response,status,responseObj) {
+                                             $( this ).addClass( "done" );
+                                             if(status == "success"){
+                                                 $("#content_box").html(response)
+
+                                                 if(responseObj.status != 200){
+                                                     // notify.addError("Error 404")
+                                                 }
+                                             }
+                                         });
+
+                                 } else {
+                                 // console.log("Ошибка данных")
+                                 }
+
+
+                                if(responseObj.status != 200){
+                                    // notify.addError("Error 404")
+                                }
+                            }
+                        });
+
+                    return false;
+                });
+
+            /*
+            // Если Я использую класс 'ajax'
+            $("#ajax-callback-more")
+                .on("success.ajax.bluz", function(event, data, textStatus, jqXHR){
+                    notify.addSuccess("Event `success.ajax.bluz` is fired");
+
+
+                })
+                .on("error.ajax.bluz", function(event, jqXHR, textStatus, errorThrown){
+                    notify.addSuccess("Event `error.ajax.bluz` is fired")
+                });
+            */
+
+            /*
+            $("#toggle-visibility")
+                .on("success.ajax.bluz", function(event, data, textStatus, jqXHR){
+                    notify.addSuccess(data);
+
+                    setTimeout(function(){
+                        $("#feedback-message-2").html("");
+
+                        if( $("#toggle-visibility").hasClass("do-hide") ) {
+                            $("#toggle-visibility").addClass("do-unhide")
+                            $("#toggle-visibility").removeClass("do-hide")
+                            $("#toggle-visibility").text("{{ __("Открыть") }}");
+                        } else {
+                            $("#toggle-visibility").text("{{ __("Скрыть") }}");
+                            $("#toggle-visibility").removeClass("do-unhide")
+                            $("#toggle-visibility").addClass("do-hide")
+                        }
+                    },30);
+                });
+
+            // Если Я использую самостоятельный обработчик
+            $("#ajax-callback-more").off().on("click",function(event, data, textStatus, jqXHR){
+
+                var articles_frame_counter = $("input[name=articles_frame_counter]").val();
+                var frame = $("input[name=frame]").val();
+
+                var data = {}
+                data["articles_frame_counter"] = articles_frame_counter; // frame number
+                data["frame"] = frame; // frmae capacity
+                data["uri"] = window.location.href;
+
+                $.ajax({
+                    type: "POST",
+                    data: data,
+                    url: $(this).attr("href"),
+                    context: document.body,
+                    dataType: "html"
+                }).done(function(response,status,responseObj) {
+                    $( this ).addClass( "done" );
+                    if(status == "success"){
+
+
+                        if(responseObj.status != 200){
+                           // notify.addError("Error 404")
+                        }
+
+                        articles_frame_counter = $("input[name=articles_frame_counter]").val();
+                        articles_frame_counter++;
+                        $("input[name=articles_frame_counter]").val(articles_frame_counter)
+
+                        $("#article-items").append(response)
+                    }
+                });
+                return false;
+            });
+            */
+
+        });
+    });
+
+
+</script>
+

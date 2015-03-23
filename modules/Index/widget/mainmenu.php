@@ -89,7 +89,7 @@ return
                             $submenu
                             .'</div>
                         </li>';
-                    } else {
+                    } else {  
                         $html .= '
                         <li>
                             <img src="'. $view->baseUrl('public/images/' . $category['categories_icon']) .'">

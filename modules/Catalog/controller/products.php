@@ -119,7 +119,6 @@ return
                     $view->category_parent = $category_parent;
                 }
 
-
                 $products = $db->fetchAll ("SELECT * FROM products_to_categories  WHERE categories_id = {$category[0]['categories_id']} ");
 
                 $categories_id = $category[0]['categories_id'];
@@ -133,17 +132,20 @@ return
                     }
                     $tmp = implode(',', $tmp);
 
-                    $products = $db->fetchAll ("
-                            SELECT p.*, pd.*
-                            FROM products p, products_description pd
-                            WHERE p.products_id IN ($tmp) AND p.products_id = pd.products_id
+                    $pr_query = "
+                            SELECT p.*,
+                             pd.products_description, pd.products_image_small
+                            FROM products p
+                            LEFT JOIN products_description pd ON p.products_id = pd.products_id
+                            WHERE p.products_id IN ($tmp)
                             ORDER BY p.{$order} {$direction}
-                            ");
+                            ";
+                    $products = $db->fetchAll ($pr_query);
 
                     $view->products = $products;
 
                 } else {
-                    fb("zxcvfgbe");
+                    fb("test metka zxcvfgbe");
                 }
 
                 if(isset($category_parent)){
@@ -201,9 +203,10 @@ return
 
                     $products = $db->fetchAll ("
                             SELECT p.*, pd.*
-                            FROM products p, products_description pd
-                            LEFT JOIN manufacturers m ON pd.manufacturers_id = m.manufacturers_id
-                            WHERE p.products_id > 0 AND p.products_id = pd.products_id
+                            FROM products p
+                            LEFT JOIN manufacturers m ON p.manufacturers_id = m.manufacturers_id
+                            LEFT JOIN  products_description pd ON p.products_id = pd.products_id
+                            WHERE p.products_id > 0
                             AND p.products_id IN($tmp)
                             AND m.manufacturers_id = '$manufacturers_id'
                             ORDER BY p.{$order} {$direction}

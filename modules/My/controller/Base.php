@@ -13,7 +13,6 @@
 $.post(basePath+"my/Base/вопрос/78", {asd: 'asd'}, function (res) {
     }, "json");
  */
-
 return
     /**
      * @param string $question
@@ -28,8 +27,8 @@ return
         //$app_object = Application\Bootstrap::getInstance();
         $app_object = app()->getInstance();
 
-        $title = 'Admin';
-
+        $title = 'Автор';
+		
 
 
 
@@ -37,7 +36,8 @@ return
 
 
 
-        $crumbs_arr =  array( 
+        $crumbs_arr =  array(
+            //$view->ahref('Автор', array('автор', '') ),
             __($title)
         );
 

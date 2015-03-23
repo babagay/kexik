@@ -81,7 +81,7 @@ function ($code, $message = '') use ($view) {
         }
     }
 
-    $boot_object = Bootstrap::getInstance();
+    $boot_object = Bootstrap::getInstance(); // Application\Bootstrap
 
     // check CLI or HTTP request
     if (!$boot_object->getRequest()->isCli()) {
@@ -91,8 +91,10 @@ function ($code, $message = '') use ($view) {
         // simple AJAX call
         if ($boot_object->getRequest()->isXmlHttpRequest()
             && $accept == "application/json") {
+
             $boot_object->getMessages()->addError($message);
-            return $view;
+            //return $view;
+            return $view->render();
         }
 
         // dialog AJAX call

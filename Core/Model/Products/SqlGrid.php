@@ -45,7 +45,7 @@ class SqlGrid extends \Bluz\Grid\Grid
 
          $this->setAdapter($adapter);
          $this->setDefaultLimit(500);
-         $this->setAllowOrders(array('products_id', 'products_barcode', 'products_name', 'products_shopping_cart_price', 'products_price_wholesale', 'products_quantity'));
+         $this->setAllowOrders(array('products_id', 'products_barcode', 'products_name', 'products_shoppingcart_price', 'products_price', 'products_quantity'));
          $this->setAllowFilters(array('products_id', 'products_barcode', 'products_name'));
 
 

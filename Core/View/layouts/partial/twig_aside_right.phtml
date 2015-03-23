@@ -1,24 +1,6 @@
 {# /** @var \Bluz\View\Layout $this */ #}
 
 <aside id="right">
-                <div class="cabinet"><a href="" >Войти в кабинет</a></div>
-                <div class="basket"><a href="" >Ваша корзина</a></div>
-                <div class="partners">
-                    <img src="public/images/bank.png">
-                    <img src="public/images/master.png" class="middle">
-                    <img src="public/images/post.png">
-                </div>
+    <div class="widget wg-cabinet"> {{ widget('users','cabinet') }} </div>
 
-                <div class="cabnet-form">
-                    <div class="select-cabnet"><span>Личный кабинет:  <span>&#9660;</span>  </span>
-                        <ul class="select-no-display">
-                            <li><a href="">Система СКИДОК</a></li>
-                            <li><a href="">Пополнение счета</a></li>
-                        </ul>
-                    </div>
-                    <p>Текущая скидка: <span class="discount">0 %</span></p>
-                    <p>Баланс: <span class="discount">3000</span>грн.</p>
-                    <p>До ПОДАРКА: <span class="discount">10</span> заказов</p>
-                    <button> ВЫХОД</button>
-                </div>
 </aside>

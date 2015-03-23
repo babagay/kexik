@@ -121,20 +121,21 @@
             {% else %} {% set product_link = product.products_id %} {% endif %}
 
 
-            <div class="name">{{ ahref(  product.products_name, ['каталог' ~ parent ~ '/' ~ category_name, product_link]) }}</div>
+            {#<div class="name">{{ ahref(  product.products_name, ['каталог' ~ parent ~ '/' ~ category_name, product_link]) }}</div>#}
+            <div class="name">{{  product.products_name }}</div>
             <div class="image-box">
                 <img src="{{ baseUrl('public/images/goods1.jpg') }}">
             </div>
             <div class="description">
                 <div class="weight">{{ product.products_unit }}</div>
-                <div class="cost">{{ product.products_shopping_cart_price }}</div>
-                <div class="basket"><a href="" >В корзину</a></div>
+                <div class="cost">{{ product.products_shoppingcart_price }}</div>
+                <div class="basket"><a href="ajax/modify_basket" class="push-to-basket" >В корзину</a></div>
                 <div class="number-arrow">
-                    <a class="inc"></a>
+                    <a class="inc"><img src="public/images/arrow-inc.png"></a>
                     <input type="number" min="1" value="1" class="num">
-                    <a class="dec"></a>
+                    <a class="dec"><img src="public/images/arrow-dec.png"></a>
                 </div>
-                <div class="price">{{ product.products_shopping_cart_price }}</div>
+                <div class="price">{{ product.products_shoppingcart_price }}</div>
             </div>
 
             <input type="hidden" name="products_id" value="{{ product.products_id }}">
@@ -142,9 +143,9 @@
             <input type="hidden" name="products_name" value="{{ product.products_name }}">
             <input type="hidden" name="products_unit" value="{{ product.products_unit }}">
             <input type="hidden" name="products_departament" value="{{ product.products_departament }}">
-            <input type="hidden" name="products_shopping_cart_price" value="{{ product.products_shopping_cart_price }}">
+            <input type="hidden" name="products_shoppingcart_price" value="{{ product.products_shoppingcart_price }}">
             <input type="hidden" name="products_quantity" value="{{ product.products_quantity }}">
-            {# <input type="hidden" name="products_price_wholesale" value="{{ product.products_price_wholesale }}"> #}
+            {# <input type="hidden" name="products_price" value="{{ product.products_price }}"> #}
 
 
 
@@ -154,3 +155,52 @@
 </div>
 {% endif %}
 
+<script>
+
+    require(["jquery","bluz.notify"],  function ($,notify) {
+        //notify.addSuccess("Event `success.ajax.bluz` is fired")
+        //notify.add("success","asd")
+
+            $("a.push-to-basket").off().on("click", function(event, anydata, textStatus, jqXHR){
+            var products_id = $(this).closest(".goods").find("input[name=products_id]").val();
+            var products_num = $(this).closest(".goods").find("input.num").val();
+
+            var data = {};
+            data["products_id"] = products_id
+            data["products_num"] = products_num
+            data["mode"] = "add"
+
+            $.ajax({
+                type: "POST",
+                data: data,
+                url: "basket/" + $(this).attr("href"),
+                context: document.body,
+                dataType: "json"
+            }).done(function(response,status,responseObj) {
+                    $( this ).addClass( "done" );
+                    if(status == "success"){
+
+                         // responseObj.responseText - is response
+                         if(response.response == "ok"){
+                          //console.log("ок")
+                            alert("Товар добавлен в корзину")
+
+                         } else {
+                         // console.log("Ошибка данных")
+                         }
+
+
+                        if(responseObj.status != 200){
+                            // notify.addError("Error 404")
+                        }
+
+                        //$("#article-items").append(response)
+                    }
+                });
+
+            return false;
+        });
+
+    });
+
+</script>

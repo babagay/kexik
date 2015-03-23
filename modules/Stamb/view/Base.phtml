@@ -1,0 +1,90 @@
+ asd
+<script>
+
+
+    require(["jquery", "bluz.notify"], function($, notify) {
+        $(function(){
+
+            /*
+            // Если Я использую класс 'ajax'
+            $("#ajax-callback-more")
+                .on("success.ajax.bluz", function(event, data, textStatus, jqXHR){
+                    notify.addSuccess("Event `success.ajax.bluz` is fired");
+
+
+                })
+                .on("error.ajax.bluz", function(event, jqXHR, textStatus, errorThrown){
+                    notify.addSuccess("Event `error.ajax.bluz` is fired")
+                });
+            */
+
+
+            $("#toggle-visibility")
+                .on("success.ajax.bluz", function(event, data, textStatus, jqXHR){
+                    notify.addSuccess(data);
+
+                    setTimeout(function(){
+                        $("#feedback-message-2").html("");
+
+                        if( $("#toggle-visibility").hasClass("do-hide") ) {
+                            $("#toggle-visibility").addClass("do-unhide")
+                            $("#toggle-visibility").removeClass("do-hide")
+                            $("#toggle-visibility").text("{{ __("Открыть") }}");
+                        } else {
+                            $("#toggle-visibility").text("{{ __("Скрыть") }}");
+                            $("#toggle-visibility").removeClass("do-unhide")
+                            $("#toggle-visibility").addClass("do-hide")
+                        }
+                    },30);
+                });
+
+            // Если Я использую самостоятельный обработчик
+            $("#ajax-callback-more").off().on("click",function(event, data, textStatus, jqXHR){
+
+                var articles_frame_counter = $("input[name=articles_frame_counter]").val();
+                var frame = $("input[name=frame]").val();
+
+                var data = {}
+                data["articles_frame_counter"] = articles_frame_counter; // frame number
+                data["frame"] = frame; // frmae capacity
+                data["uri"] = window.location.href;
+
+                $.ajax({
+                    type: "POST",
+                    data: data,
+                    url: $(this).attr("href"),
+                    context: document.body,
+                    dataType: "html"
+                }).done(function(response,status,responseObj) {
+                    $( this ).addClass( "done" );
+                    if(status == "success"){
+                        /*
+                        // responseObj.responseText - is response
+                        if(response.response == "ok"){
+                            // console.log("ок")
+                            // var $div = bluz_ajax.createModal("content") // не работает
+                        } else {
+                            // console.log("Ошибка данных")
+                        }
+                        */
+
+                        if(responseObj.status != 200){
+                           // notify.addError("Error 404")
+                        }
+
+                        articles_frame_counter = $("input[name=articles_frame_counter]").val();
+                        articles_frame_counter++;
+                        $("input[name=articles_frame_counter]").val(articles_frame_counter)
+
+                        $("#article-items").append(response)
+                    }
+                });
+                return false;
+            });
+
+        });
+    });
+
+
+</script>
+

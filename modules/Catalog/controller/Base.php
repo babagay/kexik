@@ -53,7 +53,7 @@ return
 
         $категория = null;
 
-        
+
         // TODO протестить в инете
         $param_2 = $app_object->getRequest()->get(2);
         $param_3 = $app_object->getRequest()->get(3);
@@ -101,7 +101,9 @@ return
                         // Да - Пытаемся взять продукты подкатегории
                         return $app_object->dispatch('catalog','products', array('категория' => $подкатегория));
                     } else {
+                        // Такой подкатегории нет
                         // $param_3 это продукт? Если да, пытаемся взять продукт
+
                         $selectBuilder = $db
                             ->select('p.products_id')
                             ->from('products', 'p')
@@ -112,8 +114,8 @@ return
                             return $app_object->dispatch('catalog','products', array('products_id' => $product[0]['products_id']));
 
                         $selectBuilder = $db
-                            ->select('pd.products_id')
-                            ->from('products_description', 'pd')
+                            ->select('p.products_id')
+                            ->from('products', 'p')
                             ->where("products_seo_page_name = '$param_3'");
                         $product = $selectBuilder->execute();
 

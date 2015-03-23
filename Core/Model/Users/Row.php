@@ -119,4 +119,14 @@ class Row extends AbstractRowEntity
     {
         return $this->data;
     }
+
+    function getCredit()
+    {
+        $user = app()->getAuth()->getIdentity();
+        $id = $user->id;
+        $db =  app()->getDb();
+        $credit = $db->fetchOne("SELECT credit FROM users  WHERE id = '$id' ");
+
+        return $credit;
+    }
 }
