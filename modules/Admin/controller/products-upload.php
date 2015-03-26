@@ -6,9 +6,23 @@
 
     $_this = $this;
 
+    /**
+     * Загрузка продуктов
+     * Активный вариант: загруждаются только те продукты , у которых есть категория
+     * Вариант: загружаются все продукты
+     *
+     * Ограничения:
+     * - имя файла на английском
+     * - первая строка файла - заголовок
+     *
+     * Использование:
+     * - можно указать последний удачно загруженный продукт ($id)
+     * - если задать parse_category = 1 , из 12-го поля будут вытаскиваться категории
+     */
+
     return
 
-        function (  $asd = null ) use ($_this) {
+        function (  $parse_category = null, $id = null ) use ($_this) {
             /**
              * @var \Application\Bootstrap $this
              * @var \Bluz\View\View $view
@@ -18,9 +32,13 @@
             /**
              * Если id = int, начинать вносить в базу продукты, начиная с данного id
              * id = 51, тогда запись начнется с 52-го
+             * Т.о., надо указать последний успешно внесенный продукт
              */
-            $id = null;
-            $id = 51;
+            
+            //$id = 586059;
+            
+            if( (int)$id === 0) $id = null;           
+            
             $operate_the_product = false;
 
             $_this->resetLayout();
@@ -30,6 +48,11 @@
              * Массив категорий продукта
              */
             $category_arr = null;
+
+            /**
+             * id производителяпод названием Noname
+             */
+            $manufacturers_noname_id = null;
 
             if( !isset($_FILES['products_list'] )) return;
 
@@ -41,6 +64,24 @@
             $app_object = app()->getInstance();
 
             $db =  app()->getDb();
+
+
+            $selectBuilder = app()->getDb()
+                ->select('*')
+                ->from('manufacturers', 'm')
+                ->where('m.manufacturers_name = ?',"noname");
+            $m = $selectBuilder->execute();
+            if(isset( $m[0]['manufacturers_id'])){
+                $manufacturers_noname_id = $m[0]['manufacturers_id'];
+            } else {
+                $insertBuilder        = app()->getDb()
+                    ->insert( 'manufacturers' )
+                    ->set( 'manufacturers_name', 'noname' )
+                    ->set( 'date_added', date('Y-m-d H:i:s') )
+                ;
+                $manufacturers_noname_id = $insertBuilder->execute();
+            }
+
 
             $arr = explode(".",$filename);
 
@@ -55,6 +96,12 @@
 
             $logger = new \Bluz\Logger\MyLogger();
             $logger->products("Import started at " . date('Y-m-d H:i:s'));
+            
+            if($parse_category == 1){
+               $logger->products("Category parsing is enabled");
+            } else {
+              $logger->products("Category parsing is disabled");
+            }
 
             // Взять   всех  manufacturers
             $запрос = " SELECT manufacturers_id, manufacturers_name
@@ -78,19 +125,24 @@
                     $products_exist = $tmp;
             }
 
-            // Пройти все записи Excel-файла
             $objReader = \PHPExcel_IOFactory::createReader('Excel2007');
             //$objPHPExcel = $objReader->load(PUBLIC_PATH . "/data/files/products1.xlsx");
             $objPHPExcel = $objReader->load($path.$filename);
 
             $new_products_arr = array();
+
             foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
-                //fb( 'Worksheet - ' . $worksheet->getTitle() ); - название листа
+                // Проход Excel-таблицы
+                ///fb( 'Worksheet - ' . $worksheet->getTitle() ); - название листа
 
                 $ind = 1;
                 $header_skipped = false;
+
                 foreach( $worksheet->getRowIterator() as $row ) {
+                    // Проход строки
+
                     $row_xls = array();
+                    $category_arr = array();
 
                     if(!$header_skipped){
                         if( $row->getRowIndex() == 1 ){
@@ -103,18 +155,21 @@
                         $cellIterator->setIterateOnlyExistingCells(false); // Loop all cells, even if it is not set
                         $row_xls[] = $ind;
                         $ind++;
+                        // Преобразуем строку в массив
                         foreach ($cellIterator as $cell) {
                             if (!is_null($cell)) {
                                 $row_xls[] =  $cell->getCalculatedValue();
-                                //$cell->getCoordinate() - A1
+                                ///$cell->getCoordinate() - A1
                             }
                         }
 
-
+                        /**
+                         * Если задан id,
+                         * тогда начинать вносить продукты только после того, как флаг ($operate_the_product) = true
+                         */
                         if(!is_null($id)){
                             if((int)trim($row_xls[1]) == $id){
                                 $operate_the_product = true;
-                                // Начинать вносить продукты только после того, как flag = true
                                 continue;
                             } else {
                                 if($operate_the_product === false){
@@ -129,11 +184,15 @@
                             $manufacturers_id = null;
                             $manufacturer_exists = false;
                             foreach( $manufacturers as $manufacturer ) {
+                              if(isset($manufacturer['manufacturers_name'])){
                                 if( $manufacturer['manufacturers_name'] == $current_manufacturer ){
                                     $manufacturer_exists = true;
                                     $manufacturers_id = $manufacturer['manufacturers_id'];
                                     break;
                                 }
+                              } else {
+                              // manufacturers_name отсутсвует - FIXME: узнать, как это возникает 
+                              }
                             }
                             if($current_manufacturer != '') {
                                 // У товара есть производитель, который отсутсвует в базе
@@ -146,23 +205,13 @@
                                     ;
                                     $manufacturers_id = $insertBuilder->execute();
 
-                                    // Обновить массив производителей
-                                    //$запрос = "SELECT * FROM manufacturers ORDER BY manufacturers_id";
-
                                     $manufacturers[] = array('manufacturers_id' => $manufacturers_id, '$manufacturers_name' => $current_manufacturer);
 
-                                    //$manufacturers = $db->fetchAll($запрос);
                                 }
                             } else {
-                                // Поле производителя пустое, вставить ссылку на НОНЕЙМ, если он есть
+                                // Поле производителя пустое, вставить ссылку на НОНЕЙМ
                                 if(is_null($manufacturers_id)){
-                                    $selectBuilder = app()->getDb()
-                                        ->select('*')
-                                        ->from('manufacturers', 'm')
-                                        ->where('m.manufacturers_name = ?',"noname");
-                                    $m = $selectBuilder->execute();
-                                    if(isset( $m[0]['manufacturers_id']))
-                                        $manufacturers_id = $m[0]['manufacturers_id'];
+                                    $manufacturers_id = $manufacturers_noname_id;
                                 }
                             }
 
@@ -177,20 +226,27 @@
 
                             $products_category = null;
 
-                            if(isset($row_xls[12])){
-                                if($row_xls[12] != ''){
-                                    $products_category = $row_xls[12];
-                                    $products_category = str_replace(" ","",$products_category);
-                                    if(strpos($products_category,",") > 0){
-                                        // Поле содержит перечисление категорий
-                                        $category_arr = explode(",",$products_category);
-                                    } else {
-                                        $category_arr[] = $products_category;
-                                    }
-                                }
+                            if($parse_category == 1){
+                              if(isset($row_xls[12])){
+                                  $row_xls[12] = trim($row_xls[12]);
+                                  if($row_xls[12] != ''){
+                                      $products_category = $row_xls[12];
+                                      $products_category = str_replace(" ","",$products_category);
+                                      if(strpos($products_category,",") > 0){
+                                          // Поле содержит перечисление категорий
+                                          $category_arr = explode(",",$products_category);
+                                      } else {
+                                          $category_arr[] = $products_category;
+                                      }
+                                  }
+                              }
+
+                              if(count($category_arr) == 0){
+                                  // Пропускать продукты , у которых категория пустая
+                                  $logger->products("Product skipped (category is empty): $products_id ");
+                                  continue;
+                              }
                             }
-
-
 
                             if( in_array($products_id,$products_exist) ){
                                 // Обновить продукт
@@ -240,15 +296,23 @@
                                // if(!is_null($category_arr)){
                                     // Категорий несколько
                                   //  if(is_array($category_arr)){
+                                      if($parse_category == 1){
                                         foreach($category_arr as $category_item){
+                                            // [!] FIXME убрать костыль
+                                            if($category_item == 79) $category_item = 80;
+
+
                                             $запрос_привязки_к_категории = " SELECT products_id
                                             FROM products_to_categories
-                                            WHERE products_id = $products_id
+                                            WHERE products_id = '$products_id'
+                                            AND categories_id = '$category_item'
                                             ";
                                             $linked_products_id = $db->fetchOne($запрос_привязки_к_категории);
 
-                                            if( (int)$linked_products_id == $products_id ){
-                                                // update
+                                            if( $linked_products_id == $products_id ){
+
+                                                // update не делаем ,а просто пропускаем
+                                                /*
                                                 $updateBuilder = $db
                                                     ->update('products_to_categories')
                                                     ->setArray(
@@ -259,6 +323,8 @@
                                                     )
                                                     ->where('products_id = ?', $products_id);
                                                 $updateBuilder->execute();
+                                                */
+                                                $logger->products("Product $products_id is already linked to category: $category_item ");
 
                                             } else {
                                                 // insert
@@ -268,10 +334,10 @@
                                                     ->set( 'categories_id', $category_item )
                                                 ;
                                                 $insertBuilder->execute();
+                                                $logger->products("Product $products_id linked to category: $category_item ");
                                             }
-
-                                            $logger->products("Product linked to category: $products_id ");
                                         }
+                                      }
                                  //   }
 
                                // }

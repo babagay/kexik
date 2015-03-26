@@ -7,8 +7,10 @@ namespace Application;
 return
     /**
      * @return \closure
+     * Для корректной работы нужно задать либо $категория (categories_id), либо $продукты (array of products_id)
+     * Всегда нужно передавать все параметры
      */
-    function ($категория, $manufacturers_id = null) {
+    function ($категория = null, $manufacturers_id = null, $продукты = null) {
         /**
          * @var \Application\Bootstrap $this
          */
@@ -17,23 +19,36 @@ return
         $app_object = app()->getInstance();
         $db =  app()->getDb();
 
-        $params = $app_object->getRequest()->getParams();
-
-        $query = "  SELECT p2c.products_id
-                    FROM products_to_categories p2c
-                    WHERE categories_id = " . $db->quote($категория);
-
-        $products = $db->fetchAll($query);
-
-        $tmp = array();
+        $manufacturer_item_all = '';
+        $tmp = $products = array();
         $products_str = '';
 
-        foreach($products as $product){
-            $tmp[] = $product['products_id'];
-            $products_str .= $product['products_id'] . ",";
+        $params = $app_object->getRequest()->getParams();
+
+
+
+
+        if(!is_null($категория)){
+            $query = "  SELECT p2c.products_id
+                        FROM products_to_categories p2c
+                        WHERE categories_id = " . $db->quote($категория);
+
+            $products = $db->fetchAll($query);
+
+            foreach($products as $product){
+                $tmp[] = $product['products_id'];
+                $products_str .= $product['products_id'] . ",";
+            }
+
+            $products_str = substr($products_str,0,-1);
+
+        } elseif (!is_null($продукты)){
+            //$products = $продукты;
+            $products_str = implode(",",$продукты);
         }
 
-        $products_str = substr($products_str,0,-1);
+
+
 
         $query = " SELECT p.manufacturers_id, m.manufacturers_id, m.manufacturers_name
                     FROM products p
@@ -44,7 +59,6 @@ return
 
         $manufacturers = $db->fetchAll($query);
 
-        $manufacturer_item_all = '';
 
         $manufacturer_name = 'Производитель:';
         if($manufacturers_id !== null){

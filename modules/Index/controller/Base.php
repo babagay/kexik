@@ -21,6 +21,8 @@ return
 
 
 
+        //--
+
        // $app_object->getLayout()->title('Блог'); // дает Base :: Блог
 
        // fb( $app_object->getRequest()->getModule() );

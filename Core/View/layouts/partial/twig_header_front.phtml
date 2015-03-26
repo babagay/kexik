@@ -55,9 +55,9 @@
                 </div>
                 <div class="search-wrapper">
                     <div class="search-wrapper-for-substrate">
-                        <div class="search-substrate"> <input type="text"> </div>
+                        <div class="search-substrate"> <input type="text" id="search-global-field"> </div>
                     </div>
-                    <button class="search">Искать</button>
+                    <button class="search" id="search-global-btn">Искать</button>
                 </div>
             </div>
         </div>
@@ -76,6 +76,28 @@
         require(['bluz.notify'], function(notify) {
             notify.set({{ getMessages() }} );
         });
+
     </script>
     {% endif %}
+
+    <script>
+        require(["jquery"],  function ($) {
+
+                $("#search-global-btn").off().on("click",function(e){
+                    var search = $("#search-global-field").val()
+                    window.location = "поиск/" + search
+                });
+
+
+                $("#search-global-field").on("keypress",function(e){
+                    var code = e.keyCode || e.which;
+
+                    if(code == 13){
+                        var search = $("#search-global-field").val()
+                        window.location = "поиск/" + search
+                    }
+                });
+
+        });
+    </script>
 

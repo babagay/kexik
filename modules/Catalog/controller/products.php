@@ -25,7 +25,7 @@ return
 
         $is_ajax = false;
 
-        $limit = 50;
+        $limit = 500;
         $filter_categories_id = null;
         $filter_manufacturers_id = null;
         $filter_order = null;

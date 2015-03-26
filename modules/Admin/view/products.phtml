@@ -2,7 +2,8 @@
 
     <input type="file" name="products_list">
 
-    <input type="hidden" name="asd" value="1">
+    <input type="hidden" name="parse_category" value="0">
+    <input type="hidden" name="id" value="0">
 
     <p class="btn-toolbar">
         <!--input type="button" class="btn btn-primary" value="Insert" onClick="return savePage()"-->
@@ -18,7 +19,7 @@
 
 
         $("#upload_target").load(function(e){
-            $("div[data-spy=grid] .pagination li.active a").click();
+            $("div[data-spy=grid] .pagination li.active a").first().click();
         });
 
     });

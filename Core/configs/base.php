@@ -108,6 +108,7 @@ return array(
         "блог" => array('blog', 'Base'),
         "автор" => array('autor', 'Base'),
         "каталог" => array('catalog', 'Base'),
+        "поиск" => array('catalog', 'search'),
         "авторизация" => array('facebook', 'auth'),
         "кабинет" => array('my', 'Base'),
         "корзина" => array('basket', 'Base'),

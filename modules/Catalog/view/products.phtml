@@ -1,3 +1,6 @@
+<input type="hidden" name="is_search" value="{{ is_search }}">
+<input type="hidden" name="search_text" value="{{ search_text }}">
+
 {% if(product) %}
     <div>
         {{ product.products_name }}
@@ -15,7 +18,9 @@
     </div>
 </div>
 
-{{ widget('catalog','manufacturer',{'категория':categories_id,'manufacturers_id':manufacturers_id}) }}
+
+    {{ widget('catalog','manufacturer',{'категория':categories_id,'manufacturers_id':manufacturers_id,'продукты':products_ids}) }}
+
 
 <script>
     require(["jquery", "bluz.notify"], function($, notify) {
@@ -32,6 +37,15 @@
             data["direction"] = direction; //?
 
             var url = $(this).attr("href") + "?" + $("form[name=state]").serialize();
+
+            var is_search = $("input[name=is_search]").val()
+
+            if(is_search == 1){
+                var text = $("input[name=search_text]").val()
+                url = "поиск/" + text ;
+                var manufacturers_id = $("form[name=state] input[name=filter-manufacturers_id]").val()
+                data["manufacturers_id"] = manufacturers_id.substring(3)
+            }
 
             $.ajax({
                 type: "POST",
@@ -70,6 +84,12 @@
 
             var url = $(this).attr("href") + "?" + $("form[name=state]").serialize();
 
+            var is_search = $("input[name=is_search]").val()
+
+            if(is_search == 1){
+                var text = $("input[name=search_text]").val()
+                url = "поиск/" + text ;
+            }
 
             $.ajax({
                 type: "POST",
