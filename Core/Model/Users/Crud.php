@@ -7,7 +7,8 @@
 /**
  * @namespace
  */
-namespace Core\Model\Users;
+//namespace Core\Model\Users;
+namespace Application\Users;
 
 use Application\Auth;
 use Application\Exception;
@@ -72,6 +73,8 @@ class Crud extends \Bluz\Crud\Table
             )
         )->render();
 
+        // FIXME отправка почты
+        /*
         try {
             $mail = app()->getMailer()->create();
 
@@ -92,6 +95,7 @@ class Crud extends \Bluz\Crud\Table
 
             throw new Exception('Unable to send email. Please contact administrator.');
         }
+        */
 
         // show notification and redirect
         app()->getMessages()->addSuccess(
@@ -100,7 +104,9 @@ class Crud extends \Bluz\Crud\Table
             "Note that you must activate the account by clicking on the activation link".
             "when you get the e-mail before you can login."
         );
-        app()->redirectTo('index', 'index');
+
+        // FIXME из аякса редирект не работает
+        // app()->redirectTo('index', 'index');
 
         return $userId;
     }
@@ -128,6 +134,7 @@ class Crud extends \Bluz\Crud\Table
         $email = isset($data['email'])?$data['email']:null;
         // TODO: add solution for check gmail accounts (because a.s.d@gmail.com === asd@gmail.com)
         // check unique
+
         if ($this->getTable()->findRowWhere(array('email' => $email))) {
             $this->addError(
                 __('User with email "%s" already exists', esc($email)),

@@ -8,6 +8,7 @@
  * @namespace
  */
 namespace Application\Users;
+
 use Zend\Mvc\Application;
 
 /**
@@ -68,7 +69,8 @@ class Table extends \Bluz\Db\Table
     public function getUserPrivileges($userId)
     {
         // Roles\Table::getInstance()->getUserRolesIdentity($userId);
-        $roles = \Core\Model\Roles\Table::getInstance()->getUserRolesIdentity($userId);
+        //$roles = \Core\Model\Roles\Table::getInstance()->getUserRolesIdentity($userId);
+        $roles = \Application\Roles\Table::getInstance()->getUserRolesIdentity($userId);
 
         $stack = array();
         foreach ($roles as $roleId) {
@@ -109,20 +111,21 @@ class Table extends \Bluz\Db\Table
      */
     public function getRolePrivileges($roleId)
     {
-        $cacheKey = 'privileges:role:'.$roleId;
+        $cacheKey = 'privileges:role:' . $roleId;
 
         if (!$data = app()->getCache()->get($cacheKey)) {
             $data = app()->getDb()->fetchColumn(
                 "SELECT DISTINCT CONCAT(p.module, ':', p.privilege)
-                FROM ".$this->prefix."acl_privileges AS p, ".$this->prefix."acl_roles AS r
+                FROM " . $this->prefix . "acl_privileges AS p, " . $this->prefix . "acl_roles AS r
                 WHERE p.roleId = r.id AND r.id = ?
                 ORDER BY module, privilege",
-                array((int) $roleId)
+                array((int)$roleId)
             );
 
             app()->getCache()->set($cacheKey, $data, \Bluz\Cache\Cache::TTL_NO_EXPIRY);
             app()->getCache()->addTag($cacheKey, 'privileges');
         }
+
         return $data;
     }
 }
