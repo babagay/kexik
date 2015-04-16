@@ -119,6 +119,8 @@ class Table extends \Bluz\Db\Table
         // get user profile
         $user = Users\Table::findRow($authRow->userId);
 
+        if(!is_object($user)) return false;
+
         // try to login
         $user->login();
 

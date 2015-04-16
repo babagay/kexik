@@ -1,0 +1,58 @@
+{#
+<form action="{{ baseUrl('admin','upload-image.php') }}" enctype="multipart/form-data" method="post" id="title-image-form" class="form-horizontal">
+    <fieldset>
+        <div class="control-group">
+            <label class="control-label" for="">Иллюстрации</label>
+            <div class="controls">
+                <div style="display:none" id="imgloadstatus-2"><img alt="Загрузка...." src="public/images/loader.gif"></div>
+                <div id="imgloadbutton-2">
+                    <input type="file" id="title-image" name="title-image" class="filestyle" data-icon="true" data-buttonText="Выбрать файл">
+                </div>
+                <p class="help-block">Дополнительные иллюстрации к статье</p>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<div id="preview">
+</div>
+#}
+
+<script>
+    require(["jquery", "jquery.form", "bluz", "filestyle"],  function ($, jqueryform, bluz, filestyle) {
+        $("#title-image").off("click").on("change", function(){
+            $("#preview").html("");
+            $("#title-image-form").ajaxForm({
+                target: "#preview",
+                beforeSubmit:function(){
+                    //console.log("s");
+                    $("#imgloadstatus").show();
+                    $("#imgloadbutton").hide();
+                },
+                success:function(){
+                    //console.log("z");
+                    $("#imgloadstatus").hide();
+                    $("#imgloadbutton").show();
+                },
+                error:function(){
+                    //console.log("d");
+                    $("#imgloadstatus").hide();
+                    $("#imgloadbutton").show();
+                },
+                complete:function(respObj){
+                    if(respObj.statusText == "OK"){
+                        if(respObj.    responseJSON.ahref){
+                            $("form[name=add-edit-article-form] input[name=cover]").val(respObj.responseJSON.ahref);
+                            $("#preview").html("<img src="+respObj.responseJSON.ahref+" style=height:150px; />")
+                        }
+                    }
+                    $("#imgloadstatus").hide();
+                    $("#imgloadbutton").show();
+                }
+            }).submit();
+        });
+
+    });
+</script>
+
+{{ dispatch('admin','grid-orders') }}
+

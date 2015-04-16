@@ -44,7 +44,7 @@ return
         if(is_object($user)){
             $userData = $db->fetchObject("SELECT * FROM users WHERE id = ". $db->quote($user->id));
 
-            $credit = $userData->credit;
+            $credit = round($userData->credit * 100,0)/100; // Отсекает 3 и 4 знаки после запятой, не затрагивая значение в базе
             $discount = $userData->discount;
             $orders_to_bonus = $userData->orders_to_bonus;
         }
@@ -92,8 +92,10 @@ return
                 </div>
                 <p>Текущая скидка: <span class="discount"><?php echo $discount; ?> %</span></p>
                 <p>Баланс: <span class="discount" id="users_credit"><?php echo $credit; ?></span> грн.</p>
-                <p>До ПОДАРКА: <span class="discount"><?php echo $orders_to_bonus; ?></span> заказов</p>
-                <button><a href="<?php echo $link_enter_cabinet; ?>" ><?php echo $btn_1; ?></a></button>
+                <p>Заказов до ПОДАРКА: <span class="discount"><?php echo $orders_to_bonus; ?></span>  </p>
+                <!--button-->
+                  <a href="<?php echo $link_enter_cabinet; ?>" ><?php echo $btn_1; ?></a>
+                <!--/button-->
             </div>
         <?php
         } else {

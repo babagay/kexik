@@ -1,0 +1,175 @@
+.wrapper-goods {
+    position: relative;
+}
+
+.basket-navigation {
+    width: 100%;
+    left: 50%;
+    margin: 0 0 30px -198px;
+    position: relative;
+    overflow: hidden;
+}
+
+.button-basket,
+.button-type-of-payment,
+.button-adress {
+    cursor: pointer;
+    width: 123px;
+    padding-top: 7px;
+    text-align: center;
+    float: left;
+    height: 36px;
+    margin: 0;
+    font-weight: normal;
+    background: url("../images/bg-button.png") repeat-x;
+    border: none;
+    border-radius: 7px;
+    color: #fff;
+}
+
+.basket-btn-navi.active {
+    background: green;
+}
+
+.separator {
+    background: url("../images/arrow-inc.png") no-repeat ;
+    width: 27px;
+    height: 27px;
+    float: left;
+    margin-top: 7px;
+}
+
+.basket-navigation-second {
+    width: 100%;
+    left: 50%;
+    margin: 0 0 30px -200px;
+    position: relative;
+    overflow: hidden;
+}
+
+.basket-navigation-second > .button-basket,
+.basket-navigation-second > .button-adress,
+.basket-navigation-second > .button-type-of-payment {
+    float: left;
+    padding: 0;
+    margin: 0 5px 0 0;
+}
+
+.basket-navigation-second > .button-type-of-payment,
+.basket-navigation-second > .button-adress {
+    margin: 0 20px 0 0;
+    width: auto;
+    padding: 0 20px;
+}
+.basket-navigation-second > a.button-type-of-payment{
+    padding: 8px 20px;
+}
+.button-basket:hover,
+.button-type-of-payment:hover,
+.button-adress:hover {
+    color:#611c04;
+}
+a.button-type-of-payment:hover{
+    text-decoration: none;
+}
+table.title {
+    margin: 0 2%;
+    width: 96%;
+}
+
+table.title td {
+    padding: 0 0 3px;
+    color: #bf4b10;
+}
+
+table td {
+    width: 20%;
+    text-align: center;
+    padding: 0 0 21px;
+}
+
+table td:nth-child(2) {
+    width: 30%
+}
+
+.white {
+    border: none;
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.5);
+    overflow: hidden;
+    padding: 15px 2%;
+    margin-bottom: 20px;
+}
+
+#basket-items .image-box {
+    border-radius: 10px;
+    position: static ;
+    float: left;
+    margin: 0 4px 0 0;
+    background: -moz-linear-gradient(top, #6C7807, #C6DB0E);
+    -pie-background: -moz-linear-gradient(top, #6C7807, #C6DB0E);
+    background: -webkit-linear-gradient(top, #6C7807, #C6DB0E);
+    background: -o-linear-gradient(top, #6C7807, #C6DB0E);
+    background: -ms-linear-gradient(top, #6C7807, #C6DB0E);
+    background: linear-gradient(to bottom, #6C7807, #C6DB0E);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6C7807', endColorstr='#C6DB0E', GradientType=0);
+    behavior: url(js/PIE.htc);
+}
+
+.image-box img {
+    border-radius: 5px;
+    width: 100%;
+}
+
+h4 {
+    margin: 0 0 15px 5%;
+    font: 18px/20px Calibri, Arial;
+}
+
+.note {
+
+}
+
+.note textarea {
+    background: transparent;
+    border: medium none;
+    box-shadow: none;
+    height: 60px;
+    width: 100%;
+    font-size: 12px;
+    line-height: 19px;
+}
+
+.description .number-arrow {
+    margin: 0 auto;
+}
+
+.number-arrow .dec,
+.number-arrow .inc {
+    width: 15%;
+    height: 10px;
+    float: left;
+    cursor: pointer;
+}
+
+.number-arrow .inc {
+
+}
+
+.number-arrow [type="number"] {
+    box-shadow: none;
+    border: none;
+    height: 23px;
+    padding: 0;
+    width: 50%;
+    border-radius: 0;
+    text-align: center;
+    float: left;
+    margin: 0 10%;
+}
+
+.num {
+    -moz-appearance: textfield;
+}
+
+/*чтобы убрать стрелки из number*/

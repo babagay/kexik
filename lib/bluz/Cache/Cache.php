@@ -132,6 +132,31 @@ class Cache extends Options implements CacheInterface, TagableInterface
         return $this->getAdapter()->flush();
     }
 
+    public function __isset($key)
+    {
+        return $this->contains($key);
+    }
+
+    function __set($name, $var)
+    {
+        $this->set($name, $var);
+    }
+
+    function __get($name)
+    {
+        $var = null;
+
+        if ($this->contains($name))
+            $var = $this->get($name);
+
+        return $var;
+    }
+
+    function __unset($key)
+    {
+        return $this->delete($key);
+    }
+
     /**
      * Get underlying cache Adapter
      * @return Adapter\AbstractAdapter

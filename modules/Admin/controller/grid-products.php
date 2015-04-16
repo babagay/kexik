@@ -17,12 +17,7 @@ function ($products_id = null) use ($view, $module, $controller, $_this) {
      * @var \Application\Bootstrap $this
      * @var \Bluz\View\View $view
      */
-    $_this->getLayout()->breadCrumbs(
-        array(
-            $view->ahref('Test', array('test', 'index')),
-            'Grid with SQL',
-        )
-    );
+
 
     $options = array();
 

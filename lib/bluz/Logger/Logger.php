@@ -134,9 +134,10 @@ class MyLogger extends Options
     function error($mess){
 
         $logger_name = "base_logger";
+        $logger_name = "";
         $logger_type = Logger::ERROR;
 
-        $this->filename = date("Y-m-d") . "_" . $logger_name;
+        $this->filename = date("Y-m-d") .  $logger_name . ".log";
 
         //TODO throw new Exception("Logger is unavailible");
 

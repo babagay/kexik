@@ -1,8 +1,8 @@
 <?php
 
-// TODO
 
-namespace Core\Model\Orders;
+//namespace Core\Model\Orders;
+namespace Application\Orders;
 
 use Application\Auth;
 use Application\Exception;
@@ -13,196 +13,240 @@ use Bluz\Crud\ValidationException;
  
 class Crud extends \Bluz\Crud\Table
 {
+
+    private $products = null;
+    private $user = null;
+    private $total = null;
+
+    private $exception;
+
+    public function setProducts($products)
+    {
+        $this->products = $products;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    public function setTotal($total)
+    {
+        $this->total = $total;
+    }
+
+    function createSet($data)
+    {
+         throw new \Exception("Not Implemented " . __METHOD__ . " in " . __FILE__);
+    }
+
+    /**
+     * @param array $data
+     * @return int|void
+     * @throws \Bluz\Application\Exception\OrderException
+     */
     public function createOne($data)
     {
+
+        /**
+         * Создёт Заказ в orders
+         * Сохраняет продукты в order_products
+         * Уменьшает кредит пользователя на сумму заказа
+         * Производит расчет total
+         * Применяет скидку
+         * Модифицирует пользователя в users
+         * Сохраняет скидку пользователя на момент создания заказа
+         *
+         * TODO
+         * - уведомление пользователю
+         * - логирование в logs
+         * - Модифицирует сессию identity
+         */
+
+        $this->exception = new \Bluz\Application\Exception\OrderException( );
+
+
+        $total = null;
+        $calculate_total = false;
+
+        if(!is_null($this->total)) $total = $this->total;
+        if(is_null($total)){
+            if(isset($data['total']))
+                $total = $data['total'];
+        }
+
+        ///$user = app()->getAuth()->getIdentity();
+        $user = $this->user;
+
+        $data['users_id'] = $user->id;
+        $data['user_discount'] = $user->discount;
+
         $row = $this->getTable()->create();
         $row->setFromArray($data);
-        $row->status = Table::STATUS_PENDING;
         $row->save();
+        $orders_id = $row->orders_id;
 
-        $orders_id = $row->id;
-    }
-        
-    /**
-     * @param $data
-     * @throws \Application\Exception
-     * @return boolean
-     */
-    public function _createOne($data)
-    {
-        $this->validate(null, $data);
-        $this->validateCreate($data);
-        $this->checkErrors();
 
-        /** @var $row Row */
-        $row = $this->getTable()->create();
-        $row->setFromArray($data);
-        $row->status = Table::STATUS_PENDING;
-        $row->save();
-
-        $userId = $row->id;
-
-        // create auth
-        $password = isset($data['password'])?$data['password']:null;
-        Auth\Table::getInstance()->generateEquals($row, $password);
-
-        // create activation token
-        // valid for 5 days
-        $actionRow = UsersActions\Table::getInstance()->generate($userId, UsersActions\Table::ACTION_ACTIVATION, 5);
-
-        // send activation email
-        // generate activation URL
-        $activationUrl = app()->getRouter()->getFullUrl(
-            'users',
-            'activation',
-            array('code' => $actionRow->code, 'id' => $userId)
-        );
-
-        $subject = "Activation";
-
-        $body = app()->dispatch(
-            'users',
-            'mail-template',
-            array(
-                'template' => 'registration',
-                'vars' => array('user' => $row, 'activationUrl' => $activationUrl, 'password' => $password)
-            )
-        )->render();
-
-        try {
-            $mail = app()->getMailer()->create();
-
-            // subject
-            $mail->Subject = $subject;
-            $mail->MsgHTML(nl2br($body));
-
-            $mail->AddAddress($data['email']);
-
-            app()->getMailer()->send($mail);
-
-        } catch (\Exception $e) {
-            app()->getLogger()->log(
-                'error',
-                $e->getMessage(),
-                array('module' => 'users', 'controller' => 'change-email', 'userId' => $userId)
-            );
-
-            throw new Exception('Unable to send email. Please contact administrator.');
+        if(!$orders_id){
+            // TODO проверить
+            $this->exception->setCode(2);
+            throw $this->exception;
         }
 
-        // show notification and redirect
-        app()->getMessages()->addSuccess(
-            "Your account has been created and an activation link has".
-            "been sent to the e-mail address you entered.<br/>".
-            "Note that you must activate the account by clicking on the activation link".
-            "when you get the e-mail before you can login."
-        );
-        app()->redirectTo('index', 'index');
 
-        return $userId;
-    }
-
-    /**
-     * @throws ValidationException
-     */
-    public function validateCreate($data)
-    {
-        // login
-        $this->checkLogin($data);
-
-        $login = isset($data['login'])?$data['login']:null;
-        // check unique
-        if ($this->getTable()->findRowWhere(array('login' => $login) )) {
-            $this->addError(
-                __('User with login "%s" already exists', esc($login)),
-                'login'
-            );
+        if(is_null($total)){
+            $calculate_total = true;
+            $total = 0;
         }
 
-        // email
-        $this->checkEmail($data);
+        if(sizeof($this->products)){
+            foreach($this->products as $products_id => $products_num){
+                $product = \Application\Products\Table::findRow(array('products_id' => $products_id));
 
-        $email = isset($data['email'])?$data['email']:null;
-        // TODO: add solution for check gmail accounts (because a.s.d@gmail.com === asd@gmail.com)
-        // check unique
-        if ($this->getTable()->findRowWhere(array('email' => $email))) {
-            $this->addError(
-                __('User with email "%s" already exists', esc($email)),
-                'email'
-            );
-        }
+                $insertBuilder        = app()->getDb()
+                    ->insert( 'order_products' )
+                    ->set( 'orders_id', $orders_id )
+                    ->set( 'products_id', $products_id )
+                    ->set( 'price', $product->products_shoppingcart_price )
+                    ->set( 'products_num', $products_num )
+                ;
+                $insertBuilder->execute();
 
-        // password
-        $password = isset($data['password'])?$data['password']:null;
-        $password2 = isset($data['password2'])?$data['password2']:null;
-        if (empty($password)) {
-            $this->addError('Password can\'t be empty', 'password');
-        }
+                if($calculate_total){
+                    $product_total = $products_num * $product->products_shoppingcart_price;
+                    $total += $product_total;
+                }
+            }
 
-        if ($password !== $password2) {
-            $this->addError('Password is not equal', 'password2');
-        }
-    }
+            if($calculate_total){
+                $discount = (int)$user->discount;
+                if($discount > 0 AND $discount < 100){
+                    // Применить скидку
+                    $discount_summ = $total * $discount / 100;
+                    $total_discounted = $total - $discount_summ;
+                    $total = $total_discounted;
+                }
 
-    /**
-     * @throws ValidationException
-     */
-    public function validateUpdate($id, $data)
-    {
-        // name validator
-        $this->checkLogin($data);
-
-        // email validator
-        $this->checkEmail($data);
-    }
-
-    /**
-     * checkLogin
-     *
-     * @param $data
-     * @return void
-     */
-    protected function checkLogin($data)
-    {
-        $login = isset($data['login'])?$data['login']:null;
-        if (empty($login)) {
-            $this->addError('Login can\'t be empty', 'login');
-        }
-        if (strlen($login) > 255) {
-            $this->addError('Login can\'t be bigger than 255 symbols', 'login');
-        }
-    }
-
-    /**
-     * checkEmail
-     *
-     * @param array $data
-     * @return boolean
-     */
-    public function checkEmail($data)
-    {
-        $email = isset($data['email'])?$data['email']:null;
-
-        if (empty($email)) {
-            $this->addError('Email can\'t be empty', 'email');
-            return false;
-        }
-
-        if (strlen($email) > 255) {
-            $this->addError('Email can\'t be bigger than 255 symbols', 'email');
-            return false;
-        }
-
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            list($user, $domain) = explode("@", $email, 2);
-            if (!checkdnsrr($domain, "MX") && !checkdnsrr($domain, "A")) {
-                $this->addError('Email has invalid domain name', 'email');
-                return false;
+                // Update
+                $updateBuilder = app()->getDb()
+                    ->update('orders')
+                    ->setArray(
+                        array(
+                            'total' => $total,
+                        )
+                    )
+                    ->where('orders_id = ?', $orders_id);
+                $updateBuilder->execute();
             }
         } else {
-            $this->addError('Email is invalid', 'email');
-            return false;
+            $this->exception->setCode(1);
+            throw $this->exception;
         }
-        return true;
+
+
+        $orders_to_bonus = $user->orders_to_bonus;
+        $orders_to_bonus--;
+
+        if($orders_to_bonus == 0) {
+
+            $updateBuilder = app()->getDb()
+                ->update('users')
+                ->setArray(
+                    array(
+                        'presents' => ++$user->presents
+                    )
+                )
+                ->where('id = ?', $user->id);
+            $updateBuilder->execute();
+            $orders_to_bonus = 10;
+        }
+
+        app()->getSession()->identity->orders_to_bonus = $orders_to_bonus;
+
+        /**
+         * Можно перезаписать сессиюю:
+         *  $_user = \Application\Users\Table::findRow( array('id' => 20) );
+         * app()->getSession()->identity = $_user;
+         */
+
+        $updateBuilder = app()->getDb()
+            ->update('users')
+            ->setArray(
+                array(
+                    'credit' => $user->getCredit() - $total,
+                    'orders_to_bonus' => $orders_to_bonus,
+                )
+            )
+            ->where('id = ?', $user->id);
+        $updateBuilder->execute();
+
+        app()->getRegistry()->new_orders_id = $orders_id;
     }
+
+    public function validateCreate($data)
+    {
+        if(false){
+            $this->addError('error','fieldname');
+        }
+    }
+
+    public function validateUpdate($id,$data)
+    {
+        if(false){
+            $this->addError('error','fieldname');
+        }
+    }
+
+    function readOne($primary_key)
+    {
+    /**
+     * Взять
+     * - все записи в логах
+     * - все продукты
+     * - оплачен или нет
+     * - имя юзера
+     * - тип цен
+     * - тип оплаты
+     * - телефон пользователя
+     */
+        if(!$primary_key){
+            // Если, вдруг, будет попытка выгрести ордер через этот метод
+            return parent::readOne($primary_key);
+
+        } elseif(is_array($primary_key)){
+            if(isset($primary_key['orders_id'])){
+                // Выгребаем ордер
+
+                $order = parent::readOne($primary_key);
+
+                $user = app()->getDb()->fetchRow ("
+                    SELECT u.*
+                     FROM users u
+                    WHERE  id = '".$order->users_id."' ");
+                $order->user = $user;
+
+                $payment_type = app()->getDb()->fetchRow ("
+                    SELECT pt.*
+                     FROM payment_types pt
+                    WHERE  payment_types_id = '".$order->payment_types_id."' ");
+                $order->payment_type = $payment_type;
+
+
+                $products = app()->getDb()->fetchAll ("
+                    SELECT op.*, p.*
+                     FROM order_products op
+                    JOIN products p ON p.products_id = op.products_id
+                    WHERE  orders_id = '{$primary_key['orders_id']}' ");
+
+                $order->products = $products;
+
+                //fb($products[0]['products_id']);
+
+                return $order;
+            }
+        }
+
+    }
+
+
 }

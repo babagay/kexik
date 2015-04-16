@@ -244,7 +244,8 @@ class Translator extends Options
             "%D1%8C" => "",
             "%D1%8D" => "e",
             "%D1%8E" => "ju",
-            "%D1%8F" => "ja"
+            "%D1%8F" => "ja",
+            "%20" => " "
         );
 
         return $st = strtr($st, $lit);

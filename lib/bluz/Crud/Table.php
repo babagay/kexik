@@ -138,7 +138,9 @@ class Table extends AbstractCrud
      */
     public function updateOne($primary, $data)
     {
+
         $row = $this->getTable()->findRow($primary);
+
 
         if (!$row) {
             throw new NotFoundException("Record not found");
@@ -149,9 +151,7 @@ class Table extends AbstractCrud
 
         $err_arr = $this->getErrors();
         if( is_array($err_arr) AND count($err_arr) > 0 )
-
-
-        $this->checkErrors();
+            $this->checkErrors();
 
         $row->setFromArray($data);
         return $row->save();

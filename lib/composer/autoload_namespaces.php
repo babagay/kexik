@@ -10,6 +10,7 @@ return array(
     'Monolog' => array($vendorDir . '/monolog/monolog/src'),
     'Core' => array($baseDir . '/Core'),
     'Zoqa' => array($baseDir . '/Core'),
+    //'Application\Users' => array($baseDir . '/Core/Model/Users'),
     'Testspace' => array($baseDir . '/Core/Helper'), // не работает
     //'Yandex' => array($vendorDir . '/Yandex'), // не работает
     'Yandex' => array($baseDir . '/Core/Model/Yandex'), //  работает

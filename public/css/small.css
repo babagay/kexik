@@ -1,0 +1,37 @@
+body{
+    background: url("../images/bg.png") repeat;
+    margin: 0;
+    font: 18px/20px Calibri, Arial;
+    color: #611C04;
+}
+.container.layout-small{
+    width:450px;
+    margin: 20px auto;
+    padding-bottom: 50px;
+}
+.container{
+    width: 100%;
+}
+.panel-footer{
+    text-align: center;
+}
+.panel{
+    border-radius: 14px;
+}
+.panel-heading {
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+}
+.panel-footer {
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+}
+footer{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin: 10px 0 30px -213px;
+}
+footer span{
+    margin: 0 30px 0 0;
+}

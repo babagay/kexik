@@ -18,6 +18,7 @@
      * Использование:
      * - можно указать последний удачно загруженный продукт ($id)
      * - если задать parse_category = 1 , из 12-го поля будут вытаскиваться категории
+     * - если $do_update_only = true, тогда модифицируются только существующие продукты, новые не добавляются
      */
 
     return
@@ -40,6 +41,11 @@
             if( (int)$id === 0) $id = null;           
             
             $operate_the_product = false;
+
+            /**
+             * Только обновлять существующие продукты
+             */
+            $do_update_only = true;
 
             $_this->resetLayout();
            // $_this->useJson(true);
@@ -273,21 +279,23 @@
                             } else {
                                 // Вставить продукт 
 
-                                $insertBuilder        = $db
-                                    ->insert( 'products' )
-                                    ->set( 'products_id', $products_id )
-                                    ->set( 'products_barcode', $products_barcode )
-                                    ->set( 'products_name', $products_name )
-                                    ->set( 'products_unit', $products_unit )
-                                    ->set( 'products_departament', $products_departament )
-                                    ->set( 'products_shoppingcart_price', $products_shoppingcart_price )
-                                    ->set( 'products_price', $products_price )
-                                    ->set( 'products_quantity', $products_quantity )
-                                    ->set( 'manufacturers_id', $manufacturers_id )
-                                    ->set( 'products_last_modified', date('Y-m-d H:i:s') )
-                                ;
-                                $insertBuilder->execute();
-                                $logger->products("Product inserted: $products_id ");
+                                if(!$do_update_only){
+                                    $insertBuilder        = $db
+                                        ->insert( 'products' )
+                                        ->set( 'products_id', $products_id )
+                                        ->set( 'products_barcode', $products_barcode )
+                                        ->set( 'products_name', $products_name )
+                                        ->set( 'products_unit', $products_unit )
+                                        ->set( 'products_departament', $products_departament )
+                                        ->set( 'products_shoppingcart_price', $products_shoppingcart_price )
+                                        ->set( 'products_price', $products_price )
+                                        ->set( 'products_quantity', $products_quantity )
+                                        ->set( 'manufacturers_id', $manufacturers_id )
+                                        ->set( 'products_last_modified', date('Y-m-d H:i:s') )
+                                    ;
+                                    $insertBuilder->execute();
+                                    $logger->products("Product inserted: $products_id ");
+                                }
                             }
 
                            // if( !is_null($products_category) ){

@@ -76,4 +76,16 @@ class Registry extends Options
             return null;
         }
     }
+
+    /**
+     * Remove item from the regisry
+     *
+     * @param string $key
+     * @return void
+     */
+    function __unset($key)
+    {
+        if (array_key_exists($key, $this->data))
+            unset($this->data[$key]);
+    }
 }

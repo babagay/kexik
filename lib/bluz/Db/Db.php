@@ -546,9 +546,9 @@ class Db extends Options
             $result = $stmt->fetchAll(\PDO::FETCH_INTO, $object);
         } elseif (is_string($object)) {
             // some class name
-fb(1);
 
-            fb($stmt);
+
+
             $result = $stmt->fetchAll(\PDO::FETCH_CLASS, $object);
         }
         $stmt->closeCursor();

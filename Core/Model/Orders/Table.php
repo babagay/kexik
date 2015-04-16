@@ -19,7 +19,6 @@ class Table extends \Bluz\Db\Table
      */
     protected $primary = array('orders_id');
 
-    protected $prefix = TABLE_PREFIX;
 
 
      

@@ -36,13 +36,14 @@
     <table class="table grid">
         <thead>
         <tr>
-            <th width="120px"><a href="{{ grid.order('id', null, 'desc', false) }}">Id</a></th>
-            <th width="120px"><a href="{{ grid.order('login') }}">Логин</a></th>
+            <th width="60px"><a href="{{ grid.order('id', null, 'desc', false) }}">Id</a></th>
+            <th width="100px"><a href="{{ grid.order('login') }}">Логин</a></th>
             <th width="120px"><a href="{{ grid.order('email') }}">Адрес почты</a></th>
             <th width="120px"><a href="{{ grid.order('status') }}">Статус</a></th>
-            <th width="120px"><a href="{{ grid.order('credit') }}">Кредит</a></th>
-            <th width="120px"><a href="{{ grid.order('discount') }}">Скидка</a></th>
+            <th width="50px"><a href="{{ grid.order('credit') }}">Кредит</a></th>
+            <th width="50px"><a href="{{ grid.order('discount') }}">Скидка</a></th>
             <th width="120px"><a href="{{ grid.order('orders_to_bonus') }}">До подарка заказов</a></th>
+            <th width="120px"><a href="{{ grid.order('presents') }}">Заработал подарков</a></th>
             <th width="120px">Действия</th>
         </tr>
         </thead>
@@ -61,9 +62,10 @@
                 В процессе регистрации
                 {% endif %}
             </td>
-            <td>{{ row['credit'] }}</td>
+            <td>{{ row['credit']|round(2, 'ceil') }}</td>
             <td>{{ row['discount'] }}</td>
             <td>{{ row['orders_to_bonus'] }}</td>
+            <td>{{ row['presents'] }}</td>
             <td class="controls">
                 <a href="{{ url('admin', 'users-crud', {'id' : row['id']}) }}" class="btn btn-xs btn-primary dialog"
                    data-ajax-method="get">

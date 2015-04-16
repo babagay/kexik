@@ -1,0 +1,63 @@
+{% set uid = uniqid('form_') %}
+
+{# action="{{ url('admin', 'ajax/crud') }}" #}
+{# action="{{ url('admin', 'categories-crud')  }}" #}
+<form id="{{ uid }}" action="{{ url('admin', 'users-crud') }}" class="form-horizontal ajax" method="{{ method }}">
+    <input type="hidden" name="id" value="{{ row.id }}"/>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h3 class="modal-title">Пользователь</h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="login">{{ __('Логин') }}</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="login" name="login" value="{{ row.login }}" required />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="email">{{ __('Почта') }}</label>
+            <div class="col-lg-10">
+                <input type="email" class="form-control" id="email" name="email" value="{{ row.email }}" required />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="discount">{{ __('Скидка, %') }}</label>
+            <div class="col-lg-10">
+                <input  class="form-control" id="discount" name="discount" value="{{ row.discount }}" required />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="credit">{{ __('Кредит') }}</label>
+            <div class="col-lg-10">
+                <input  class="form-control" id="credit" name="credit" value="{{ row.credit }}" required />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="presents">{{ __('Подарков заработал') }}</label>
+            <div class="col-lg-10">
+                <input  class="form-control" id="presents" name="presents" value="{{ row.presents }}" required />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="status">{{ __('Статус') }}</label>
+            <div class="col-lg-10">
+                <select id="status" name="status" class="form-control">
+                    <option {% if row.status == 'active' %} 'selected' {% endif %} value='active'>Активен</option>
+                    <option {% if row.status == 'disabled' %} 'selected' {% endif %} value='disabled'>Заблокирован</option>
+                    <option {% if row.status == 'deleted' %} 'selected' {% endif %} value='deleted'>Удалён</option>
+                    <option {% if row.status == 'pending' %} 'selected' {% endif %} value='pending'>В процессе регистрации</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">{{ __('Сохранить') }}</button>
+        <a href="#" class="btn btn-default" data-dismiss="modal">{{ __('Отмена') }}</a>
+    </div>
+</form>
+
+{% if errors %}
+Error
+
+{% endif %}

@@ -38,6 +38,31 @@ return
         ///fb($статья);
         ///$app_object = Application\Bootstrap::getInstance();
 
+        //
+        $memcache = new Memcache;
+
+	  $memcache->connect("localhost",11211); # You might need to set "localhost" to "127.0.0.1"
+
+	  fb( "Server's version: " . $memcache->getVersion() . " ");
+
+	  $tmp_object = new stdClass;
+
+	  $tmp_object->str_attr = "test";
+
+	  $tmp_object->int_attr = 123;
+
+	  //$memcache->set("key",$tmp_object,false,10);
+
+	  //fb( "Store data in the cache (data will expire in 10 seconds)<br />\n");
+
+	  //fb( "Data from the cache:<br />\n ");
+
+	  //fb($memcache->get("key"));
+
+        //fb( base64_encode(file_get_contents( $view->baseUrl("public/images/logo.png") )) );
+       // echo "<img src='".$view->baseUrl("public/images/logo.png")."'>";
+        //
+
         $app_object = app()->getInstance();
 
         $articles_id = null;

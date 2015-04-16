@@ -62,8 +62,9 @@ function ($code, $message = '') use ($view) {
             break;
         default:
             $code = 500;
-            $title = __("Internal Server Error");
-            $description = __("An unexpected error occurred with your request. Please try again later");
+            $title = __("Ошибка");
+            $description = __("");
+            //$description = __("An unexpected error occurred with your request. Please try again later");
             break;
     }
 

@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     $vendorDir . '/FirePHP/firephp-core/lib/FirePHPCore/fb.php', // работает
+
     $vendorDir . '/bluz/_functions.php',
     $vendorDir . '/bluz/_loader.php',
 );

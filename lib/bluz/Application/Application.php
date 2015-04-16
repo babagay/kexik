@@ -855,6 +855,7 @@ class Application
         // process params
         $params = $this->params($reflectionData, $params);
 
+
         // $view for use in closure
         $view = $this->getView();
         // [!] Так работало, но ради эксперимента переключил на верхний вариант
@@ -1390,7 +1391,7 @@ class Application
         if($controller == 'ajax'){
             $file = 'ajax';
 
-            $uri = app()->getInstance()->getRequest()->requestUri ; // /blog/ajax/getheaders
+            $uri = app()->getInstance()->getRequest()->requestUri ; // /module/ajax/file
 
             $uri_arr = explode('/',$uri);
             for($i = 0; $i< count($uri_arr); $i++){
@@ -1410,6 +1411,11 @@ class Application
             $controllerPath = $this->getPath() . '/modules/' . ucfirst($module)
                 . '/ajax/' . $file . ".php" ;
 
+        } elseif($controller == 'widget') {
+            $uri = app()->getInstance()->getRequest()->requestUri ; // users/widget/cabinet
+
+            $controllerPath = $this->getPath() . '/modules/' . ucfirst($module)
+                . '/widget/' . app()->getRequest()->get(3) . ".php" ;
         } else {
 
             $controllerPath = $this->getPath() . '/modules/' . ucfirst( $module )

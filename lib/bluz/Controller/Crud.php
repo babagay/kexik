@@ -27,6 +27,8 @@ use Bluz\Request\AbstractRequest;
  */
 class Crud extends AbstractController
 {
+    private $data_forced = null;
+
     /**
      * @throws NotImplementedException
      * @throws NotFoundException
@@ -35,15 +37,17 @@ class Crud extends AbstractController
      */
     public function __invoke()
     {
-
         $primary = $this->getPrimaryKey();
+
+        if(!is_null($this->data))
+            if(sizeof($this->data_forced)){
+                $this->data = $this->data_forced;
+            }
 
         // switch by method
         switch ($this->method) {
             case AbstractRequest::METHOD_GET:
                 $row = $this->readOne($primary);
-fb('inv');
-                fb($row);
                 $result = array('row' => $row);
                 if ($primary) {
                     // update form
@@ -51,7 +55,7 @@ fb('inv');
                 } else {
                     // create form
                     $result['method'] = AbstractRequest::METHOD_POST;
-                }fb($result);
+                }
                 return $result;
                 break;
             case AbstractRequest::METHOD_POST:
@@ -110,6 +114,16 @@ fb('inv');
     }
 
     /**
+     * Override data
+     *
+     * @param $data
+     */
+    function forceData($data)
+    {
+        $this->data_forced = $data;
+    }
+
+    /**
      * Return primary key
      *
      * @return array
@@ -143,6 +157,7 @@ fb('inv');
     public function updateOne($id, $data)
     {
         $result = $this->getCrud()->updateOne($id, $data);
+
 
         app()->getMessages()->addSuccess("Record was updated");
 

@@ -552,13 +552,18 @@ class View extends Options implements ViewInterface /*, \JsonSerializable */
         //FIXME реализация взята из Helper'а. Метод вызывает вью-хелпер в виде замыкания
 
         // Call helper function (or class)
-        if (isset($this->helpers[$method]) && is_callable($this->helpers[$method])) {
+        // Попробовал заменить вызов замыкания с целью избежать заворачивания в массив, 
+        // но после этого в хелперах (например, breadCrumbs) произошло дополнительное обворачивание, которого ранее не было, поэтому, вернул назад
+        //$m = $this->helpers[$method];            
+        //return $m($args);
+        if (isset($this->helpers[$method]) && is_callable($this->helpers[$method])) { 
+            
             return call_user_func_array($this->helpers[$method], $args);
         }
 
         // Try to find helper file
         foreach (self::$helpersPath as $helperPath) {
-            $helperPath = realpath($helperPath . '/' . ucfirst($method) . '.php');
+            $helperPath = realpath($helperPath . '/' . lcfirst($method) . '.php');
             if ($helperPath) {
                 $helperInclude = include $helperPath;
                 if (is_callable($helperInclude)) {
@@ -566,7 +571,20 @@ class View extends Options implements ViewInterface /*, \JsonSerializable */
                 } else {
                     throw new \Exception("Helper '$method' not found in file '$helperPath'");
                 }
+
                 return $this->__call($method, $args);
+            } else {
+              $helperPath = realpath($helperPath . '/' . ucfirst($method) . '.php');
+              if ($helperPath) {
+                $helperInclude = include $helperPath;
+                if (is_callable($helperInclude)) {
+                    $this->helpers[$method] = $helperInclude;
+                } else {
+                    throw new \Exception("Helper '$method' not found in file '$helperPath'");
+                }
+
+                return $this->__call($method, $args);
+              }
             }
         }
         throw new \Exception("Helper '$method' not found for '" . __CLASS__ . "'");

@@ -92,7 +92,7 @@ class Yandex {
         $db =  app()->getDb();
         $previous_year = time() - (12 * 30 * 24 * 60 * 60);
         $sql = " SELECT *
-                 FROM zoqa_config
+                 FROM config
                  WHERE descriptor = '$descriptor'
                  AND dateline > $previous_year
         ";

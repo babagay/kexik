@@ -41,7 +41,9 @@ class Crud extends \Bluz\Crud\Table
         /** @var $row Row */
         $row = $this->getTable()->create();
         $row->setFromArray($data);
-        $row->status = Table::STATUS_PENDING;
+        // FIXME поменять STATUS_ACTIVE на STATUS_PENDING
+        //$row->status = Table::STATUS_PENDING;
+        $row->status = Table::STATUS_ACTIVE;
         $row->save();
 
         $userId = $row->id;
@@ -74,6 +76,7 @@ class Crud extends \Bluz\Crud\Table
         )->render();
 
         // FIXME отправка почты
+        // mail($data['email'], $subject, $body);
         /*
         try {
             $mail = app()->getMailer()->create();
@@ -98,15 +101,22 @@ class Crud extends \Bluz\Crud\Table
         */
 
         // show notification and redirect
+        /*
         app()->getMessages()->addSuccess(
             "Your account has been created and an activation link has".
             "been sent to the e-mail address you entered.<br/>".
             "Note that you must activate the account by clicking on the activation link".
             "when you get the e-mail before you can login."
         );
+        */
 
-        // FIXME из аякса редирект не работает
+        // FIXME из аякса редирект не работает, если return заворачивать в замыкание
         // app()->redirectTo('index', 'index');
+        // throw new \Bluz\Application\Exception\RedirectException('http://localhost/kex');
+        app()->getRegistry()->user_created_successfully = true; // вариант с этим реестром работает
+        app()->getRegistry()->user_created_mess = "Аккаунт создан успешно";
+
+        // \Core\Helper\Registry::getInstance()->user_created_successfully === true;
 
         return $userId;
     }

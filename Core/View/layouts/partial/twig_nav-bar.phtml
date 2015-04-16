@@ -24,13 +24,13 @@
                     <li {% if(module('admin','products')) %}class="active"{% endif %}>
                         {{ ahref('Продукты', ['admin', 'products']) }}
                     </li>
-                    <!--li {% if(module('blog','Base')) %}class="active"{% endif %}>
-                        {{ ahref('Блог', ['блог', '']) }}
+                    <li {% if(module('admin','users')) %}class="active"{% endif %}>
+                        {{ ahref('Пользователи', ['admin', 'users']) }}
                     </li>
-                    <li {% if(module('autor')) %}class="active"{% endif %}>
-                        {{ ahref('Автор', ['автор', '']) }}
+                    <li {% if(module('admin','orders')) %}class="active"{% endif %}>
+                        {{ ahref('Заказы', ['admin', 'orders']) }}
                     </li>
-                    <li {% if(module('dashboard')) %}class="active"{% endif %}>
+                    <!--li {% if(module('dashboard')) %}class="active"{% endif %}>
                       {{ ahref('Dashboard', ['dashboard', 'index']) }}
                     </li>
                     <li {% if(module('test')) %}class="active"{% endif %}>

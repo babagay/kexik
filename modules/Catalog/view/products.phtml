@@ -148,14 +148,14 @@
             </div>
             <div class="description">
                 <div class="weight">{{ product.products_unit }}</div>
-                <div class="cost">{{ product.products_shoppingcart_price }}</div>
-                <div class="basket"><a href="ajax/modify_basket" class="push-to-basket" >В корзину</a></div>
+                <div class="cost">{{ product.products_shoppingcart_price|round(2, 'ceil') }}</div>
+                <div class="basket"><a href="JavaScript:void(0);" data-href="ajax/modify_basket" class="push-to-basket" >В корзину</a></div>
                 <div class="number-arrow">
-                    <a class="inc"><img src="public/images/arrow-inc.png"></a>
+                    <a class="dec" href="JavaScript:void(0);" data-href=""><img src="public/images/arrow-dec.png"></a>
                     <input type="number" min="1" value="1" class="num">
-                    <a class="dec"><img src="public/images/arrow-dec.png"></a>
+                    <a class="inc" href="JavaScript:void(0);" data-href=""><img src="public/images/arrow-inc.png"></a>
                 </div>
-                <div class="price">{{ product.products_shoppingcart_price }}</div>
+                <div class="price">{{ product.products_shoppingcart_price|round(2, 'ceil') }}</div>
             </div>
 
             <input type="hidden" name="products_id" value="{{ product.products_id }}">
@@ -180,6 +180,79 @@
     require(["jquery","bluz.notify"],  function ($,notify) {
         //notify.addSuccess("Event `success.ajax.bluz` is fired")
         //notify.add("success","asd")
+        
+         $(".goods a.dec").off()
+                .on("click",function(e){
+                    var num = $(this).closest(".goods").find("input.num").val();
+                    num--
+                    if( num < 0 ) num = 0;
+                    
+                    if(num == 0) return false;
+                    
+                    $(this).closest(".goods").find("input.num").val(num)
+                    var products_shoppingcart_price = $(this).closest(".goods").find("input[name=products_shoppingcart_price]").val()
+
+                    $(this).closest(".goods").find(".price").html( Math.round(products_shoppingcart_price * num * 100)/100 )
+
+                    var data = {}
+                    var url = "basket/ajax/modify_basket"
+                    data["products_id"] = $(this).closest(".goods").find("input[name=products_id]").val()
+
+
+                    data["mode"] = "update"
+                    data["products_num"] = num
+
+                    $.ajax({
+                        type: "POST",
+                        data: data,
+                        url: url,
+                        context: document.body,
+                        dataType: "json"
+                    }).done(function(response,status,responseObj) {
+                            $( this ).addClass( "done" );
+                            if(status == "success"){
+
+
+                            }
+                        });
+
+                    return false;
+                });
+                
+                $(".goods a.inc").off()
+                .on("click",function(e){
+                    var num = $(this).closest(".goods").find("input.num").val();
+                    num++
+                    
+                    $(this).closest(".goods").find("input.num").val(num)
+                    var products_shoppingcart_price = $(this).closest(".goods").find("input[name=products_shoppingcart_price]").val()
+
+                    $(this).closest(".goods").find(".price").html( Math.round(products_shoppingcart_price * num * 100)/100 )
+
+                    var data = {}
+                    var url = "basket/ajax/modify_basket"
+                    data["products_id"] = $(this).closest(".goods").find("input[name=products_id]").val()
+
+
+                    data["mode"] = "update"
+                    data["products_num"] = num
+
+                    $.ajax({
+                        type: "POST",
+                        data: data,
+                        url: url,
+                        context: document.body,
+                        dataType: "json"
+                    }).done(function(response,status,responseObj) {
+                            $( this ).addClass( "done" );
+                            if(status == "success"){
+
+
+                            }
+                        });
+
+                    return false;
+                });
 
             $("a.push-to-basket").off().on("click", function(event, anydata, textStatus, jqXHR){
             var products_id = $(this).closest(".goods").find("input[name=products_id]").val();
@@ -193,7 +266,7 @@
             $.ajax({
                 type: "POST",
                 data: data,
-                url: "basket/" + $(this).attr("href"),
+                url: "basket/" + $(this).attr("data-href"),
                 context: document.body,
                 dataType: "json"
             }).done(function(response,status,responseObj) {

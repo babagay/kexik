@@ -129,4 +129,9 @@ class Row extends AbstractRowEntity
 
         return $credit;
     }
+
+    function getSelf()
+    {
+        return $this;
+    }
 }

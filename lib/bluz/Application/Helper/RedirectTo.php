@@ -23,5 +23,8 @@ return
     function ($module = 'index', $controller = 'index', $params = array()) {
         /** @var Application $this */
         $url = $this->getRouter()->url($module, $controller, $params);
+
+
+
         $this->redirect($url);
     };

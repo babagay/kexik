@@ -48,12 +48,12 @@ require_once 'Common/Options.php';
 
 
 // application
-require_once 'Application/Application.php';
+// require_once 'Application/Application.php';
 require_once 'Application/Exception/ApplicationException.php';
 //require_once 'View/ViewException.php';
 
 // packages and support
-require_once 'Config/Config.php';
+//require_once 'Config/Config.php';
 //require_once 'Config/ConfigException.php';
 require_once 'EventManager/Event.php';
 require_once 'EventManager/EventManager.php';
@@ -78,6 +78,7 @@ require_once 'Acl/AclException.php';
 //require_once 'Grid/Grid.php';
 //require_once 'Grid/Source/AbstractSource.php';
 //require_once 'Grid/Source/ArraySource.php';
-require_once PATH_LIB.'/PHPMailer/PHPMailerAutoload.php';
+//require_once PATH_LIB.'/PHPMailer/PHPMailerAutoload.php';
 
 require_once PATH_LIB.'/FirePHP/firephp-core/lib/FirePHPCore/FirePHP.class.php';
+

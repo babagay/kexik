@@ -1,4 +1,6 @@
 <?php
+
+
 return
     /**
      * @param string $question
@@ -10,21 +12,12 @@ return
          * или так: app()->getRequest();
          * @var View $view - Bluz\View\View
 
-            $selectBuilder = $db
-        ->select('p.products_id')
-        ->from('products', 'p')
-        ->where("products_id = '$param_3'");
-        $product = $selectBuilder->execute();
-
-        if(isset($product[0]['products_id']))
-        return $app_object->dispatch('catalog','products', array('products_id' => $product[0]['products_id']));
-
-
-        throw new \Bluz\Application\Exception\ApplicationException("Такого продукта нет",404);
-        return $app_object->dispatch('catalog','products', array('продукт' => $param_4));
 
          */
 
+
+        if(app()->getSession()->rollback)
+        unset(app()->getSession()->rollback);
 
         # Инициализация
         $app_object = app()->getInstance();
@@ -76,10 +69,16 @@ return
                             $product = $selectBuilder->execute();
                             */
 
-                            $product = $db->fetchRow(" SELECT *
+                            if( (int)$products_id == 0 ){ 
+                                unset($basket['products'][$products_id]);
+                                continue;                            
+                            }
+                            
+                            $query_fetch_product = "SELECT *
                                                 FROM products
-                                                WHERE products_id = $products_id
-                                                ");
+                                                WHERE products_id = $products_id";
+                            
+                            $product = $db->fetchRow( $query_fetch_product);
 
                             $product['products_num'] = $products_num;
 
@@ -87,6 +86,8 @@ return
 
                             $products[] = $product;
                         }
+                        
+                        app()->getSession()->basket = $basket;
 
                     } else {
                         // Корзина пуста
@@ -103,19 +104,22 @@ return
             case 2:
                 // Ничего не делать
                 $next_step_head = "Выбрать способ оплаты";
-
+ 
                 if(isset( $basket['address_dostavki']))
                      $view->address_dostavki =  $basket['address_dostavki'];
 
                 break;
 
             case 3:
-                // Внести адрес доставки
+                // TODO Внести адрес доставки
                 // TODO проверить длоступное количество продуктов
+                // TODO payment_types_id должно прилетать из браузера как результат выбора
 
                 $next_step_head = "Подтвердить заказ";
 
                 $basket['address_dostavki'] = $address_dostavki;
+
+                $basket['payment_types_id'] = 60;
 
                 $total = 0;
                 if(isset($basket['products']))
@@ -139,7 +143,9 @@ return
 
                 $basket['total'] = $total;
 
-                $discount = (int)$user->discount;
+                $discount = 0;
+                if(is_object($user))
+                    $discount = (int)$user->discount;
 
                 if($discount > 0 AND $discount < 100){
                     // Применить скидку
@@ -156,53 +162,55 @@ return
                 break;
 
             case 4:
-                // Создать Ордер
-                // Очистить корзину
-                // TODO снять деньги ссо счета
-                // TODO логирование
-                // TODO если есть скидка, применить ее
-                // TODO сделать класс ордера и перенести логику в него
-
-                $credit = $user->getCredit();
+                // Создать Заказ
+ 
+                $credit = 0;
+                if(is_object($user))
+                    $credit = $user->getCredit();
+                else {
+                    app()->getSession()->rollback = $view->baseUrl("корзина");
+                    throw new \Bluz\Auth\AuthException("Для совершения покупок нужна  <a href=\"".$view->baseUrl('вход')."\">авторизация</a> ");
+                }
 
                 if($credit < $basket['total'])
                     throw new \Application\Exception("Не достаточно средств");
 
-                $insertBuilder        = $db
-                    ->insert( 'orders' )
-                    ->set( 'users_id', $user->id )
-                    ->set( 'address', $basket['address_dostavki'] )
-                    ->set( 'total', $basket['total'] )
-                ;
-                $orders_id = $insertBuilder->execute();
+                $data = app()->getSession()->basket;
+                $data['address'] = $data['address_dostavki'];
 
-                foreach($basket['products'] as $products_id => $products_num){
-                    $product = $db->fetchRow ("SELECT * FROM products WHERE  products_id = '$products_id' ");
+                try{
+                    $crudController = new \Bluz\Controller\Crud();
+                    $crudController->setCrud(\Application\Orders\Crud::getInstance());
 
-                    $insertBuilder        = $db
-                        ->insert( 'order_products' )
-                        ->set( 'orders_id', $orders_id )
-                        ->set( 'products_id', $products_id )
-                        ->set( 'price', $product['products_shoppingcart_price'] )
-                        ->set( 'products_num', $products_num )
-                    ;
-                    $insertBuilder->execute();
+                    \Application\Orders\Crud::getInstance()->setProducts($basket['products']);
+                    \Application\Orders\Crud::getInstance()->setUser($user);
+                    \Application\Orders\Crud::getInstance()->setTotal($basket['total']);
+                    $crudController->forceData($data);
+
+                    $result = $crudController(  );
+
+                } catch(\Bluz\Application\Exception\OrderException $e){
+                    $code = $e->getCode();
+                    fb($e->getMessage());
                 }
 
-                $orders_to_bonus = $user->orders_to_bonus;
-                $orders_to_bonus--;
-                app()->getSession()->identity->orders_to_bonus = $orders_to_bonus;
+                $new_orders_id = app()->getRegistry()->new_orders_id;
 
-                $updateBuilder = $db
-                    ->update('users')
-                    ->setArray(
-                        array(
-                            'credit' => $credit - $basket['total'],
-                            'orders_to_bonus' => $orders_to_bonus
-                        )
-                    )
-                    ->where('id = ?', $user->id);
-                $updateBuilder->execute();
+                if( (int)$new_orders_id > 0 ){
+                    // Ok
+                    $view->new_orders_id = $new_orders_id;
+                    $view->new_order_mess = "Спасибо за заказ!";
+
+                    if(app()->getSession()->identity->orders_to_bonus == 10){
+                        $view->present = "Вам положен маленький презент от нас! ";
+                    }
+
+                } else {
+                    // Заказ не был создан
+                    $view->new_order_mess = "Заказ не был создан";
+                }
+
+                unset(app()->getRegistry()->new_orders_id);
 
                 unset(app()->getSession()->basket);
 

@@ -8,6 +8,16 @@ return
 
         $title = 'Admin';
 
+        $user = app()->getAuth()->getIdentity();
+
+        if(!is_object($user))
+            throw new \Bluz\Application\Exception\ApplicationException("Такой страницы нет",404);
+
+        $access_is_open = $user->hasPrivilege($module = 'admin', $privilege = 'Management');
+        if($access_is_open !== true)
+            throw new \Bluz\Application\Exception\ApplicationException("Такой страницы нет",404);
+
+
 
         //$app_object->getLayout()->title($title);
         $app_object->getLayout()->title('Пользователи', 'rewrite');

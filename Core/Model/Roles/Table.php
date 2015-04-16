@@ -5,8 +5,8 @@
  * @category Application
  * @package  Roles
  */
-//namespace Application\Roles;
-    namespace   Core\Model\Roles;
+namespace Application\Roles;
+//    namespace   Core\Model\Roles;
 
 use Bluz\Cache\Cache;
 use Bluz\Db\Db;

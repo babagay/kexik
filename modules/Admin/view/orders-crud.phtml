@@ -1,0 +1,44 @@
+{% set uid = uniqid('form_') %}
+
+{# action="{{ url('admin', 'ajax/crud') }}" #}
+{# action="{{ url('admin', 'categories-crud')  }}" #}
+<form id="{{ uid }}" action="{{ url('admin', 'orders-crud') }}" class="form-horizontal ajax" method="{{ method }}">
+    <input type="hidden" name="orders_id" value="{{ row.orders_id }}"/>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h3 class="modal-title">Заказ</h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="address">{{ __('Адрес доставки') }}</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="address" name="address" value="{{ row.address }}" required />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="notes">{{ __('Замечания') }}</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="notes" name="notes" value="{{ row.notes }}" required />
+            </div>
+        </div>
+        <!--div class="form-group">
+            <label class="control-label col-lg-2" for="status">{{ __('Status') }}</label>
+            <div class="col-lg-10">
+                <select id="status" name="status" class="form-control">
+                    <option {% if row.status == 'active' %} 'selected' {% endif %}>active</option>
+                    <option {% if row.status == 'disable' %} 'selected' {% endif %}>disable</option>
+                    <option {% if row.status == 'delete' %} 'selected' {% endif %}>delete</option>
+                </select>
+            </div>
+        </div-->
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">{{ __('Сохранить') }}</button>
+        <a href="#" class="btn btn-default" data-dismiss="modal">{{ __('Отмена') }}</a>
+    </div>
+</form>
+
+{% if errors %}
+Error
+
+{% endif %}

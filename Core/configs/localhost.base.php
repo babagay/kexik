@@ -42,6 +42,11 @@ return array(
             "client_id"     => "f8d97173c0394aedaba85f45a4c5a4eb",
             "client_secret" => "6dd3122b52974d939b8f5ac75eaa773e",
         ),
+        "livedocx" => array(
+            "base_url"      => "https://api.livedocx.com/1.2/mailmerge.asmx?WSDL",
+            "username"      => "babagay",
+            "password"      => "zxcVBN123_lkjh",
+        ),
     ),
     "debug" => defined('DEBUG')?DEBUG:false,
     "db" => array(
@@ -112,5 +117,6 @@ return array(
         "авторизация" => array('facebook', 'auth'),
         "кабинет" => array('my', 'Base'),
         "корзина" => array('basket', 'Base'),
+        "404.php" => array('error', '404'),
     ),
 );

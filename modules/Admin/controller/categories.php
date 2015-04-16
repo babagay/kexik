@@ -25,7 +25,7 @@
          * @param string $question
          * @return \closure
          */
-        function ($question = null, $asd = null, $вопрос) use ($view) {
+        function (  $asd = null ) use ($view) {
             /**
              * @var Вместо Application $this используй $app_object = Application\Bootstrap::getInstance();
              * или так: app()->getRequest();
@@ -42,6 +42,7 @@
                     'Управление категориями',
                 )
             );
+
 
             // TODO
             $user = app()->getAuth()->getIdentity();

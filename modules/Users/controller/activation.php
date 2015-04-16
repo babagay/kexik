@@ -39,7 +39,9 @@ function ($id, $code = null) {
     if($Id !== false)
         $id = $Id;
 
-    $actionRow = UsersActions\Table::findRow(array('userId' => $id, 'token' => $code));
+    // [!] В т.е users_actions столбец token назывался code
+    // $actionRow = UsersActions\Table::findRow(array('userId' => $id, 'token' => $code));
+    $actionRow = UsersActions\Table::findRow(array('userId' => $id, 'code' => $code));
 
     if (!$actionRow) {
         $this->getMessages()->addError('Invalid activation code');
@@ -65,6 +67,7 @@ function ($id, $code = null) {
         // create user role
         // get member role
         $roleRow = Roles\Table::findRowWhere(array('name' => Table::BASIC_MEMBER));
+        //$roleRow = \Core\Model\Roles\Table::findRowWhere(array('name' => Table::BASIC_MEMBER));
         // create relation user to role
         $usersRoleRow = new UsersRoles\Row();
         $usersRoleRow->roleId = $roleRow->id;

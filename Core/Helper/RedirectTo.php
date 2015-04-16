@@ -35,8 +35,6 @@ return
 
 
 
-
-
         $url = app()->getRouter()->url($module, $controller, $params);
 
         // Вызов Core/Helper/Redirect

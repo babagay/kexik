@@ -31,8 +31,8 @@
 <table class="table grid">
     <thead>
     <tr>
-        <th width="120px"><a href="{{ grid.order('categories_name', null, 'desc', false) }}">Название</a></th>
-        <th width="120px"><a href="{{ grid.order('sort_order') }}">Порядок</a></th>
+        <th width="50px"><a href="{{ grid.order('categories_name', null, 'desc', false) }}">Название</a></th>
+        <th width="50px"><a href="{{ grid.order('sort_order') }}">Порядок</a></th>
         <th width="120px"><a href="{{ grid.order('date_added') }}">Дата создания</a></th>
         <th width="120px"><a href="{{ grid.order('categories_status') }}">Статус</a></th>
         <th width="120px"><a href="{{ grid.order('categories_seo_page_name') }}">СЕО</a></th>
@@ -44,16 +44,16 @@
     <tr>
         <td>{{ row['categories_name'] }}</td>
         <td>{{ row['sort_order'] }}</td>
-        <td>{{ row['date_added'] }}</td>
+        <td>{{ row['date_added']|date("j F G:i ") }}</td>
         <td>{{ row['categories_status'] }}</td>
         <td>{{ row['categories_seo_page_name'] }}</td>
         <td class="controls">
             <a href="{{ url('admin', 'categories-crud', {'categories_id' : row['categories_id']}) }}" class="btn btn-xs btn-primary dialog" data-ajax-method="get">
                 <i class="fa fa-pencil"></i>
             </a>
-            <a href="{{ url('admin', 'categories-crud', {'categories_id' : row['categories_id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
+            <!--a href="{{ url('admin', 'categories-crud', {'categories_id' : row['categories_id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
                 <i class="fa fa-times"></i>
-            </a>
+            </a-->
             {# set asd = grid.getUid ~ '-filter-parent_id' #}
             {% if(row['parent_id'] == 0) %}
                 <a href="{{ url('admin', 'grid-categories', {  'sql-filter-parent_id': row['categories_id']}) }}" class="confirm filter btn btn-xs btn-default ajax" data-ajax-method="get">

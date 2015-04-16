@@ -32,7 +32,7 @@ class SqlGrid extends \Bluz\Grid\Grid
 
         $this->setAdapter($adapter);
         $this->setDefaultLimit(500);
-        $this->setAllowOrders(array('id', 'login', 'email', 'created', 'updated', 'status', 'credit', 'discount', 'orders_to_bonus'));
+        $this->setAllowOrders(array('id', 'login', 'email', 'created', 'updated', 'status', 'credit', 'discount', 'orders_to_bonus', 'presents'));
         $this->setAllowFilters(array('id', 'login', 'email', 'status'));
 
 

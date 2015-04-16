@@ -13,18 +13,28 @@
     <link rel="stylesheet" href="{{ baseUrl('/public/css/styles.css') }}" />
     <link rel="stylesheet" href="{{ baseUrl('/public/css/print.css') }}" media="print" />
     <link rel="stylesheet" href="{{ baseUrl('/public/css/basket.css') }}"  />
-    <link rel="shortcut icon"  href="{{ baseUrl('favicon.png') }}" type="image/png" />
+    <link rel="stylesheet" href="{{ baseUrl('/public/css/jcarousel.css') }}"  />
+    <link rel="shortcut icon"  href="{{ baseUrl('/public/favicon.png') }}" type="image/png" />
 
     <script src="{{ baseUrl('/public/js/require.js') }}"></script>
     <script src="{{ baseUrl('/public/js/config.js') }}"></script>
 
+    <script src="{{ baseUrl('/public/js/scripts/script.js') }}"></script>
+
+
+
     <!-----------------Юля-+++------------------------>
+    {#
 
     <script src="{{ baseUrl('/public/js/scripts/script.js') }}"></script>
     <script src="{{ baseUrl('/public/js/scripts/jquery.min.js') }}"></script>
     <script src="{{ baseUrl('/public/js/scripts/custom_animations.js') }}"></script>
     <script src="{{ baseUrl('/public/js/scripts/custom_easing.js') }}"></script>
     <script src="{{ baseUrl('/public/js/scripts/jSlider.js') }}"></script>
+
+    <script src="{{ baseUrl('/public/js/scripts/jquery.min.js') }}"></script>
+    <script src="{{ baseUrl('/public/js/jcarousel.js') }}"></script>
+    #}
     <!------------------------------------------>
 
     <!-- For IE6-8 support of HTML5 elements -->
@@ -43,6 +53,7 @@
 </head>
 <body data-spy="scroll" data-bluz-module="{{ module() }}" data-bluz-controller="{{ controller() }}">
 <!-----------------Юля------------------------->
+ 
 <div id="wrapper">
     <header>
         <div class="wrapper-header">
@@ -101,3 +112,78 @@
         });
     </script>
 
+    <div id="loading_2" class="hidden">
+        <img src="{{ baseUrl('public/images/loader_2.gif') }}">
+    </div>
+
+    <script>
+
+/*
+        require(["jquery","jcarousel" ], function(  $, jcarousel_obj  ) {
+            var jcarousel = $('.jcarousel');
+
+            jcarousel
+                .on('jcarousel:reload jcarousel:create', function () {
+                    var carousel = $(this),
+                        width = carousel.innerWidth();
+
+
+
+                    carousel.jcarousel('items').css('width', Math.ceil(width) + 'px');
+                })
+                .jcarousel({
+                    wrap: 'circular'
+                });
+
+            $('.jcarousel-control-prev')
+                .jcarouselControl({
+                    target: '-=1'
+                });
+
+            $('.jcarousel-control-next')
+                .jcarouselControl({
+                    target: '+=1'
+                });
+
+            $('.jcarousel-pagination')
+                .on('jcarouselpagination:active', 'a', function() {
+                    $(this).addClass('active');
+                })
+                .on('jcarouselpagination:inactive', 'a', function() {
+                    $(this).removeClass('active');
+                })
+                .on('click', function(e) {
+                    e.preventDefault();
+                })
+                .jcarouselPagination({
+                    perPage: 1,
+                    item: function(page) {
+                        return '<a href="#' + page + '">' + page + '</a>';
+                    }
+                });
+
+            $('.jcarousel')
+                .jcarousel({
+                    // Core configuration goes here
+                })
+                .jcarouselAutoscroll({
+                    interval: 3000,
+                    target: '+=1',
+                    autostart: true
+                })
+            ;
+
+        });
+
+*/
+
+        /*
+        require(["jCarousel" ], function(  jCarousel  ) {
+
+        });
+        */
+
+
+
+
+    </script>

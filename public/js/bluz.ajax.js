@@ -27,6 +27,7 @@ define(['jquery', 'bluz', 'bluz.notify'], function ($, bluz, notify) {
         $(document)
             .ajaxStart(function () {
                 $('#loading').show();
+                $('#loading_2').show();
             })
             .ajaxSuccess(function (event, jqXHR) {
                 // redirect and reload page
@@ -70,6 +71,7 @@ define(['jquery', 'bluz', 'bluz.notify'], function ($, bluz, notify) {
             })
             .ajaxComplete(function () {
                 $('#loading').hide();
+                $('#loading_2').hide();
             });
 
 		// get only plain data

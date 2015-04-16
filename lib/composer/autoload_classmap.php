@@ -16,9 +16,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    //'FB' => $vendorDir . '/FirePHP/firephp-core/lib/FirePHPCore/fb.php',
     'FirePHP' => $vendorDir . '/FirePHP/firephp-core/lib/FirePHPCore/FirePHP.class.php',
-    //'Zoqa\\Testspace' => $vendorDir . '/../Core/Helper/zxc.php', // не пашет
+    'PHPExcel_Calculation_MathTrig' => $vendorDir . '/PHPExcel/Classes/PHPExcel/Calculation/MathTrig.php',
 
     'Twitter\\Client' => $vendorDir . '/Twitter/Client.php',
     'Application\\Auth\\Table' => $vendorDir . '/../Core/Model/Auth/Table.php',
@@ -34,6 +33,18 @@ return array(
     'Application\\UsersRoles\\Table' => $vendorDir . '/../Core/Model/UsersRoles/Table.php',
     'Application\\UsersActions\\Table' => $vendorDir . '/../Core/Model/UsersActions/Table.php',
     'Application\\UsersActions\\Row' => $vendorDir . '/../Core/Model/UsersActions/Row.php',
+    'Application\\Users\\Crud' => $vendorDir . '/../Core/Model/Users/Crud.php',
+    'Application\\Users\\SqlGrid' => $vendorDir . '/../Core/Model/Users/SqlGrid.php',
+    'Application\\Orders\\SqlGrid' => $vendorDir . '/../Core/Model/Orders/SqlGrid.php',
+    'Application\\Orders\\Crud' => $vendorDir . '/../Core/Model/Orders/Crud.php',
+    'Application\\Orders\\Table' => $vendorDir . '/../Core/Model/Orders/Table.php',
+    'Application\\Orders\\Row' => $vendorDir . '/../Core/Model/Orders/Row.php',
+    'Application\\Products\\Table' => $vendorDir . '/../Core/Model/Products/Table.php',
+    'Application\\Products\\Row' => $vendorDir . '/../Core/Model/Products/Row.php',
+    'Application\\Products\\Crud' => $vendorDir . '/../Core/Model/Products/Crud.php',
+    'Application\\Products\\SelectGrid' => $vendorDir . '/../Core/Model/Products/SelectGrid.php',
+    'Application\\OrderProducts\\Table' => $vendorDir . '/../Core/Model/OrderProducts/Table.php',
+    'Application\\OrderProducts\\Row' => $vendorDir . '/../Core/Model/OrderProducts/Row.php',
 
     'Application\\Facebook\\Facebook' => $vendorDir . '/../Core/Model/Facebook/Facebook.php',
     'Application\\Facebook\\BaseFacebook' => $vendorDir . '/../Core/Model/Facebook/BaseFacebook.php',
@@ -63,6 +74,15 @@ return array(
     'Application\\Categories\\SelectGrid' => $vendorDir . '/../Core/Model/Categories/SelectGrid.php',
 
 
+
+
+
+
+
+
+
+
+/*
     'Zend\\Authentication\\Adapter\\AdapterInterface' => $vendorDir . '/Zend/Authentication/Adapter/AdapterInterface.php',
     'Zend\\Authentication\\Adapter\\DbTable' => $vendorDir . '/Zend/Authentication/Adapter/DbTable.php',
     'Zend\\Authentication\\Adapter\\Digest' => $vendorDir . '/Zend/Authentication/Adapter/Digest.php',
@@ -1804,4 +1824,5 @@ return array(
     'Zend\\XmlRpc\\Value\\String' => $vendorDir . '/Zend/XmlRpc/Value/String.php',
     'Zend\\XmlRpc\\Value\\Struct' => $vendorDir . '/Zend/XmlRpc/Value/Struct.php',
     'asd' => $vendorDir . '/Zoqa/helper/TinyMCE/asd.php',
+    */
 );

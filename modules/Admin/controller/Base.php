@@ -28,7 +28,7 @@ return
         //$app_object = Application\Bootstrap::getInstance();
         $app_object = app()->getInstance();
 
-        $title = 'Admin';
+        $title = 'Админка - главная';
 
 
 
@@ -42,7 +42,7 @@ return
         );
 
         // change layout
-        $app_object->useLayout('front_end.phtml');
+        $app_object->useLayout('backend.phtml');
 
         $app_object->getLayout()->breadCrumbs($crumbs_arr);
     };

@@ -11,7 +11,7 @@ define(['jquery', 'bootstrap'], function ($) {
         log: function (error, text) {
             if (window.console !== undefined) {
                 window.console.error(error, "Response Text:", text);
-                console.log("Error")
+                //console.log("Error")
             }
         },
         trim: function (str, charlist ) {

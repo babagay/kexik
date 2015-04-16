@@ -14,4 +14,5 @@ return array(
     'Bluz\\'            => array($baseDir . '/lib/bluz'),
     'Zoqa\\Testspace\\' => array($baseDir . '/Core/Helper'), // работает
     'Application\\Test\\' => array($baseDir . '/Core/Model/Test'), // работает
+    'Awakenweb\\Livedocx\\' => array($baseDir . '/lib/Awakenweb/Livedocx'), // работает
 );

@@ -17,7 +17,8 @@
         .goods .name{
             margin-bottom: 8px;
         }
-        .image-box{
+        .wrapper-goods .image-box{
+
             position:absolute;
             top:43px;
             border-radius: 10px;
@@ -63,10 +64,11 @@
                     font: 15px/16px Calibri,Arial;
                 }
                 .description .basket a::before {
-                    background: url("../images/basket2.png") no-repeat 0 -22px;
+                    background: url("../images/basket-hover.png") no-repeat 0 50%;
+                    content: 'a';
+                    text-indent: -9999px;
+                    padding: 10px 10px;
                     color: transparent;
-                    content: "m00";
-                    text-indent: -99999px;
                 }
                 .description .basket:hover{
                     background: -moz-linear-gradient(top,#6C7807, #C6DB0E );
@@ -80,7 +82,7 @@
                 }
                 .description .basket:hover a{color:#fff;}
                 .description .basket:hover a::before {
-                    background: url("../images/basket2.png") no-repeat 0 0
+                    background: url("../images/basket.png") no-repeat 0 50%;
                 ;}
             .description .weight,
             .description .cost{
@@ -91,19 +93,18 @@
                 float: right;
             }
             .description .number-arrow{}
-                .number-arrow a.dec,
-                .number-arrow a.inc{
-                    background: url("../images/arrows.png") no-repeat;
-                    width: 14px;
-                    height: 13px;
+                .number-arrow a.dec img,
+                .number-arrow a.inc img{
+                    width: 21px;
                     float: right;
-                    margin-top: 3px;
+                    margin-top: 1px;
+                    cursor:pointer;
                 }
                 .number-arrow a.inc{
-                    background: url("../images/arrows.png") no-repeat 0 -14px;
                 }
                 .number-arrow [type="number"]{
                     box-shadow: none;
+                    height: 21px;
                     border: none;
                     padding: 0 0 0 5px;
                     width: 64px;

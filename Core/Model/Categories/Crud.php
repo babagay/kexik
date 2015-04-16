@@ -18,6 +18,9 @@ use Bluz\Crud\Table;
  */
 class Crud extends Table
 {
+
+    protected  $table_name = "categories";
+
     /**
      * {@inheritdoc}
      */
@@ -118,5 +121,37 @@ class Crud extends Table
             $this->addError('Email has invalid format', 'email');
         }
         */
+    }
+
+    /**
+     * @param mixed $primary
+     * @param array $data
+     * @return int|void
+     * @throws NotFoundException
+     *
+     * Перегрузил родительский метод, чтобы добавить фильтрацию столбцов (filterColumns)
+     */
+    function updateOne($primary,$data)
+    {
+        $data =  $this->getTable()->filterColumns($data) ;
+
+        $row = $this->getTable()->findRow($primary);
+
+        if (!$row) {
+            throw new NotFoundException("Record not found");
+        }
+
+        $this->validate($primary, $data);
+        $this->validateUpdate($primary, $data);
+
+        $err_arr = $this->getErrors();
+        if( is_array($err_arr) AND count($err_arr) > 0 )
+            $this->checkErrors();
+
+        $updateBuilder = app()->getDb()
+            ->update('categories')
+            ->setArray($data)
+            ->where('categories_id = ?', $primary['categories_id']);
+        $updateBuilder->execute();
     }
 }

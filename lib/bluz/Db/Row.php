@@ -99,10 +99,10 @@ class Row implements /* \JsonSerializable, */  \ArrayAccess
      */
     public function __construct($data = array())
     {
-        fb(2);
+
         // original cleaner data
         $this->clean = $this->toArray();
-fb($this->clean, \FirePHP::TRACE);
+
         // not clean data, but not modified
         if (sizeof($data)) {
             $this->setFromArray($data);
@@ -177,12 +177,18 @@ fb($this->clean, \FirePHP::TRACE);
          * otherwise UPDATE
          */
 
+        /*
+        fb('метод save() из ' . __FILE__);
         fb( sizeof(array_filter($this->getPrimaryKey()))  ); // 1
 
         // TODO почему попадает в elseif
         fb($this->getPrimaryKey()); //  array('id'=>'16')  array('categories_id'=>'2')
         fb($this->clean); //  array('id'=>'16', 'name'=>'Jonah', 'email'=> ... )  array()
         fb( array_diff_assoc($this->getPrimaryKey(), $this->clean ) ); //  array()  array('categories_id'=>'2')
+
+        FIXME $this->clean для категорий пустой
+        */
+
 
 
         if (!sizeof(array_filter($this->getPrimaryKey()))) {

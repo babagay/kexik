@@ -142,10 +142,18 @@ aside#main-nav nav ul li {
     font-size: 17px;
     line-height: 36px;
 
-    overflow: hidden;
-    _position: relative;
+    /*overflow: hidden;*/
+    position: relative;
+    clear: both;
 }
-
+aside#main-nav nav ul li:nth-last-child(1) .submenu-wrapper, aside#main-nav nav ul li:nth-last-child(2) .submenu-wrapper,aside#main-nav nav ul li:nth-last-child(3) .submenu-wrapper{
+    bottom: -150px;
+    top: inherit;
+}
+aside#main-nav nav ul li:nth-last-child(4) .submenu-wrapper, aside#main-nav nav ul li:nth-last-child(5) .submenu-wrapper,aside#main-nav nav ul li:nth-last-child(6) .submenu-wrapper{
+    bottom:-250px;
+    top: inherit;
+}
 aside#main-nav nav ul li span {
     background: url("../images/bg-nav.png") no-repeat;
     display: inline-block;
@@ -159,9 +167,9 @@ aside#main-nav nav ul li span:hover {
     background: url("../images/bg-nav.png") 0 -39px no-repeat;
 }
 
-aside#main-nav nav ul li:hover #submenu,
+aside#main-nav nav ul li:hover .submenu,
 aside#main-nav nav ul li:hover .submenu-wrapper,
-aside#main-nav nav ul li:hover ul {
+aside#main-nav nav ul li:hover ul{
     display: block;
 }
 
@@ -182,20 +190,33 @@ aside#main-nav nav ul li img {
     float: left;
 }
 
-.submenu-wrapper {
+
+.submenu-wrapper{
     position: absolute;
     top: 0;
-    width: 550px;
+    width:550px;
     left: 180px;
     display: none;
-}
+    height: auto;
+    float: left;
 
-#submenu {
+    /*min-height: 450px;*/
+
+}
+.submenu-wrapper::after {
+    content: "";
+    clear: both;
+    display: block;
+}
+.submenu{
     width: 100%;
     position: relative;
+    height: 100%;
+    float: left;
+    min-height: 400px;
+    padding: 20px 0;
 }
-
-.submenu-wrapper #submenu ul {
+.submenu-wrapper .submenu ul{
     list-style: none;
     font-size: 16px;
     position: absolute;
@@ -205,31 +226,55 @@ aside#main-nav nav ul li img {
     padding: 2%;
     margin: 0;
 }
+.submenu-wrapper .submenu table{
+    /*position: absolute;*/
+    top: 0;
+    z-index: 15;
+    padding:2%;
+    margin: 0;
+    width: 98%;
+    border-color:transporent;
 
-.submenu-wrapper #submenu img.holder {
+    height: auto;
+}
+.submenu-wrapper .submenu table td{
+    text-align:right;
+    width:50%;
+}
+#main-nav #main-navigation .submenu-wrapper .submenu table  a{
+    color: #611C04;
+    width:100%;
+    line-height:normal;
+    height: auto;
+}
+.submenu-wrapper .submenu table tr td a:hover{
+    color:#4A9E00;
+}
+.submenu-wrapper .submenu table td:nth-child(2n){
+    text-align:left;
+}
+.submenu-wrapper .submenu table td {
+    padding:5px 20px;
+}
+.submenu-wrapper .submenu img.holder{
     width: 100%;
     z-index: 3;
 
 }
-
-.submenu-wrapper #submenu li {
+.submenu-wrapper .submenu li{
     margin-bottom: 5px;
     line-height: 14px;
     overflow: visible;
     width: 50%;
     float: left;
 }
-
-.submenu-wrapper #submenu li a {
+.submenu-wrapper .submenu li a{
     text-decoration: none;
-    color: #611C04;
+    color:#611C04;
     float: none;
     width: 200px;
 }
-
-#submenu li a:hover {
-    color: #4A9E00;
-}
+.submenu li a:hover{color: #4A9E00;}
 
 .content-wrapper {
     position: relative;
@@ -296,21 +341,22 @@ aside#right {
 }
 
 .basket a:before {
-    content: "m00";
-    text-indent: -99999px;
-    background: url("../images/basket2.png") 0 0 no-repeat;
-    width: 20px;
-    height: 20px;
+    background: url("../images/basket.png") no-repeat 0 50%;
+    content: 'a';
+    text-indent: -9999px;
+    padding: 10px 10px;
     color: transparent;
+
 }
 
 .basket:hover a:before {
-    background: url("../images/basket2.png") 0 -22px no-repeat
+    background: url("../images/basket-hover.png") no-repeat 0 50%;
 }
 
 .partners {
     width: 90%;
     float: right;
+    margin: 0 0 10px;
 }
 
 .partners img {
@@ -418,7 +464,6 @@ ul.select-no-display {
     border-radius: 0 0 7px 7px;
     padding: 10px 0 15px;
     z-index: 2;
-    _text-align: center;
 }
 
 ul.select-no-display li {
@@ -448,7 +493,7 @@ ul.select-no-display li:hover a {
     _height: 25.666%;
     margin: 5px 0 50px;
     position: relative;
-
+    _display:none;
 }
 
 .slider.not-slide {
@@ -572,4 +617,30 @@ footer span {
 .breadcrumbs.back-end {
     margin-top: 0;
 }
-
+.input-group-btn.grid-filter-search.one-line {
+    float: left;
+}
+.form-control.one-line-search {
+    float: left;
+    margin-left: 101px;
+    width: 800px;
+}
+#loading_2 img {
+    _width: 40px;
+}
+#loading_2 {
+    left: 500px;
+    position: fixed;
+    top: 100px;
+    width: 25px;
+    z-index: 9999;
+}
+a.print.form-1 {
+    color: #ec971f;
+}
+a.print.form-2 {
+    color: #41a83e;
+}
+a.print.form-3 {
+    color: #a94442;
+}

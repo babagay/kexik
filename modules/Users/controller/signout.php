@@ -21,6 +21,8 @@ function () use ($view) {
      */
     $_this = app();
 
+    unset(app()->getSession()->basket);
+
     $_this->getAuth()->clearIdentity();
     $_this->getMessages()->addNotice('You are signout');
     $_this->redirectTo('index', 'index');

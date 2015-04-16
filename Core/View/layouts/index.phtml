@@ -1,19 +1,20 @@
 {% include 'partial/twig_header_front.phtml' %}
 
-{% include  'partial/twig_aside.phtml' %}
+
 
 
 {% if(user()) %} 
     {% include  'partial/twig_nav-bar.phtml' %}
 {% endif %}
 
-
-
 {% if(user('acl','system', 'Management')) %}
     {% include  'partial/twig_nav-bar.phtml' %}
 {% else %}
     {# include  'partial/twig_navbar_front.phtml' #}
 {% endif %}
+
+<div>
+{% include  'partial/twig_aside.phtml' %}
  <div class="content-wrapper">
  
     {% include  'partial/twig_aside_right.phtml' %}
@@ -57,9 +58,9 @@
             {% endif %}
         </div>
         
-        {{ getContent() }}-->  
+        {{ getContent() }}-->
 
-
+    </div>
     </div>
 {% include 'partial/twig_footer.phtml' %}
 </div>
