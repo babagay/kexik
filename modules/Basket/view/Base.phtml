@@ -87,9 +87,6 @@
 
 <script>
 
-    //require(["basket"], function(basket) {
-         //console.log( basket.trim("Hello World", "Hdle") );
-    //});
 
     require(["jquery", "bluz.notify","basket"], function($, notify,basket) {
         $(function(){
@@ -112,37 +109,21 @@
                     context: document.body,
                     dataType: "html"
                 }).done(function(response,status,responseObj) {
-
                         if(status == "success"){
                             $("#content_box").html(response)
 
                             if(responseObj.status != 200){
-
                             } else {
-                                var data = {}
-
                                 if(current_step == 3){
-
                                     basket.redrawCabinetWg();
-                                    /*$.ajax({
-                                        type: "POST",
-                                        data: data,
-                                        url: "users/widget/cabinet",
-                                        context: document.body,
-                                        dataType: "html"
-                                    }).done(function(response,status,responseObj) {
-                                            if(status == "success"){
-                                                $(".widget.wg-cabinet").html(response)
-                                            }
-                                        }); */
                                 }
                             }
-
                         }
                     });
             });
 
             $(".remove_product").on("click",function(e){
+                // TODO попробовать перенести код в модуль
                 var products_id = $(this).closest("tr").attr("data-products_id")
 
                 var data = {}
@@ -156,13 +137,19 @@
                     context: document.body,
                     dataType: "json"
                 }).done(function(response,status,responseObj) {
-                        $("#basket-items tr[data-products_id="+products_id+"]").hide();
-                        basket.redrawCabinetWg(1);
+
+                        if(responseObj.responseJSON.redir == "clear"){
+                            basket.clearBasket();
+                        } else {
+                            $("#basket-items tr[data-products_id="+products_id+"]").hide();
+                            basket.redrawCabinetWg(1);
+                        }
                 });
             });
 
             $(".next_step").off()
                 .on("click",function(e){
+                    // TODO попробовать перенести код в модуль
                     var next_step = $(this).attr("data-next_step");
                     var step = $("input[name=step]").val() * 1
 
@@ -231,6 +218,7 @@
 
             $(".arrow.inc").off()
                 .on("click",function(e){
+                    // TODO перенести код в модуль
                     var num = $(this).closest(".product-item").find("input.num").val();
                     num++
                     $(this).closest(".product-item").find("input.num").val(num)
@@ -264,6 +252,7 @@
 
             $(".arrow.dec").off()
                 .on("click",function(e){
+                    // TODO перенести код в модуль
                     var num = $(this).closest(".product-item").find("input.num").val();
                     //num *= 1
 
@@ -301,6 +290,8 @@
 
                 $(".clear-basket").off()
                 .on("click", function(event, arrdata, textStatus, jqXHR){
+                        basket.clearBasket()
+                        /*
                     var data = {}
                     var url = "basket/ajax/modify_basket"
 
@@ -352,6 +343,7 @@
 
                             basket.redrawCabinetWg(2);
                         });
+                        */
 
                     return false;
                 });

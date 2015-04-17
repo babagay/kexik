@@ -12,7 +12,7 @@ window.onload = function() {
     }
 }
 
-    //Установить сотояние active на кнопке, которая была выбрана, чтобы применить стили (окрасить в телесный цвет кнопку)
+//Установить сотояние active на кнопке, которая была выбрана, чтобы применить стили (окрасить в телесный цвет кнопку)
 function changeActive(param){
     var clean_container = document.getElementById('main-navigation').getElementsByTagName('li');
     for (var i = 0; i < clean_container.length; i++) {
@@ -26,3 +26,8 @@ function changeActive(param){
 function showSelect(){
     document.getElementById('select-no-display').setAttribute('display','none');
 }
+
+require(["jquery"], function($) {
+
+});
+

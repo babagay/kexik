@@ -43,6 +43,7 @@ return
         //  $db = app()->getDb();
 
         $basket = $_this->getSession()->basket;
+        $redir = null;
 
         switch($mode){
             case 'add':
@@ -66,6 +67,9 @@ return
 
                 $_this->getSession()->basket = $basket;
 
+                if(count($basket['products']) == 0)
+                    $redir = "clear";
+
                 break;
 
             case 'update':
@@ -78,8 +82,14 @@ return
 
             case 'clear':
                 // Очистить корзину
+                //app()->useLayout(false);
+
                 unset( $_this->getSession()->basket );
 
+                break;
+
+            case 'test':
+                fb( "R");
                 break;
         }
 
@@ -91,11 +101,11 @@ return
 
 
 
-        return function () {
+        return function () use($redir) {
 
             $response = 'ok';
 
-            $result = array('response' => $response);
+            $result = array('response' => $response, 'redir' => $redir);
 
             return $result;
         };

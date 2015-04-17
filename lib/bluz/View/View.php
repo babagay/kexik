@@ -563,6 +563,7 @@ class View extends Options implements ViewInterface , \JsonSerializable
 
         // Try to find helper file
         foreach (self::$helpersPath as $helperPath) {
+            $_helperPath = $helperPath;
             $helperPath = realpath($helperPath . '/' . lcfirst($method) . '.php');
             if ($helperPath) {
                 $helperInclude = include $helperPath;
@@ -574,7 +575,7 @@ class View extends Options implements ViewInterface , \JsonSerializable
 
                 return $this->__call($method, $args);
             } else {
-              $helperPath = realpath($helperPath . '/' . ucfirst($method) . '.php');
+              $helperPath = realpath( $_helperPath . '/' . ucfirst($method) . '.php');
               if ($helperPath) {
                 $helperInclude = include $helperPath;
                 if (is_callable($helperInclude)) {
