@@ -46,6 +46,7 @@ use \Core\Helper\Registry as AppRegistry;
  *
  * @method void denied()
  * @method void redirect(\string $url)
+ * @method void wordEnd(\string $word, int $number)
  * @method void redirectTo(\string $module, \string $controller, array $params = array())
  * @method void reload()
  * @method \Bluz\Auth\AbstractRowEntity user()

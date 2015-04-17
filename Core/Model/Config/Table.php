@@ -78,7 +78,7 @@ class Table extends \Bluz\Db\Table
      */
     public function getUserRolesIdentity($userId)
     {
-fb(12);
+ 
         if(TABLE_PREFIX !== '')
             $this->prefix = TABLE_PREFIX . "_" ;
 

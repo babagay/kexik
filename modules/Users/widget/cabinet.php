@@ -26,10 +26,9 @@ return
         $view = app()->getView();
         $app_object = app()->getInstance();
         $db =  app()->getDb();
-
-        //$params = $app_object->getRequest()->getParams();
-
+        $basket = app()->getSession()->basket;
         $user = app()->getAuth()->getIdentity();
+        //$params = $app_object->getRequest()->getParams();
 
         $header_enter_cabinet = "Войти на сайт";
         $header_basket = "Ваша корзина";
@@ -40,6 +39,7 @@ return
         $discount = 0;
         $credit = 0;
         $orders_to_bonus = 10;
+        $in_basket = '';
 
         if(is_object($user)){
             $userData = $db->fetchObject("SELECT * FROM users WHERE id = ". $db->quote($user->id));
@@ -49,6 +49,13 @@ return
             $orders_to_bonus = $userData->orders_to_bonus;
         }
 
+        if(isset($basket['products'])){
+            $products_count = count($basket['products']);
+
+            $product_title = app()->wordEnd("товар",$products_count);
+
+            $in_basket = " - <span id=\"basket_products_counter\">".$products_count . "</span> $product_title";
+        }
 
 
         $btn_1 = "ВЫХОД";
@@ -73,7 +80,7 @@ return
         </script>
 
         <div class="cabinet"><a href="<?php echo $link_enter_cabinet; ?>" ><?php echo $header_enter_cabinet; ?></a></div>
-        <div class="basket"><a href="<?php echo $link_basket; ?>" ><?php echo $header_basket; ?></a></div>
+        <div class="basket"><a href="<?php echo $link_basket; ?>" > <?php echo $header_basket; ?> <?php echo $in_basket; ?> </a></div>
         <div class="partners">
             <img src="public/images/bank.png">
             <img src="public/images/master.png" class="middle">

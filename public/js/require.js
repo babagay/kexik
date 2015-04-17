@@ -166,6 +166,7 @@ var requirejs, require, define;
         if (err) {
             e.originalError = err;
         }
+        console.log(  e)
         return e;
     }
 

@@ -177,7 +177,7 @@
 
 <script>
 
-    require(["jquery","bluz.notify"],  function ($,notify) {
+    require(["jquery","bluz.notify","basket"],  function ($,notify,basket) {
         //notify.addSuccess("Event `success.ajax.bluz` is fired")
         //notify.add("success","asd")
         
@@ -246,52 +246,52 @@
                     }).done(function(response,status,responseObj) {
                             $( this ).addClass( "done" );
                             if(status == "success"){
-
-
+                                basket.redrawCabinetWg(2);
                             }
-                        });
+                    });
 
                     return false;
                 });
 
             $("a.push-to-basket").off().on("click", function(event, anydata, textStatus, jqXHR){
-            var products_id = $(this).closest(".goods").find("input[name=products_id]").val();
-            var products_num = $(this).closest(".goods").find("input.num").val();
+                var products_id = $(this).closest(".goods").find("input[name=products_id]").val();
+                var products_num = $(this).closest(".goods").find("input.num").val();
 
-            var data = {};
-            data["products_id"] = products_id
-            data["products_num"] = products_num
-            data["mode"] = "add"
+                var data = {};
+                data["products_id"] = products_id
+                data["products_num"] = products_num
+                data["mode"] = "add"
 
-            $.ajax({
-                type: "POST",
-                data: data,
-                url: "basket/" + $(this).attr("data-href"),
-                context: document.body,
-                dataType: "json"
-            }).done(function(response,status,responseObj) {
-                    $( this ).addClass( "done" );
-                    if(status == "success"){
+                $.ajax({
+                    type: "POST",
+                    data: data,
+                    url: "basket/" + $(this).attr("data-href"),
+                    context: document.body,
+                    dataType: "json"
+                }).done(function(response,status,responseObj) {
+                        $( this ).addClass( "done" );
+                        if(status == "success"){
 
-                         // responseObj.responseText - is response
-                         if(response.response == "ok"){
-                          //console.log("ок")
-                            alert("Товар добавлен в корзину")
+                             // responseObj.responseText - is response
+                             if(response.response == "ok"){
 
-                         } else {
-                         // console.log("Ошибка данных")
-                         }
+                                 basket.redrawCabinetWg(2);
+                                //alert("Товар добавлен в корзину")
+
+                             } else {
+                                // console.log("Ошибка данных")
+                             }
 
 
-                        if(responseObj.status != 200){
-                            // notify.addError("Error 404")
+                            if(responseObj.status != 200){
+                                // notify.addError("Error 404")
+                            }
+
+                            //$("#article-items").append(response)
                         }
+                    });
 
-                        //$("#article-items").append(response)
-                    }
-                });
-
-            return false;
+                return false;
         });
 
     });

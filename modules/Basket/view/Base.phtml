@@ -23,12 +23,13 @@
                     <td>Цена</td>
                     <td>Количество</td>
                     <td>Стоимость</td>
+                    <td>Действия</td>
                 </tr>
             </table>
             <div class="white">
                 <table id="basket-items">
                     {% for product in products %}
-                        <tr class="product-item">
+                        <tr class="product-item" data-products_id="{{ product.products_id }}">
                             <td><div class="image-box"><img src="{{ baseUrl('public/images/goods1.jpg') }}"></div></td>
                             <td>{{ product.products_name }}</td>
                             <td>{{ product.products_shoppingcart_price|round(2, 'ceil') }} грн.</td>
@@ -42,6 +43,7 @@
                                 </div>
                             </td>
                             <td><span class="products_total">{{ product.products_total }}</span> грн.</td>
+                            <td><div class="remove_product">Удалить</div></td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -85,8 +87,11 @@
 
 <script>
 
+    //require(["basket"], function(basket) {
+         //console.log( basket.trim("Hello World", "Hdle") );
+    //});
 
-    require(["jquery", "bluz.notify"], function($, notify) {
+    require(["jquery", "bluz.notify","basket"], function($, notify,basket) {
         $(function(){
 
             $(".basket-btn-navi").off().on("click",function(e){
@@ -118,7 +123,8 @@
 
                                 if(current_step == 3){
 
-                                    $.ajax({
+                                    basket.redrawCabinetWg();
+                                    /*$.ajax({
                                         type: "POST",
                                         data: data,
                                         url: "users/widget/cabinet",
@@ -128,12 +134,31 @@
                                             if(status == "success"){
                                                 $(".widget.wg-cabinet").html(response)
                                             }
-                                        });
+                                        }); */
                                 }
                             }
 
                         }
                     });
+            });
+
+            $(".remove_product").on("click",function(e){
+                var products_id = $(this).closest("tr").attr("data-products_id")
+
+                var data = {}
+                data["products_id"] = products_id
+                data["mode"] = "remove"
+
+                $.ajax({
+                    type: "POST",
+                    data: data,
+                    url: "basket/ajax/modify_basket",
+                    context: document.body,
+                    dataType: "json"
+                }).done(function(response,status,responseObj) {
+                        $("#basket-items tr[data-products_id="+products_id+"]").hide();
+                        basket.redrawCabinetWg(1);
+                });
             });
 
             $(".next_step").off()
@@ -193,18 +218,7 @@
                                         });
                                         */
                                     if(step == 3){
-
-                                        $.ajax({
-                                            type: "POST",
-                                            data: data,
-                                            url: "users/widget/cabinet",
-                                            context: document.body,
-                                            dataType: "html"
-                                        }).done(function(response,status,responseObj) {
-                                                if(status == "success"){
-                                                    $(".widget.wg-cabinet").html(response)
-                                                }
-                                         });
+                                        basket.redrawCabinetWg();
                                      }
                                 }
 
@@ -251,6 +265,8 @@
             $(".arrow.dec").off()
                 .on("click",function(e){
                     var num = $(this).closest(".product-item").find("input.num").val();
+                    //num *= 1
+
                     num--
                     if( num < 0 ) num = 0;
                     $(this).closest(".product-item").find("input.num").val(num)
@@ -333,6 +349,8 @@
                                     // notify.addError("Error 404")
                                 }
                             }
+
+                            basket.redrawCabinetWg(2);
                         });
 
                     return false;

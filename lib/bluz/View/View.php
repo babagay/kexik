@@ -48,7 +48,7 @@ use Core\View\Zoqa_Twig_Extension;
  * @author   Anton Shevchuk, ErgallM
  * @created  08.07.11 11:49
  */
-class View extends Options implements ViewInterface /*, \JsonSerializable */
+class View extends Options implements ViewInterface , \JsonSerializable
 {
     //use Options;
     //use Helper;
