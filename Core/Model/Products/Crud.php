@@ -115,4 +115,11 @@ class Crud extends Table
             $this->addError('Email has invalid format', 'email');
         }
     }
+
+    function readOne($primary_key)
+    {
+        if(is_array($primary_key)){
+            return parent::readOne($primary_key);
+        }
+    }
 }

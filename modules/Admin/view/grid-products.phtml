@@ -34,10 +34,10 @@
             <td>{{ row['products_price'] }}</td>
             <td>{{ row['products_quantity'] }}</td>
             <td class="controls">
-                <!--a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="btn btn-xs btn-primary dialog" data-ajax-method="get">
-                    <i class="fa fa-pencil"></i>
+                <a href="{{ url('admin', 'products-crud', {'products_id' : row['products_id']}) }}" class="btn btn-xs btn-primary dialog" data-ajax-method="get">
+                    <i class="fa fa-pencil"></i> edit
                 </a>
-                <a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
+                <!--a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
                     <i class="fa fa-times"></i>
                 </a-->
             </td>
