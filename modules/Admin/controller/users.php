@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * @privilege Management
+ */
 return
 
     function () use ($view) {

@@ -40,6 +40,10 @@ define(['jquery','bluz'], function ($,bluz) {
             $(this).css("min-height",hhh);
         });
 
+        // Обнуление состояния
+        $("form[name=state] input[name=filter-origin]").val("")
+        $("form[name=state] input[name=filter-subcategory]").val("")
+
         // test action
         $(document).on('click', 'span.jsCaller', function() {
             bluz.log('Error','Test error was thrown')

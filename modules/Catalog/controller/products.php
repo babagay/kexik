@@ -2,24 +2,65 @@
 /**
  * TODO можно всегда преобразовывать $категория в cat_id и
  * сделать отдельный класс для выборки продуктов
+ *
+ * FIXME происходит отвал в Application, если в докКоментах указать кириллическое имя параметра
  */
 
 return
     /**
-     * @param string $question
-     * @return \closure
+     * @param int $manufacturers_id
+     * @return \closure     *
      */
     function ($категория = null, $продукт = null, $products_id = null, $manufacturers_id = null) use ($view) {
-        /**
-         * @var Вмsесто Application $this используй $app_object = Application\Bootstrap::getInstance();
-         * или так: app()->getRequest();
-         * @var View $view
-         */
+
+        function filterProducts(array $products, array $filter_origin){
+            // Составить строку выбранных products_id
+            $products_str = "";
+            foreach($products as $product){
+                $products_str .= $product['products_id'] . ",";
+            }
+
+            if(substr($products_str,-1) == ",")
+                $products_str = substr_replace($products_str,"",-1);
+
+            $products_filtered = array();
+            foreach($filter_origin as $filter){
+                $query = "SELECT products_id
+                              FROM filters_to_products
+                              WHERE products_id IN($products_str) AND filters_id = '$filter' ";
+
+                $products_filtered_tmp = app()->getDb()->fetchAll ($query);
+
+                if(is_array($products_filtered_tmp))
+                    foreach($products_filtered_tmp as $products_filtered_tmp_item ){
+                        $products_filtered[$products_filtered_tmp_item['products_id']] = $products_filtered_tmp_item['products_id'];
+                    }
+            }
+
+
+            if(sizeof($products_filtered)){
+                $tmp = array();
+                foreach($products as $product){
+                    foreach($products_filtered as $filtered_id => $product_filtered_id){
+                        if($product['products_id'] == $product_filtered_id){
+                            $tmp[] = $product;
+                            continue;
+                        }
+                    }
+                }
+                $products = $tmp;
+            }
+
+            return $products;
+        }
+
         //$app_object = Application\Bootstrap::getInstance();
         // Альтернатива $_this = $this;
         $app_object = app()->getInstance();
 
         $db =  app()->getDb();
+
+        $filterKeeper = app()->getFilterKeeper();
 
         $crumbs_arr = array();
 
@@ -82,6 +123,29 @@ return
 
         //fb($get_params );
 
+        /**
+         * array of filters_id
+         */
+        $filter_origin = null;
+
+        /**
+         * array of subcategories
+         */
+        $filter_subcategory = null;
+
+        if($is_ajax){
+            $get_params = $app_object->getRequest()->getAllParams();
+
+            if(isset($get_params['filter-subcategory'])){
+                // Задан фильтр по категориям
+                $filter_subcategory = explode(",",$get_params['filter-subcategory']);
+            }
+            if(isset($get_params['filter-origin'])){
+                // Задан "оригинальный" фильтр
+                $filter_origin = explode(",",$get_params['filter-origin']);
+            }
+        }
+
         if(!is_null($категория)){
             // Вывести все продукты категории
 
@@ -91,6 +155,7 @@ return
                     ->from('categories', 'c')
                     ->where("categories_seo_page_name = '$категория'")
                     ->orWhere("categories_id = '$категория'")
+
                 ;
                 $category = $selectBuilder->execute();
 
@@ -138,10 +203,28 @@ return
                             FROM products p
                             LEFT JOIN products_description pd ON p.products_id = pd.products_id
                             WHERE p.products_id IN ($tmp)
+                                AND p.products_visibility = 1
                             ORDER BY p.{$order} {$direction}
                             ";
                     $products = $db->fetchAll ($pr_query);
 
+                    // наложение оригинальных фильтров
+                    if(isset($products[0]))
+                        if(isset($filter_origin[0]))
+                            if($filter_origin[0] != ""){
+                                $products = filterProducts($products,$filter_origin );
+
+                                $products_ids = array();
+                                foreach($products as $product){
+                                    $products_ids[] = $product['products_id'];
+                                }
+                                $view->products_ids = $products_ids;
+                                $actual_filters['filter_origin'] = $filter_origin;
+
+                                $view->actual_filters = $actual_filters;
+                            }
+
+                    // вывод
                     $view->products = $products;
 
                 } else {
@@ -183,12 +266,17 @@ return
                     $tmp = implode(',', $tmp);
 
                     $products = $db->fetchAll ("
-                            SELECT p.*, pd.*
+                            SELECT p.*,
+                            pd.products_description, pd.products_image_small
                             FROM products p, products_description pd
                             WHERE p.products_id > 0 AND p.products_id = pd.products_id
                             AND p.products_id IN($tmp)
+                            AND p.products_visibility = 1
                             ");
                     //LEFT JOIN manufacturers m ON pd.manufacturers_id = m.manufacturers_id
+
+                    // [!] все сгенерированные к данному моменту фильтры производителей остаются в кеше filterKeeper'a
+
                 } else {
                     // Добавить фильтр по производителю и по категории
                     $products = $db->fetchAll ("SELECT * FROM products_to_categories WHERE categories_id = '$категория' " );
@@ -202,24 +290,64 @@ return
                     $tmp = implode(',', $tmp);
 
                     $products = $db->fetchAll ("
-                            SELECT p.*, pd.*
+                            SELECT p.*
                             FROM products p
                             LEFT JOIN manufacturers m ON p.manufacturers_id = m.manufacturers_id
-                            LEFT JOIN  products_description pd ON p.products_id = pd.products_id
+
                             WHERE p.products_id > 0
                             AND p.products_id IN($tmp)
                             AND m.manufacturers_id = '$manufacturers_id'
+                            AND p.products_visibility = 1
                             ORDER BY p.{$order} {$direction}
                             ");
+                    //LEFT JOIN  products_description pd ON p.products_id = pd.products_id
                     //TODO категорию
 
                 }
 
+                $products_ids = array();
+                // наложение оригинальных фильтров
+                $filters_defined = false;
+                if(isset($products[0])){
+                    if(isset($filter_origin[0])){
+                        if($filter_origin[0] != ""){
 
+                            $products = filterProducts($products,$filter_origin );
+
+                            foreach($products as $product){
+                                $products_ids[] = $product['products_id'];
+                            }
+                            $filters_defined = true;
+                            //$view->products_ids = $products_ids;
+                            $actual_filters['filter_origin'] = $filter_origin;
+                            $view->actual_filters = $actual_filters;
+                        }
+                    }  else {
+                    }
+                }
+
+
+                if($filters_defined === false){
+                    // FIXME зачем этот блок кода?
+                    // если выбран производитель, отображать только привязанные к нему фильтры
+                    $products_ids = array();
+                    foreach($products as $product){
+                        $products_ids[] = $product['products_id'] ;
+                    }
+                }
+
+                /*
+               if($фильтры_вендора = $filterKeeper->selectContext("vendor",$manufacturers_id)->selectFilterType("origin")->getFilters()){
+                   $filters = $фильтры_вендора;
+               } else {
+                   fb($products);
+               }
+               */
 
                 $view->products = $products;
                 $view->categories_id = $категория;
                 $view->products_id = $products_id;
+                $view->products_ids = $products_ids;
                 $view->manufacturers_id = $manufacturers_id;
 
                 $categories_id = $категория;
@@ -234,6 +362,7 @@ return
                         SELECT p.*
                         FROM products p
                         WHERE p.products_id = '$продукт'
+                        AND p.products_visibility = 1
                         ");
 
             if($product === false){
@@ -294,6 +423,7 @@ return
                         SELECT p.*
                         FROM products p
                         WHERE p.products_id = '{$product['products_id']}'
+                         AND p.products_visibility = 1
                         ");
 
 
@@ -306,7 +436,10 @@ return
 
             // TODO сначала искать в кэше
 
-            $product = $db->fetchAll ("SELECT * FROM products WHERE products_id = '$products_id' " );
+            $product = $db->fetchAll ("SELECT *
+             FROM products
+              WHERE products_id = '$products_id'
+                AND p.products_visibility = 1 " );
             //fb($product);
             $view->product = $product;
         } else {

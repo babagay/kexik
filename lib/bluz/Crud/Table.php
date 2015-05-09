@@ -118,14 +118,13 @@ class Table extends AbstractCrud
 
         $err_arr = $this->getErrors();
         if( is_array($err_arr) AND count($err_arr) > 0 )
-
-
-        $this->checkErrors();
+            $this->checkErrors();
 
         $row = $this->getTable()->create();
 
         $row->setFromArray($data);
-        return $row->save();
+        $id = $row->save();
+        return $id;
     }
 
     /**
@@ -138,7 +137,6 @@ class Table extends AbstractCrud
      */
     public function updateOne($primary, $data)
     {
-
         $row = $this->getTable()->findRow($primary);
 
 
@@ -152,6 +150,7 @@ class Table extends AbstractCrud
         $err_arr = $this->getErrors();
         if( is_array($err_arr) AND count($err_arr) > 0 )
             $this->checkErrors();
+
 
         $row->setFromArray($data);
         return $row->save();

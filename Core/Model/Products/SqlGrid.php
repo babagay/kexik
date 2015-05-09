@@ -21,6 +21,7 @@ class SqlGrid extends \Bluz\Grid\Grid
     protected $uid = 'sql';
     protected $table_name = 'products';
     protected $fulltext_search = false;
+    protected $orders_id = null;
 
     /**
      * init
@@ -39,6 +40,73 @@ class SqlGrid extends \Bluz\Grid\Grid
             $key = trim($this->options['search-like']);
             $adapter->setSource('SELECT * FROM '.$this->table_name . " WHERE MATCH (products_name) AGAINST ('$key')");
             $this->fulltext_search = true;
+        } elseif ( isset($this->options['orders_id']) ){
+            // получение продуктов одного заказа
+
+            $this->orders_id = $this->options['orders_id'];
+
+            $builder = app()->getDb()
+                ->select('op.*' )
+                ->from('order_products', 'op')
+                ->where('op.orders_id = ?', $this->options['orders_id']);
+            $products = $builder->execute();
+
+            $products_str = '';
+            $tmp = null;
+            if(is_array($products))
+                if(sizeof($products)){
+                    foreach($products as $product){
+                        $tmp[] = $product['products_id'];
+                    }
+                }
+            if(sizeof($tmp)) $products_str = implode(',',$tmp);
+
+            if($products_str != ''){
+                $source = "SELECT  p.*, op.price, op.products_num
+                    FROM " . $this->table_name . " p
+                    LEFT JOIN order_products op ON op.products_id = p.products_id
+                    WHERE p.products_id IN ( $products_str   )
+                    ";
+                $adapter->setSource( $source );
+            }
+
+            // Если задан только search, можно искать во всех столбцах
+            if( isset( $this->options['search']) ){
+                $key = $this->options['search'];
+
+
+                if( isset( $this->options['search-column']) ){
+                    if( $this->options['search-column'] == 'products_name' ){
+                        $adapter->setSource(
+                            'SELECT * FROM '.
+                            '(SELECT * FROM ' . $this->table_name . ' WHERE MATCH (products_name) AGAINST (\''.$key.'\') ) tmp'.
+                             " WHERE tmp.products_id IN($products_str)"   );
+                        $this->fulltext_search = true;
+                    } elseif( $this->options['search-column'] == 'products_id' ){
+                        $adapter->setSource("SELECT tmp.*
+                                              FROM (
+                                                SELECT *
+                                                FROM {$this->table_name}
+                                                WHERE products_id IN($products_str)
+                                                ) tmp
+                                              WHERE tmp.products_id LIKE '%$key%'
+                                              ");
+
+                    } elseif($this->options['search-column'] == 'barcode'  ){
+                        $adapter->setSource("SELECT tmp.*
+                                              FROM (
+                                                SELECT *
+                                                FROM {$this->table_name}
+                                                WHERE products_id IN($products_str)
+                                                ) tmp
+                                              WHERE tmp.products_barcode LIKE '%$key%'
+                                              ");
+                    }
+                }
+
+            }
+
+
         } else {
             $adapter->setSource( 'SELECT * FROM ' . $this->table_name );
         }

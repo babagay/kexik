@@ -32,6 +32,13 @@ class Yandex {
     private $_password;
     private $_client_id;
     private $_client_secret;
+    private $_album_default;
+
+    /**
+     * Внутрисистемное название массива идентификационных данных для Яндекса
+     * @var
+     */
+    private $yandex_account;
 
     private $token;
     private $album;
@@ -47,7 +54,7 @@ class Yandex {
     private $post = array();
 
 
-    function __construct($config)
+    function __construct($config,$yandex_account)
     {
         if(isset($config['base_url'])) $this->_url = $config['base_url'];
         if(isset($config['api_photo_url'])) $this->_api_photo_url = $config['api_photo_url'];
@@ -56,6 +63,11 @@ class Yandex {
         if(isset($config['password'])) $this->_password = $config['password'];
         if(isset($config['client_id'])) $this->_client_id = $config['client_id'];
         if(isset($config['client_secret'])) $this->_client_secret = $config['client_secret'];
+        if(isset($config['album_default'])) $this->_album_default = $config['album_default'];
+
+        if( $this->_album_default ) $this->setAlbum($this->_album_default);
+
+        $this->yandex_account = $yandex_account;
     }
 
     function getConfig()
@@ -68,6 +80,7 @@ class Yandex {
             'password' => $this->_password,
             'client_id' => $this->_client_id,
             'client_secret' => $this->_client_secret,
+            'album_default' => $this->_album_default,
         );
     }
 
@@ -87,7 +100,7 @@ class Yandex {
 
         if( is_string($this->token) ) return $this->token;
 
-        if($type == 'photo') $descriptor = "yandex_fotki_token";
+        if($type == 'photo') $descriptor = "yandex_fotki_token_" .  $this->yandex_account;
 
         $db =  app()->getDb();
         $previous_year = time() - (12 * 30 * 24 * 60 * 60);
@@ -111,9 +124,11 @@ class Yandex {
         if(is_null($client_secret)) $client_secret = $this->_client_secret;
 
         //  $url = 'https://oauth.yandex.ru/token';
-        // TODO если урл не задан кинуть ексепшн
-
+        // FIXME: этот метод получения токена устарел
         $url = $this->_oauth_url . 'token';
+        $postfields = "grant_type=password&username=$username&password=$password&client_id=$client_id&client_secret=$client_secret";
+
+        /*
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,$url); // set url to post to
         curl_setopt($ch, CURLOPT_FAILONERROR, 1);
@@ -121,12 +136,18 @@ class Yandex {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1); // return into a variable
         curl_setopt($ch, CURLOPT_TIMEOUT, 9);
         curl_setopt($ch, CURLOPT_POST, 1); // set POST method
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=password&username=$username&password=$password&client_id=$client_id&client_secret=$client_secret"); // add POST fields
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields); // add POST fields
         $result = curl_exec($ch); // run the whole process
         curl_close($ch);
         $Resp = json_decode($result, true);
+        */
 
-        // TODO cохранить токен в базу
+        // Токен получен вручную в соответствии с https://tech.yandex.ru/oauth/doc/dg/tasks/get-oauth-token-docpage/
+        $Resp['access_token'] = "2c7c35675e564cf6970fb80e9e81558b";
+
+        // Как получать программно описано здесь: https://api.yandex.ru/oauth/doc/dg/yandex-oauth-dg.pdf
+
+        // cохранить токен в базу
         $arr = array(
             "descriptor" => $descriptor,
             "value" => $Resp['access_token'],

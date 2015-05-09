@@ -21,7 +21,6 @@ return
 
 
 
-        //--
 
        // $app_object->getLayout()->title('Блог'); // дает Base :: Блог
 

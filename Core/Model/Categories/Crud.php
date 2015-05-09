@@ -83,6 +83,11 @@ class Crud extends Table
         if (isset($data['categories_seo_page_name'])) {
             $this->checkSeo($data['categories_seo_page_name']);
         }
+
+        // Наценка
+        if (isset($data['price_index'])) {
+            $this->checkPriceIndex($data['price_index']);
+        }
     }
 
     /**
@@ -95,10 +100,10 @@ class Crud extends Table
     {
         if (empty($name)) {
             $this->addError('Name can\'t be empty', 'name');
-        } elseif (!preg_match('/^[a-zA-Zа-яА-Я .-]+$/i', $name)) {
+        }/* elseif (!preg_match('/^[a-zA-Zа-яА-Я .-]+$/i', $name)) {
             // TODO
-            // $this->addError('Имя содержит толкьо буквы иили точку', 'name');
-        }
+            $this->addError('Имя содержит толкьо буквы иили точку', 'name');
+        } */
     }
 
     /**
@@ -123,6 +128,44 @@ class Crud extends Table
         */
     }
 
+    protected function checkPriceIndex($index)
+    {
+        if((int)$index < 0) $this->addError('Наценка не может быть отрицательной', 'price_index');
+        if((int)$index > 100) $this->addError('Наценка не может быть больше 100 %', 'price_index');
+    }
+
+
+    /**
+     * Обновляет цену продуктов
+     * @param $pk
+     * @param $data
+     */
+    private function updateProductPrice($pk, $data)
+    {
+        if(isset($pk['categories_id'])) $categories_id = $pk['categories_id'];
+        else {
+            $this->addError('Не найден первичный ключ', 'categories_id');
+            return;
+        }
+
+        $price_index = $data['price_index']/100;
+
+        if( isset($data['price_index']) ){
+            if( (int)$data['price_index'] > 0 ){
+
+                app()->getDb()->query("
+                    UPDATE products
+                    SET products_shoppingcart_price = (products_price * $price_index) + products_price
+                    WHERE  products_id  IN (
+                        SELECT products_id
+                        FROM products_to_categories
+                        WHERE categories_id = '$categories_id'
+                    )
+                    ");
+            }
+        }
+    }
+
     /**
      * @param mixed $primary
      * @param array $data
@@ -143,6 +186,8 @@ class Crud extends Table
 
         $this->validate($primary, $data);
         $this->validateUpdate($primary, $data);
+
+        $this->updateProductPrice($primary,$data);
 
         $err_arr = $this->getErrors();
         if( is_array($err_arr) AND count($err_arr) > 0 )

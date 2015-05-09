@@ -26,5 +26,11 @@ return function () {
     $r->setTable();
     */
 
+    $crud = $crudController();
+
+    fb($crud);
+
+    return $crud;
+
     return $crudController();
 };

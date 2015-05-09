@@ -43,10 +43,10 @@
             <label class="control-label col-lg-2" for="status">{{ __('Статус') }}</label>
             <div class="col-lg-10">
                 <select id="status" name="status" class="form-control">
-                    <option {% if row.status == 'active' %} 'selected' {% endif %} value='active'>Активен</option>
-                    <option {% if row.status == 'disabled' %} 'selected' {% endif %} value='disabled'>Заблокирован</option>
-                    <option {% if row.status == 'deleted' %} 'selected' {% endif %} value='deleted'>Удалён</option>
-                    <option {% if row.status == 'pending' %} 'selected' {% endif %} value='pending'>В процессе регистрации</option>
+                    <option {% if row.status == 'active' %} selected {% endif %} value='active'>Активен</option>
+                    <option {% if row.status == 'disabled' %} selected {% endif %} value='disabled'>Заблокирован</option>
+                    <option {% if row.status == 'deleted' %} selected {% endif %} value='deleted'>Удалён</option>
+                    <option {% if row.status == 'pending' %} selected {% endif %} value='pending'>В процессе регистрации</option>
                 </select>
             </div>
         </div>

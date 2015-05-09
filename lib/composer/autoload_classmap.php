@@ -73,6 +73,10 @@ return array(
     'Application\\Categories\\Table' => $vendorDir . '/../Core/Model/Categories/Table.php',
     'Application\\Categories\\SelectGrid' => $vendorDir . '/../Core/Model/Categories/SelectGrid.php',
 
+    // здесь можно сэкономить несколько строк, если определить пространство имен в *_psr4.php
+    //'Application\\Filters\\Table' => $vendorDir . '/../Core/Model/Filters/Table.php',
+    //'Application\\Filters\\Row' => $vendorDir . '/../Core/Model/Filters/Row.php',
+
 
 
 

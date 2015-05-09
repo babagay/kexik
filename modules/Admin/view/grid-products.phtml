@@ -1,22 +1,27 @@
 <script>
     require(["bluz.grid"]);
+
+    //add-product
 </script>
 
-<div class="clearfix" data-spy="grid" data-grid="{{ attribute(grid, 'getUid')  }}" ">
+<div class="clearfix" data-spy="grid" data-grid="{{ attribute(grid, 'getUid')  }}" data-url="{{ baseUrl('admin/grid-products') }}">
 
 {{ partial('grid/filter-search.phtml', {'grid': grid}) }}
 
 
+<div class="input-group create-group pull-left">
+    <a class="btn btn-primary pull-left dialog" data-ajax-method="get" href="{{ baseUrl('admin/products-crud-2') }}">Создать</a>
+</div>
 
 {{ partial('grid/limit.phtml', {'grid': grid}) }}
 
     <table class="table grid">
         <thead>
         <tr>
-            <th width="120px"><a href="{{ grid.order('products_id', null, 'desc', false) }}">Артикул</a></th>
+            <th width="60px"><a href="{{ grid.order('products_id', null, 'desc', false) }}">Артикул</a></th>
             <th width="120px"><a href="{{ grid.order('products_barcode') }}">Штрихкод</a></th>
             <th width="120px"><a href="{{ grid.order('products_name') }}">Наименование</a></th>
-            <th width="120px"><a href="{{ grid_order_4 }}">Единица измерения</a></th>
+            <th width="20px"> <!--Картинка--> </th>
             <th width="120px"><a href="{{ grid.order('products_shoppingcart_price') }}">Розница</a></th>
             <th width="120px"><a href="{{ grid.order('products_price') }}">Опт</a></th>
             <th width="120px"><a href="{{ grid.order('products_quantity') }}">Количество</a></th>
@@ -25,18 +30,35 @@
         </thead>
         <tbody>
         {% for row in attribute(grid, 'getData') %}
-        <tr>
+        <tr class="visible-{{ row.products_visibility }}">
             <td>{{ row['products_id'] }}</td>
-            <td>{{ row['products_barcode'] }}</td>
-            <td>{{ row['products_name'] }}</td>
-            <td>{{ row['products_unit'] }}</td>
-            <td>{{ row['products_shoppingcart_price'] }}</td>
-            <td>{{ row['products_price'] }}</td>
-            <td>{{ row['products_quantity'] }}</td>
+            <td class="grid-text">{{ row['products_barcode'] }}</td>
+            <td class="grid-text">{{ row['products_name'] }}</td>
+            <td>
+                {% if(row['image_small']) %}
+                    <img src="{{ row['image_small'] }}" class="grid-image">
+                {% endif %}
+            </td>
+            <td class="grid-text">{{ row['products_shoppingcart_price'] }}</td>
+            <td class="grid-text">{{ row['products_price'] }}</td>
+            <td class="grid-text">{{ row['products_quantity'] }} ({{ row['products_unit'] }})</td>
             <td class="controls">
                 <a href="{{ url('admin', 'products-crud', {'products_id' : row['products_id']}) }}" class="btn btn-xs btn-primary dialog" data-ajax-method="get">
                     <i class="fa fa-pencil"></i> edit
                 </a>
+                {% if( row.products_visibility == 1 ) %}
+                    {% set operation_hide = "hide" %}
+                    {% set operation_hide_style = "fa-lock" %}
+                {% else %}
+                    {% set operation_hide = "unhide" %}
+                    {% set operation_hide_style = "fa-unlock" %}
+                {% endif %}
+
+                <a class="btn btn-xs btn-primary dialog" data-ajax-method="get" href="{{ url('admin', 'products-crud-2', {'products_id' : row['products_id']}) }}">
+                    <i class="fa fa-pencil"></i>
+                </a>
+
+                <a onclick="javascript:return false;" href="{{ url('admin','grid-products', {'products_id' : row['products_id'], 'operation': operation_hide} ) }}" class="hide-item"><i class="fa {{operation_hide_style}}"></i> </a>
                 <!--a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
                     <i class="fa fa-times"></i>
                 </a-->

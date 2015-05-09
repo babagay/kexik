@@ -33,7 +33,7 @@
     <tr>
         <th width="50px"><a href="{{ grid.order('categories_name', null, 'desc', false) }}">Название</a></th>
         <th width="50px"><a href="{{ grid.order('sort_order') }}">Порядок</a></th>
-        <th width="120px"><a href="{{ grid.order('date_added') }}">Дата создания</a></th>
+        <th width="120px"><a href="{{ grid.order('price_index') }}">Наценка</a></th>
         <th width="120px"><a href="{{ grid.order('categories_status') }}">Статус</a></th>
         <th width="120px"><a href="{{ grid.order('categories_seo_page_name') }}">СЕО</a></th>
         <th width="120px">Действия</th>
@@ -44,7 +44,12 @@
     <tr>
         <td>{{ row['categories_name'] }}</td>
         <td>{{ row['sort_order'] }}</td>
-        <td>{{ row['date_added']|date("j F G:i ") }}</td>
+        <!--td>{{ row['date_added']|date("j F G:i ") }}</td-->
+        <td>
+            {% if( row['price_index'] > 0 ) %}
+                 {{ row['price_index'] }}
+            {% endif %}
+        </td>
         <td>{{ row['categories_status'] }}</td>
         <td>{{ row['categories_seo_page_name'] }}</td>
         <td class="controls">

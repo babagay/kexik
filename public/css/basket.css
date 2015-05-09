@@ -1,5 +1,8 @@
 .wrapper-goods {
     position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .basket-navigation {
@@ -28,7 +31,13 @@
 }
 
 .basket-btn-navi.active {
-    background: green;
+    background: -moz-linear-gradient(top, #6C7807, #C6DB0E);
+    -pie-background: -moz-linear-gradient(top, #6C7807, #C6DB0E);
+    background: -webkit-linear-gradient(top, #6C7807, #C6DB0E);
+    background: -o-linear-gradient(top, #6C7807, #C6DB0E);
+    background: -ms-linear-gradient(top, #6C7807, #C6DB0E);
+    background: linear-gradient(to bottom, #6C7807, #C6DB0E);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6C7807', endColorstr='#C6DB0E', GradientType=0);
 }
 
 .separator {
@@ -91,7 +100,13 @@ table td {
 table td:nth-child(2) {
     width: 30%
 }
-
+.remove_product{
+    cursor: pointer;
+    background: url("../images/close.png") no-repeat;
+    width: 21px;
+    height: 28px;
+    text-indent: -9999px;
+}
 .white {
     border: none;
     border-radius: 14px;
@@ -147,7 +162,7 @@ h4 {
 .number-arrow .dec,
 .number-arrow .inc {
     width: 15%;
-    height: 10px;
+    height: 22px;
     float: left;
     cursor: pointer;
 }

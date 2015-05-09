@@ -22,8 +22,10 @@
 
     return
         /**
-         * @param string $question
+         * @param string $asd
          * @return \closure
+         * @privilege Management
+         *
          */
         function (  $asd = null ) use ($view) {
             /**
@@ -45,6 +47,7 @@
 
 
             // TODO
+
             $user = app()->getAuth()->getIdentity();
 
             if(!is_object($user))

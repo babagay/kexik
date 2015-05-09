@@ -184,7 +184,6 @@ class View extends Options implements ViewInterface , \JsonSerializable
      */
     private function setTwig()
     {
-        require_once PATH_LIB . '/twig/twig/lib/Twig/Autoloader.php';
 
         \Twig_Autoloader::register();
 
@@ -482,6 +481,9 @@ class View extends Options implements ViewInterface , \JsonSerializable
 
         // пересылка в twig переменных из контроллера
         $this->twig_data = array_merge($this->twig_data, $this->data);
+
+        if(!is_object($this->twig_loader))
+                $this->setTwig();
 
         $this->twig_loader->addPath($this->path);
 

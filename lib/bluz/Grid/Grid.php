@@ -434,6 +434,11 @@ abstract class Grid extends Options
     {
         $params = $this->params;
 
+        // orders_id - параметр введен мной
+        if (isset($rewrite['orders_id']) && (int)$rewrite['orders_id'] > 0) {
+            $params['orders_id'] = $rewrite['orders_id'];
+        }
+
         // change page
         if (isset($rewrite['page']) && (int)$rewrite['page'] > 1) {
             $params[$this->prefix . 'page'] = $rewrite['page'];
@@ -469,8 +474,11 @@ abstract class Grid extends Options
             $filters = $this->getFilters();
         }
         foreach ($filters as $column => $columnFilters) {
+
+
             $columnFilter = array();
             foreach ($columnFilters as $filterName => $filterValue) {
+                $filterValue = \Bluz\Translator\Translator::translit(str_replace("fulltext-","",$filterValue));
                 if ($filterName == self::FILTER_EQ) {
                     $columnFilter[] = $filterValue;
                 } else {
@@ -493,8 +501,6 @@ abstract class Grid extends Options
     {
         // prepare params
         $params = $this->getParams($params);
-
-
 
         // retrieve URL
         return app()->getRouter()->url(
@@ -664,7 +670,6 @@ abstract class Grid extends Options
     public function addFilter($column, $filter, $value)
     {
 
-
         if (!in_array($column, $this->allowFilters) &&
             !array_key_exists($column, $this->allowFilters)
         ) {
@@ -685,6 +690,7 @@ abstract class Grid extends Options
         if($this->fulltext_search) $value = 'fulltext-' . $value;
 
         $this->filters[$column][$filter] = $value;
+
 
         return $this;
     }

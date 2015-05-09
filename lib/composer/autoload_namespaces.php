@@ -11,7 +11,7 @@ return array(
     'Core' => array($baseDir . '/Core'),
     'Zoqa' => array($baseDir . '/Core'),
     //'Application\Users' => array($baseDir . '/Core/Model/Users'),
-    'Testspace' => array($baseDir . '/Core/Helper'), // не работает
+    //'Testspace' => array($baseDir . '/Core/Helper'), // не работает
     //'Yandex' => array($vendorDir . '/Yandex'), // не работает
     'Yandex' => array($baseDir . '/Core/Model/Yandex'), //  работает
     //'Application\Categories' => array($baseDir . '/Core/Model/Categories'), // не работает

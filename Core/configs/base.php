@@ -13,6 +13,8 @@ return array(
         "settings" => array(
             "cacheAdapter" => array(
                 "name" => "memcached",
+                "extension_name" => "memcached",
+                "service_name" => "Memcached",
                 "settings" => array(
                     "servers" => array(
                         array("memcached", 11211, 1),
@@ -33,7 +35,10 @@ return array(
             "api_version"   => '5.26',
             "redirect_uri"  => 'http://babagay.ru/vk/auth',
         ),
-        "yandex" => array(
+        // [!] Имя должно совпадать со второй частью ключа массива, содержащего идентификационные данные
+        // Напр, "babagay" для "yandex_babagay"
+        "default_yandex_account" => "keksik", //"babagay",
+        "yandex_babagay" => array(
             "base_url"      => "http://yandex.ru//",
             "api_photo_url" => "http://api-fotki.yandex.ru/",  // /verification_code
             "oauth_url"     => "https://oauth.yandex.ru/",
@@ -41,6 +46,17 @@ return array(
             "password"      => "djbyk.,db2012",
             "client_id"     => "f8d97173c0394aedaba85f45a4c5a4eb",
             "client_secret" => "6dd3122b52974d939b8f5ac75eaa773e",
+            "album_default" => 375464,
+        ),
+        "yandex_keksik" => array(
+            "base_url"      => "http://yandex.ru//",
+            "api_photo_url" => "http://api-fotki.yandex.ru/",  // /verification_code
+            "oauth_url"     => "https://oauth.yandex.ru/",
+            "username"      => "keksik.online",
+            "password"      => 'keksik2015',
+            "client_id"     => "d0e9ced25bcd40c0bbf02a1f2d735220",
+            "client_secret" => "8b4320d1e2744c5eaf979517f9e417f8",
+            "album_default" => 472910,
         ),
         "livedocx" => array(
             "base_url"      => "https://api.livedocx.com/1.2/mailmerge.asmx?WSDL",
@@ -53,9 +69,9 @@ return array(
         "connect" => array(
             "type" => "mysql",
             "host" => "localhost",
-            "name" => "babagayr_keks",
-            "user" => "babagayr_keks",
-            "pass" => "zvVb_Uyt",
+            "name" => "keks",
+            "user" => "keks_user",
+            "pass" => "zxVo_Ipk",
             "options" => array(\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''),
         ),
     ),

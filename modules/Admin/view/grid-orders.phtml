@@ -18,8 +18,7 @@
             </ul>
         </div>
         <!-- /btn-group -->
-        <input name="{{ grid.getUid }}-filter-{{ field }}" class="grid-filter-search-input"
-               value="{{ type }}-{{ value }}" type="hidden"/>
+        <input name="{{ grid.getUid }}-filter-{{ field }}" class="grid-filter-search-input" value="{{ type }}-{{ value }}" type="hidden"/>
 
         <input name="search-like" type="search" class="form-control _one-line-search" value="{{ value }}" required/>
     </form>
@@ -47,8 +46,8 @@
         </thead>
         <tbody>
         {% for row in attribute(grid, 'getData') %}
-        <tr>
-            <td>{{ row['orders_id'] }}</td>
+        <tr class="row-highlite-{{  row['order_status'] }}">
+            <td>{{ row['orders_id'] }} </td>
             <td>{# row['users_id'] #} {{ row['login'] }} ({{ row['email'] }})</td>
             <td>{{ row['date_added']|date("j F G:i ") }}</td>
             <td>{{ row['address'] }}</td>
@@ -62,6 +61,9 @@
                 <a href="{{ url('admin', 'orders-crud', {'orders_id' : row['orders_id']}) }}" class="btn btn-xs btn-primary dialog"
                    data-ajax-method="get">
                     <i class="fa fa-pencil"></i>
+                </a>
+                <a href="{{ url('orders', 'edit', {'orders_id' : row['orders_id']}) }}" class="btn btn-xs btn-default edit-order" >
+                    <i class="fa fa-edit"></i>
                 </a>
                 <!--a href="{{ url('admin', 'user-crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
                     <i class="fa fa-times"></i>

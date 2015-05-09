@@ -36,6 +36,7 @@ use Bluz\Translator\Translator;
 use Bluz\View\Layout;
 use Bluz\View\View;
 
+use Core\FilterKeeper;
 use \Core\Helper\Registry as AppRegistry;
 
 /**
@@ -466,6 +467,14 @@ class Application
         return $this->logger;
     }
 
+    /**
+     * @return \Core\FilterKeeper2|null
+     */
+    function getFilterKeeper()
+    {
+        return   \Core\FilterKeeper2::getInstance();
+    }
+
     /*
      *
      */
@@ -556,7 +565,7 @@ class Application
                 $this->core_path = PATH_CORE;
             } else {
                 //TODO внести коррективы
-                fb("Сработал вызов ReflectionClass;  " . __METHOD__);
+                fb("TODO внести коррективы. Сработал вызов ReflectionClass;  " . __METHOD__);
                 $reflection = new \ReflectionClass($this);
                 $this->core_path = dirname($reflection->getFileName());
             }
@@ -814,7 +823,6 @@ class Application
         if(app()->getInstance()->getRequest()->getHeader('X-Requested-With') == 'XMLHttpRequest'){
         // Этот запрос пришел через ajax
         // Такой заголовок есть у ВСЕХ ajax-запросов
-
             $this->useLayout(false);
         }
 
@@ -848,8 +856,10 @@ class Application
         // cache initialization
         if (isset($reflectionData['cache'])) {
             $cacheKey = $module . '/' . $controller . '/' . http_build_query($params);
+            //$cacheKey = md5($cacheKey);
+
             if ($cachedView = $this->getCache()->get($cacheKey)) {
-                return $cachedView;
+               return $cachedView;
             }
         }
 
@@ -902,6 +912,8 @@ class Application
 
         // return closure is replace logic of controller
         // or return any class
+        // [!] заходит сюда, если из главного контроллера модуля произведен вызов вспомогательного контроллера
+        // Например, из catalog/Base идет вызов products.php через dispatch('catalog','products')
         if (is_callable($result) or
             is_object($result)
         ) {
@@ -926,7 +938,7 @@ class Application
             $this->getCache()->addTag($cacheKey, 'view:' . $module . ':' . $controller);
         }
 
-        return $view;
+        return $view; // Bluz\View\View
     }
 
     /**
@@ -939,6 +951,8 @@ class Application
     public function reflection($file)
     {
         // cache for reflection data
+        // $this->getCache()->delete('reflection:' . $file);
+
         if (!$data = $this->getCache()->get('reflection:' . $file)) {
 
             // TODO: workaround for get reflection of closure function
@@ -973,6 +987,8 @@ class Application
                     $data[$key][] = trim($matches[2][$i]);
                 }
             }
+
+
             if (method_exists($reflection, 'getParameters')) {
                 // get params and convert it to simple array
                 $reflectionParams = $reflection->getParameters();
@@ -1490,15 +1506,193 @@ class Application
     }
 
     /**
+     * @param $old_name
+     * @param $new_name
+     * @param int $width
+     * @param int $height
+     * @param bool $white_back
+     * @return bool|int (-100 означает, что Разрешение больше допустимого)
+     * @author Махорин Александр
+     *
+     * Новый всеядный метод для создания thumbnailов строго фиксированной ширины и высоты из фоток.
+     *  Если ширина или высота не задана (равна нулю), то фотка не обрезается,
+     *  а просто недостающий параметр высчитывается пропорционально.
+     * Расширение файла изображения сохраняется оригинальное.
+     */
+    static function imgCropAndResize($old_name, $new_name, $width = 0, $height = 0, $white_back = false)
+    {
+        $limit_resolution = 4000;
+
+        //Если заданы неверные параметры
+        if($width <= 0 && $height <= 0) return false;
+
+        if(!is_file($old_name)) return -1;
+
+        /*
+          $path_info = pathinfo($_FILES["img"]['name']);
+                $ext = $path_info['extension'];
+
+
+        $ext_is_allowed = false;
+        if($ext == 'jpg')  $ext_is_allowed = true;
+        if($ext == 'jpeg')  $ext_is_allowed = true;
+        if($ext == 'png')  $ext_is_allowed = true;
+        if($ext == 'gif')  $ext_is_allowed = true;
+        if(!$ext_is_allowed)
+          return -101;
+
+        $filesize =  $_FILES["userfile_$file_index"]['size'];
+        if($filesize > 2048000)
+          return -102;
+
+          // --
+           // проверить картинку
+            $path_info = pathinfo($_FILES["img"]['name']);
+            $ext = $path_info['extension'];
+
+
+            if($ext == 'jpg' OR $ext == 'jpeg' OR $ext == 'png' OR $ext == 'gif'){}
+            else
+              return   $this->Msg('Допустимые расширени графических файлов: jpg, jpeg, png, gif', '/events/', 1000);
+
+            $filesize =  $_FILES["img"]['size'];
+            if($filesize > 2048000)
+              return $this->Msg('Допустимый размер файла: 2МБ', '/events/', 1000);
+
+            $size = GetImageSize($_FILES['img']['tmp_name']);
+            if($size[0] > 3000 OR $size[1] > 3000)
+               return $this->Msg('Допустимое разрешение 3000 х 3000 пикселей', '/events/', 1000);
+
+          */
+        // пример
+        /*
+           fb($size[0]); 3264
+           fb($size[1]); 2448
+           fb($old_name); // /tmp/phpDzbhS6
+        */
+
+
+        //Определяем размер фотографии
+        $size = getimagesize ($old_name);
+
+
+
+
+        if($size[0] > $limit_resolution OR $size[1] > $limit_resolution) return -100;
+
+        //Создаём новое изображение из «старого»
+        //определяем тип файла по содержимому
+        if ($size['mime'] == "image/gif")  $src = imagecreatefromgif($old_name);
+        if ($size['mime'] == "image/jpeg") $src = imagecreatefromjpeg($old_name);
+        if ($size['mime'] == "image/png")  $src = imagecreatefrompng($old_name);
+        if (!$src) return false;
+
+        //Вычисляем ширину/высоту
+        $iw=$size[0];
+        $ih=$size[1];
+
+        //Если всё больше нуля то создаем новую фотку с обрезкой
+        if($width > 0 && $height > 0)
+            $dst=ImageCreateTrueColor ($width, $height);
+
+        //Если один из параметров == 0, то без обрезки
+        //Недостающий параметр высчитывается пропорцией
+        if($width == 0){
+            $width = $iw*$height/$ih;
+            $dst=ImageCreateTrueColor ($width, $height);
+        }
+        if($height == 0){
+            $height = $ih*$width/$iw;
+            $dst=ImageCreateTrueColor ($width, $height);
+        }
+
+
+        if ($size['mime'] == "image/png" AND $white_back === true)
+        // Если это png, заливаем фон белым
+        imagefilledrectangle($dst, 0, 0, $width, $height, imagecolorallocate($dst, 255, 255, 255));
+
+
+
+
+        //Если высота исходной фотки > ширины
+        if($ih > $iw){
+            //вычисляем коэфициент
+            //соотношения ширины оригинала с будущей превьюшкой.
+            $koe=$iw/$width;
+            //Делим высоту изображения на коэфициент, полученный в предыдущей строке,
+            //и округляем число до целого в большую сторону — в результате получаем
+            //высоту нового изображения.
+            $new_h=ceil ($ih/$koe);
+
+            //Вычисляем, какую высоту должна была бы иметь исходная фотка чтоб
+            //попадать в наши пропорции (120х160 например для событий)
+            $tmp = ceil($iw*$height/$width);
+
+            //Если получается что эта "идеальная" высота больше реальной
+            //обрезаем фотку по бокам, выравниванием по центру по горизонтали.
+
+            if($tmp > $ih){
+                $koe=$ih/$height;
+                $new_w=ceil ($iw/$koe);
+
+                //Теперь уже вычисляем "идеальную" ширину
+                $tmp = ceil($ih*$width/$height);
+                $shift_x = ceil($iw/2 - $tmp/2);
+
+                ImageCopyResampled ($dst, $src, 0, 0, $shift_x, 0, $new_w, $height, $iw, $ih);
+            }
+            //Иначе обрезаем фотку сверху и снизу, выравниванием по центру по вертикали.
+            else{
+                $shift_y = ceil($ih/2 - $tmp/2);
+
+                ImageCopyResampled ($dst, $src, 0, 0, 0, $shift_y, $width, $new_h, $iw, $ih);
+            }
+        }
+
+        //Если высота исходной фотки < ширины
+        else{
+            $koe=$ih/$height;
+            $new_w=ceil ($iw/$koe);
+
+            $tmp = ceil($ih*$width/$height);
+
+            if($tmp > $iw){
+
+
+                $koe=$iw/$width;
+                $new_h=ceil ($ih/$koe);
+
+                //Теперь уже вычисляем "идеальную" ширину
+                $tmp = ceil($iw*$height/$width);
+                $shift_y = ceil($ih/2 - $tmp/2);
+
+                /*$result = */ ImageCopyResampled ($dst, $src, 0, 0, 0, $shift_y, $width, $new_h, $iw, $ih);
+            }
+            else{
+
+                $shift_x = ceil($iw/2 - $tmp/2);
+
+                ImageCopyResampled ($dst, $src, 0, 0, $shift_x, 0, $new_w, $height, $iw, $ih);
+            }
+        }
+        //Сохраняем полученное изображение в формате JPG
+        ImageJPEG ($dst, $new_name, 100);
+    }
+
+    /**
      * Создает объект Yandex для общения с сервисами yandex
      * @return Yandex
      */
     function getYandex()
     {
-        $config = $this->getConfigData($section = "auth", $subsection = "yandex");
+        // Берем имя секции, которая хранит идентификационные данные для работы с сервисами Яндекса
+       $default_yandex_account = $this->getConfigData($section = "auth", $subsection = "default_yandex_account");
+
+        // Берем сами данные
+       $config = $this->getConfigData($section = "auth", $subsection = "yandex_$default_yandex_account");
 
        if( AppRegistry::getInstance()->has("yandex") === false ){
-           AppRegistry::getInstance()->yandex = new \Yandex($config);
+           AppRegistry::getInstance()->yandex = new \Yandex($config,$default_yandex_account);
        }
 
         return AppRegistry::getInstance()->yandex;

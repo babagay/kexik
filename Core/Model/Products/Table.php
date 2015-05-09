@@ -31,7 +31,7 @@ class Table extends \Bluz\Db\Table
     protected $primary = array('products_id');
 
     /**
-     * save test row
+     * save test row - Example
      *
      * @return boolean
      */
@@ -41,7 +41,7 @@ class Table extends \Bluz\Db\Table
     }
 
     /**
-     * update test row
+     * update test row - Example
      *
      * @return boolean
      */
@@ -51,7 +51,7 @@ class Table extends \Bluz\Db\Table
     }
 
     /**
-     * delete test row
+     * delete test row  - Example
      *
      * @return boolean
      */

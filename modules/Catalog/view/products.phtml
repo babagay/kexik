@@ -9,21 +9,139 @@
 
 {% elseif(products) %}
 
-<div class="position-relative">
-    <div class="select-cabnet"><span> Цена:   </span>
-        <ul class="select-no-display">
-            <li><a href="{{  baseUrl('catalog/products')}}" direction="asc" class="filter-price-order">по возрастанию </a></li>
-            <li><a href="{{  baseUrl('catalog/products')}}" direction="desc" class="filter-price-order">по убыванию</a></li>
-        </ul>
-    </div>
-</div>
 
 
-    {{ widget('catalog','manufacturer',{'категория':categories_id,'manufacturers_id':manufacturers_id,'продукты':products_ids}) }}
+
+    {{ widget('catalog','manufacturer',{'категория':categories_id,'manufacturers_id':manufacturers_id,'продукты':products_ids, 'порядок_сортировки':order, 'фильтры':actual_filters, 'поисковая_фраза':search_text}) }}
 
 
 <script>
+    // TODO вынести код фильтров в отдельный модуль
+    // require(["filters"], function($, notify) {});
+
     require(["jquery", "bluz.notify"], function($, notify) {
+
+        // Очистка галочек
+        var filter_orogin_init_val = $("form[name=state] input[name=filter-origin]").val();
+        if(filter_orogin_init_val == "" || filter_orogin_init_val == undefined) $("input[type=checkbox].filter-origin").prop("checked",false);
+
+        $("input[type=checkbox].filter-origin").off().on("click",function(event, data, textStatus, jqXHR){
+
+            var setChecked = false
+            var checkbox = $(this)
+            var data_id = $(this).attr("data-id")
+            var filter_origin = $("form[name=state] input[name=filter-origin]").val();
+
+            var Re  = new RegExp(   data_id  );
+            var Re1 = new RegExp( "^" + data_id + ",");
+            var Re2 = new RegExp( "," + data_id + "$");
+            var Re3 = new RegExp( "," + data_id + "," );
+
+            //var filter_subcategory = $("form[name=state] input.filter-subcategory").val();
+
+            if(filter_origin == ""){
+                if( $(this).prop("checked") ){
+                    filter_origin = $(this).attr("data-id")
+                    $("form[name=state] input[name=filter-origin]").val(filter_origin);
+                    setChecked = true
+                } else {
+                    return false;
+                }
+
+            } else {
+
+                if( $(this).prop("checked") ){
+                    if( Re1.test(filter_origin) || Re2.test(filter_origin) || Re3.test(filter_origin) || filter_origin == data_id ){
+                        // "не дописывать, т.к. уже в списке
+                        $(".filter-origin").prop("checked",true) // FIXME не выставляет галочку
+                        return false
+                    } else {
+                        // дописать id, если его не было в списке
+                        /// console.log("дописать")
+
+                        filter_origin = filter_origin + "," + data_id
+                        $("form[name=state] input[name=filter-origin]").val(filter_origin);
+
+                        setChecked = true
+                    }
+                } else {
+                    if( Re.test(filter_origin) ){
+                        // убрать id, если он в списке
+                        if(filter_origin == $(this).attr("data-id")){
+                            $("form[name=state] input[name=filter-origin]").val("")
+                        } else {
+
+                            //Re = new RegExp( "^" + data_id + ",");
+                            if( Re1.test(filter_origin) ){ // в начале строки
+                                filter_origin = filter_origin.replace(Re1,"")
+                            } else {
+                                // Re = new RegExp( "," + data_id + "$")
+                                if( Re2.test(filter_origin) ) { // в конце строки
+                                    filter_origin = filter_origin.replace(Re2,"")
+                                } else {
+                                    // Re = new RegExp( "," + data_id + "," )
+                                    if( Re3.test(filter_origin) )  // в середине
+                                        filter_origin = filter_origin.replace(Re3,",")
+                                }
+                            }
+
+                            if( filter_origin.substr(-1) == "," )
+                                filter_origin = filter_origin.replace(/,$/,"")
+
+                            $("form[name=state] input[name=filter-origin]").val(filter_origin)
+                        }
+
+                        setChecked = false
+                    } else {
+                        // не в списке
+                        // FIXME не снимается флажок
+                        $(".filter-origin").prop("checked",false)
+                        return false;
+                    }
+                }
+
+                //filter_origin = filter_origin + "," + $(this).attr("data-id")
+            }
+
+            //$("form[name=state] input[name=filter-origin]").val(filter_origin);
+
+
+            var data = {}
+            var state = $("form[name=state]").serialize();
+            var is_search = $("input[name=is_search]").val()
+            var url = "catalog/products" + "?" + state
+
+            if(is_search == 1){
+                url = "поиск/" + $("input[name=search_text]").val() + "?" + state;
+                //var manufacturers_id = $("form[name=state] input[name=filter-manufacturers_id]").val()
+                //data["manufacturers_id"] = manufacturers_id.substring(3)
+            }
+
+            $.ajax({
+                type: "POST",
+                data: data,
+                url: url,
+                context: document.body,
+                cache: false,
+                dataType: "html"
+            }).done(function(response,status,responseObj) {
+                    if(status == "success"){
+                        if(responseObj.status != 200){
+                            notify.addError("Error 404")
+                        }
+
+                        $("#content_box").html(response)
+
+                        //$(".filter-origin").prop("checked",setChecked)
+                        //$(checkbox).prop("checked",setChecked)
+                    }
+                });
+
+            return true;
+        });
+
+        //
+
         $("a.filter-price-order").off().on("click",function(event, data, textStatus, jqXHR){
 
             var direction = $(this).attr("direction")
@@ -31,18 +149,19 @@
 
             $("form[name=state] input[name=order]").val(direction + "-" + default_order_field)
 
+            var state = $("form[name=state]").serialize();
 
             var data = {}
 
             data["direction"] = direction; //?
 
-            var url = $(this).attr("href") + "?" + $("form[name=state]").serialize();
+            var url = $(this).attr("href") + "?" + state;
 
             var is_search = $("input[name=is_search]").val()
 
             if(is_search == 1){
                 var text = $("input[name=search_text]").val()
-                url = "поиск/" + text ;
+                url = "поиск/" + text + "?" + state;
                 var manufacturers_id = $("form[name=state] input[name=filter-manufacturers_id]").val()
                 data["manufacturers_id"] = manufacturers_id.substring(3)
             }
@@ -70,7 +189,6 @@
 
         $("a.filter-vendor").off().on("click",function(event, data, textStatus, jqXHR){
 
-
             var data = {}
 
             //data = $("form[name=state]").serialize();
@@ -82,13 +200,13 @@
             $("form[name=state] input[name=filter-manufacturers_id]").val("eq-" + data["manufacturers_id"]);
             $("form[name=state] input[name=filter-categories_id]").val("eq-" + data["категория"]);
 
-            var url = $(this).attr("href") + "?" + $("form[name=state]").serialize();
-
+            var state = $("form[name=state]").serialize();
+            var url = $(this).attr("href") + "?" + state;
             var is_search = $("input[name=is_search]").val()
 
             if(is_search == 1){
                 var text = $("input[name=search_text]").val()
-                url = "поиск/" + text ;
+                url = "поиск/" + text + "?" + state;
             }
 
             $.ajax({
@@ -144,7 +262,11 @@
             {#<div class="name">{{ ahref(  product.products_name, ['каталог' ~ parent ~ '/' ~ category_name, product_link]) }}</div>#}
             <div class="name">{{  product.products_name }}</div>
             <div class="image-box">
-                <img src="{{ baseUrl('public/images/goods1.jpg') }}">
+                {%  if( product.image_small ) %}
+                    <img src="{{ product.image_small }}">
+                {% else %}
+                    <img src="{{ baseUrl('public/images/stumb.jpg') }}">
+                {% endif %}
             </div>
             <div class="description">
                 <div class="weight">{{ product.products_unit }}</div>

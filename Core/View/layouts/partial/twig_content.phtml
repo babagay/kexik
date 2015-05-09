@@ -1,81 +1,8 @@
-<script>
 
-   require(["jquery","jcarousel"], function(  $, jcarousel_obj  ) {
-
-       var jcarousel = $('.jcarousel');
-
-       jcarousel
-           .on('jcarousel:reload jcarousel:create', function () {
-               var carousel = $(this),
-                   width = carousel.innerWidth();
-
-               /*  if (width >= 600) {
-                width = width / 3;
-                } else if (width >= 350) {
-                width = width / 2;
-                }*/
-
-               carousel.jcarousel('items').css('width', Math.ceil(width) + 'px');
-           })
-           .jcarousel({
-               wrap: 'circular'
-           })
-           .jcarouselAutoscroll({
-               interval: 8000,
-               target: '+=1',
-               autostart: true
-           });
-
-       $('.jcarousel-control-prev')
-           .jcarouselControl({
-               target: '-=1'
-           });
-
-       $('.jcarousel-control-next')
-           .jcarouselControl({
-               target: '+=1'
-           });
-
-       $('.jcarousel-pagination')
-           .on('jcarouselpagination:active', 'a', function() {
-               $(this).addClass('active');
-           })
-           .on('jcarouselpagination:inactive', 'a', function() {
-               $(this).removeClass('active');
-           })
-           .on('click', function(e) {
-               e.preventDefault();
-           })
-           .jcarouselPagination({
-               perPage: 1,
-               item: function(page) {
-                   return '<a href="#' + page + '">' + page + '</a>';
-               }
-           });
-   });
-
-       /*
-      require(["jSlider" ], function(  jSlider) {
-          //$(".slider").jSlider("zc")
-          if (jSlider.jSlider) {
-              console.log("sdf")
-            //$(".slider").jSlider({elem:"div",images:true, animation: "fade",auto_slide: true, auto_slide_interval:5000, infinite: true, speed: 2200});
-          } else {
-              console.log("sad")          }
-        });
-    */
-
-
-
-
-
-</script>
 
 
   <div id="content">
                 <div class="content-text">
-
-
 
                     <div class="wrapper">
                         <div class="jcarousel-wrapper">

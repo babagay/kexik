@@ -1,30 +1,8 @@
 <?php
-/*
- * [trace] fb('Error message',FirePHP::TRACE);
- *
- * URL для вызова: http://127.0.0.1/zoqa/my/base/question/2+2
- *
- * TODO
- * Исправить вывод <title>
- *
- * TODO Рассмотреть
- * - как сделать возможность вызова метода по-зендовски (через имя точки входа)
- * - попробовать взять параметры из урла прямо здесь (в замыкании)
- *
- * - прикрутить шаблонизатор
- *
- * [пример аякс]
- * var basePath = 'http://127.0.0.1/zoqa/'
-$.post(basePath+"my/Base/вопрос/78", {asd: 'asd'}, function (res) {
-    }, "json");
 
-[url статьи]: http://babagay.ru/блог/статья/102
-
-   $now = gmdate( "D, d M Y H:i:s" );
- */
 return
     /**
-     * @param string $question
+     * @cache 2
      * @return \closure
      */
     function ($категория = null) use ($view) {
@@ -38,30 +16,7 @@ return
         ///fb($статья);
         ///$app_object = Application\Bootstrap::getInstance();
 
-        //
-        $memcache = new Memcache;
 
-	  $memcache->connect("localhost",11211); # You might need to set "localhost" to "127.0.0.1"
-
-	  fb( "Server's version: " . $memcache->getVersion() . " ");
-
-	  $tmp_object = new stdClass;
-
-	  $tmp_object->str_attr = "test";
-
-	  $tmp_object->int_attr = 123;
-
-	  //$memcache->set("key",$tmp_object,false,10);
-
-	  //fb( "Store data in the cache (data will expire in 10 seconds)<br />\n");
-
-	  //fb( "Data from the cache:<br />\n ");
-
-	  //fb($memcache->get("key"));
-
-        //fb( base64_encode(file_get_contents( $view->baseUrl("public/images/logo.png") )) );
-       // echo "<img src='".$view->baseUrl("public/images/logo.png")."'>";
-        //
 
         $app_object = app()->getInstance();
 

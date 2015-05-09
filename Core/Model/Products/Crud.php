@@ -23,6 +23,7 @@ use Bluz\Crud\Table;
 class Crud extends Table
 {
     /**
+     * Example
      * {@inheritdoc}
      */
     public function readSet($offset = 0, $limit = 10, $params = array())
@@ -61,13 +62,17 @@ class Crud extends Table
      */
     public function validateCreate($data)
     {
-        // name validator
-        $name = isset($data['name'])?$data['name']:null;
-        $this->checkName($name);
+        $products_id = isset($data['products_id'])?$data['products_id']:null;
+        $this->checkArticool($products_id);
 
-        // email validator
-        $email = isset($data['email'])?$data['email']:null;
-        $this->checkEmail($email);
+        $this->checkArticoolUnique( $products_id );
+
+        $products_barcode = isset($data['products_barcode'])?$data['products_barcode']:null;
+        $this->checkBarcode($products_barcode);
+
+        $products_name = isset($data['products_name'])?$data['products_name']:null;
+        $this->checkName($products_name);
+
     }
 
     /**
@@ -75,19 +80,12 @@ class Crud extends Table
      */
     public function validateUpdate($id, $data)
     {
-        // name validator
-        if (isset($data['name'])) {
-            $this->checkName($data['name']);
-        }
-
-        // email validator
-        if (isset($data['email'])) {
-            $this->checkEmail($data['email']);
-        }
+        $products_id = isset($data['products_id'])?$data['products_id']:null;
+        $this->checkArticool($products_id);
     }
 
     /**
-     * checkName
+     * checkName - Example
      *
      * @param $name
      * @return void
@@ -95,14 +93,14 @@ class Crud extends Table
     protected function checkName($name)
     {
         if (empty($name)) {
-            $this->addError('Name can\'t be empty', 'name');
-        } elseif (!preg_match('/^[a-zA-Z .-]+$/i', $name)) {
-            $this->addError('Name should contains only Latin characters', 'name');
+            $this->addError('Name can\'t be empty', 'products_name');
+        } elseif (!preg_match('/^[a-zа-я .-]+/i', $name)) {
+            $this->addError('Не допустимый формат', 'products_name');
         }
     }
 
     /**
-     * checkEmail
+     * checkEmail - Example
      *
      * @param $email
      * @return void
@@ -116,10 +114,105 @@ class Crud extends Table
         }
     }
 
+    protected function checkArticool($products_id)
+    {
+        if (empty($products_id)) {
+            $this->addError('products_id can\'t be empty', 'products_id');
+        } elseif (!preg_match('/^[\d]+$/i', $products_id)) {
+            $this->addError('Articool has invalid format', 'products_id');
+        }
+    }
+
+    protected function checkArticoolUnique($products_id)
+    {
+        // проверить на уникальность
+        $row = $this->getTable()->findRow(['products_id' => $products_id]);
+
+        if( is_null($row) OR $row === false ) {
+        } else {
+            $this->addError('Значение не уникально', 'products_id');
+        }
+    }
+
+    protected function checkBarcode($barcode)
+    {
+        if (empty($barcode)) {
+            $this->addError('Поле не должно быть пустым', 'products_barcode');
+        } elseif (!preg_match('/^[\d]+$/i', $barcode)) {
+            $this->addError('Не верный формат', 'products_barcode');
+        }
+
+        // проверить на уникальность
+        $row = $this->getTable()->fetch("SELECT products_barcode FROM products WHERE products_barcode = $barcode " );  //['products_barcode' => $barcode]);
+
+        if( is_null($row) OR $row === false ) {
+        } elseif( sizeof($row) ) {
+            $this->addError('Значение не уникально', 'products_barcode');
+        }
+    }
+
     function readOne($primary_key)
     {
         if(is_array($primary_key)){
             return parent::readOne($primary_key);
         }
+
+        //TODO добавить вытягивание категории
+    }
+
+    function createOne($data)
+    {
+        $data['products_last_modified'] = gmdate('Y-m-d H:i:s');
+
+        $id = parent::createOne($data); //  array('products_id'=>'0')
+
+        $id = $data['products_id'] ;
+
+        //  привязка к категории
+        if((int)$id > 0)
+        if(isset($data['categories_id'])){
+            $insertBuilder        = app()->getDb()
+                ->insert( 'products_to_categories' )
+                ->set( 'categories_id', $data['categories_id'] )
+                ->set( 'products_id', $id )
+            ;
+            $insertBuilder->execute();
+        }
+    }
+
+    function updateOne($primary, $data)
+    {
+        $category = app()->getDb()->fetchRow("SELECT * FROM products_to_categories WHERE products_id = '{$data['products_id']}'");
+        if(isset($category['categories_id'])){
+
+            if(isset($data['categories_id'])){
+
+                /*
+                if((int)$data['categories_id'] === (int)$category['categories_id']){
+                    // Do nothing
+                } else {
+                    $insertBuilder        = app()->getDb()
+                        ->insert( 'products_to_categories' )
+                        ->set( 'categories_id', $data['categories_id'] )
+                        ->set( 'products_id', $data['products_id'] )
+                    ;
+                    $insertBuilder->execute();
+                }
+                */
+
+                // FIXME сейчас оно удаляет все записи из products_to_categories
+                // TODO поддерживать несколько записей
+                app()->getDb()->delete('products_to_categories')->where("products_id = ?",$data['products_id'])->execute();
+
+                $insertBuilder        = app()->getDb()
+                    ->insert( 'products_to_categories' )
+                    ->set( 'categories_id', $data['categories_id'] )
+                    ->set( 'products_id', $data['products_id'] )
+                ;
+                $insertBuilder->execute();
+            }
+        }
+
+        parent::updateOne($primary,$data);
     }
 }

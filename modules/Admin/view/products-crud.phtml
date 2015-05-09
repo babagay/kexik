@@ -5,11 +5,15 @@
 
 
 {# Форма загрузки титульной картинки #}
-<form action="{{ baseUrl('admin') }}/upload-image/products_id/{{ row.products_id }}" enctype="multipart/form-data" method="post"   data-id="{{ row.products_id }}" name="title-image-form-{{ row.products_id }}" id="{{ uid }}" class="form-horizontal">
-    <fieldset>
-        <div class="control-group">
-            <label class="control-label" for="">Картинка</label>
-            <div class="controls">
+<form action="{{ baseUrl('admin') }}/upload-image/products_id/{{ row.products_id }}" enctype="multipart/form-data" method="post"   data-id="{{ row.products_id }}" name="title-image-form-{{ row.products_id }}" id="{{ uid }}" class="title-image-form form-horizontal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h3 class="modal-title"> {{ row.products_name }} </h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="title-image">Картинка</label>
+            <div class="controls col-lg-10">
                 <div style="display:none" name="formloading"><img alt="Загрузка...." src="{{ baseUrl('public/images/loader_2.gif') }}"></div>
                 <div id="imgloadbutton-2">
                     <input type="file"   name="title-image" class="filestyle" data-icon="true" data-buttonText="Выбрать файл">
@@ -18,9 +22,17 @@
             </div>
         </div>
         <input type="hidden" name="products_id" value="{{ row.products_id }}"/>
-    </fieldset>
 
-    <!--input type="hidden" name="orders_id" value="{{ row.orders_id }}"/>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="squarify">{{ __('Обрезать под квадрат') }}</label>
+            <div class="col-lg-10">
+                <input type="checkbox" name="squarify" checked="checked">
+            </div>
+        </div>
+
+    </div>
+
+    <!--
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h3 class="modal-title">Заказ</h3>
@@ -53,8 +65,8 @@
     <div name="preview" id="preview-{{ products_id }}" class="preview"></div>
 
     <div class="modal-footer">
-        <!--button type="submit" class="btn btn-primary">{{ __('Сохранить') }}</button-->
-        <a href="#" class="btn btn-default" data-dismiss="modal">{{ __('Отмена') }}</a>
+        <button type="reset" class="btn btn-primary ok">{{ __('Применить') }}</button>
+        <a href="#" class="btn btn-default" data-dismiss="modal">{{ __('Закрыть') }}</a>
     </div>
 
 </form>
@@ -63,20 +75,29 @@
 
 
 {% if errors %}
-Error
+    Error
 
 {% endif %}
 
 
     <script>
         require(["jquery", "jquery.form", "bluz", "filestyle"],  function ($, jqueryform, bluz, filestyle) {
+            $("form.title-image-form").find("button.ok").off().on("click",function(e){
+
+                $(this).closest("form").find("button.close").click();
+                $("div[data-spy=grid] ul.pager  li a").click()
+
+            });
+
             $("input[name=title-image]").off("click").on("change", function(){
 
                 var products_id = $(this).closest("form").attr("data-id")
+                var squarify =  $(this).closest("form").find("input[name=squarify]").prop( "checked" )
 
                 $("#preview").html("");
                 $("form[name=title-image-form-"+products_id+"]").ajaxForm({
                     target: ".preview",
+                    data: {"convert":squarify},
                     beforeSubmit:function(){
                         //console.log("s");
                         $("div[name=formloading]").show();

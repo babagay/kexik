@@ -71,14 +71,30 @@ class Crud extends AbstractController
                         return $result;
                     }
                 } catch (ValidationException $e) {
+                    //fb($this->getCrud()->getErrors());
+
                     $row = $this->readOne(null);
-                    $row->setFromArray($this->data);
-                    $result = array(
-                        'row'    => $row,
-                        'errors' => $this->getCrud()->getErrors(),
-                        'method' => $this->getMethod()
-                    );
-                    return $result;
+                    if(is_object($row)){
+                        $row->setFromArray($this->data);
+                        $result = array(
+                            'row'    => $row,
+                            'errors' => $this->getCrud()->getErrors(),
+                            'method' => $this->getMethod()
+                        );
+                        return $result;
+                    }
+
+                    // [!] Вставил if для вывода ошибок валидации при созддании айтема
+                    if( is_array($this->getCrud()->getErrors()) ){
+                        $result = array(
+                            'row'    => $row,
+                            'errors' => $this->getCrud()->getErrors(),
+                            'method' => $this->getMethod()
+                        );
+                        return $result;
+                    }
+
+                    return array('row' => 'Not an object');
                 }
                 break;
             case AbstractRequest::METHOD_PATCH:

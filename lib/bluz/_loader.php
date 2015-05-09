@@ -46,6 +46,8 @@ require_once 'Common/Helper.php';
 require_once 'Common/Singleton.php';
 require_once 'Common/Options.php';
 
+require_once PATH_LIB . '/twig/twig/lib/Twig/Autoloader.php';
+
 
 // application
 // require_once 'Application/Application.php';
@@ -67,9 +69,9 @@ require_once 'Session/Store/SessionStore.php';
 //require_once 'Session/SessionException.php';
 //require_once 'Translator/Translator.php';
 //require_once 'View/ViewInterface.php';
-require_once 'View/View.php';
-require_once 'View/Layout.php';
-require_once 'Db/Db.php';
+//require_once 'View/View.php';
+//require_once 'View/Layout.php';
+//require_once 'Db/Db.php';
 require_once 'Request/HttpRequest.php';
 require_once 'Logger/Logger.php';
 require_once 'Auth/Auth.php';

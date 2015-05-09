@@ -12,25 +12,25 @@
         <div class="form-group">
             <label class="control-label col-lg-2" for="address">{{ __('Адрес доставки') }}</label>
             <div class="col-lg-10">
-                <input type="text" class="form-control" id="address" name="address" value="{{ row.address }}" required />
+                <input type="text" class="form-control" id="address" name="address" value="{{ row.address }}" _required />
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-lg-2" for="notes">{{ __('Замечания') }}</label>
             <div class="col-lg-10">
-                <input type="text" class="form-control" id="notes" name="notes" value="{{ row.notes }}" required />
+                <input type="text" class="form-control" id="notes" name="notes" value="{{ row.notes }}" _required />
             </div>
         </div>
-        <!--div class="form-group">
-            <label class="control-label col-lg-2" for="status">{{ __('Status') }}</label>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="status">{{ __('Статус') }}</label>
             <div class="col-lg-10">
-                <select id="status" name="status" class="form-control">
-                    <option {% if row.status == 'active' %} 'selected' {% endif %}>active</option>
-                    <option {% if row.status == 'disable' %} 'selected' {% endif %}>disable</option>
-                    <option {% if row.status == 'delete' %} 'selected' {% endif %}>delete</option>
+                <select id="order_status" name="order_status" class="form-control">
+                    <option {% if row.order_status == 1 %} selected {% endif %} value="1">Открыт</option>
+                    <option {% if row.order_status == 2 %} selected {% endif %} value="2">Закрыт</option>
+                    <option {% if row.order_status == 0 %} selected {% endif %} value="0">Отменён</option>
                 </select>
             </div>
-        </div-->
+        </div>
     </div>
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary">{{ __('Сохранить') }}</button>

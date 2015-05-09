@@ -438,7 +438,7 @@ abstract class Table
         $whereClause = null;
         $whereParams = array();
 
-        if (sizeof($whereList) == 2 && is_string($whereList[0])) {fb(11);
+        if (sizeof($whereList) == 2 && is_string($whereList[0])) {
             $whereClause = $whereList[0];
             $whereParams = $whereList[1];
         } elseif (sizeof($whereList)) {

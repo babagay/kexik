@@ -288,7 +288,10 @@ class Db extends Options
             );
         }
         $this->log($sql, $params);
+
+        // [!] Если перехватить здесь исключение, оно НЕ попадает в лог
         $stmt->execute($params);
+
         return $stmt->rowCount();
     }
 

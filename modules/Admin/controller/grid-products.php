@@ -12,7 +12,7 @@ return
 /**
  * @return \closure
  */
-function ($products_id = null) use ($view, $module, $controller, $_this) {
+function ($products_id = null, $operation = null) use ($view, $module, $controller, $_this) {
     /**
      * @var \Application\Bootstrap $this
      * @var \Bluz\View\View $view
@@ -26,6 +26,15 @@ function ($products_id = null) use ($view, $module, $controller, $_this) {
     $get_params = $_this->getRequest()->get;
     //fb($_this->getRequest()->getRawParams() );
     $products_name_filter = '';
+
+    # Скрыть продукт
+    if(!is_null($operation) AND !is_null($products_id)){
+        if($operation == 'unhide') $operation = 1; else $operation = 0;
+        Products\Table::update(['products_visibility' => $operation],array('products_id' => $products_id));
+    }
+
+
+
 
     if(isset($get_params['sql-filter-products_name'])){
         // полнотекстовый поиск
@@ -60,11 +69,46 @@ function ($products_id = null) use ($view, $module, $controller, $_this) {
     if(isset($params['sql-limit'])) $grid->setLimit($params['sql-limit']);
 
 
+    $filters = array(
+        'products_id' => 'Артикул',
+        'products_barcode' => 'Штрихкод',
+        'products_name' => 'Наименование',
+    );
+
+    $default_filter = ['key' => 'products_name', 'title' => 'Наименование'];
+
+    $field =  $default_filter['title']; //'Выбрать поле';
+    $value = '';
+    $type = $grid::FILTER_LIKE;
+
+    $now_filters = $grid->getFilters() ;
+    foreach($now_filters as $column => $filter){
+        foreach($filters as $allowed_filter => $title){
+            if($allowed_filter == $column){
+                $field = $filters[$column];
+
+                foreach($filter as $filter_type => $filter_val){
+
+                    $value = str_replace("fulltext-","",$filter_val);
+
+                    $type = $filter_type;
+                }
+                break;
+            }
+        }
+    }
+
+    $view->default_filter = $default_filter;
+    $view->field = $field;
+    $view->value = Bluz\Translator\Translator::translit($value);
+    $view->type = $type;
+    $view->filters = $filters;
 
     $view->grid = $grid;
 
     $view->products_name_filter = $products_name_filter;
 
+    //$view->operation_hide = $operation_hide;
 
 /*
     $emptyRows = 0;

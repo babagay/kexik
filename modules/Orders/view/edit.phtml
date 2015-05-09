@@ -1,0 +1,21 @@
+<div id="order-edit-wrapper">
+
+    {{ dispatch('orders','grid-products', {'orders_id':orders_id}) }}
+
+    <div class="grid-products-total">Сумма: <span class="total"> {{ order.row.data.total|round(2) }} </span> грн</div>
+
+</div>
+
+
+<script>
+    require(["jquery", "bluz.notify"], function($, notify) {
+        $("div[data-grid=order-products-sql]").on("reload",function(){
+            // TODO обновить параметры заказа после перезагрузки гридды
+            // Вариант: кинуть аякс на edit.php и получить параметры заказа
+
+            //$(".total").html(45)
+        })
+    });
+
+
+</script>

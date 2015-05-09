@@ -1,0 +1,92 @@
+<script>
+    require(["bluz.grid"]);
+</script>
+
+
+<div class="clearfix" data-spy="grid" data-grid="order-products-{{ attribute(grid_products, 'getUid')  }}" >
+
+<form class="filter-form" action="{{ baseUrl('/orders/grid-products') }}">
+    <div class="input-group-btn grid-filter-search">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Поле для поиска <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a href="#" data-filter="{{ grid.getUid }}-filter-products_id"> Артикул </a></li>
+            <li><a href="#" data-filter="{{ grid.getUid }}-filter-products_barcode"> Штрихкод </a></li>
+            <li><a href="#" data-filter="{{ grid.getUid }}-filter-products_name"> Наименование </a></li>
+        </ul>
+    </div><!-- /btn-group -->
+    <input name="grid-filter-" class="grid-filter-search-input" value="" type="hidden"/>
+    <input name="orders_id"  value="{{ orders_id }}" type="hidden"/>
+
+    <input name="search-like" type="search" class="form-control" value="" required />
+</form>
+
+
+
+{# partial('grid/limit.phtml', {'grid': grid_products}) #}
+
+<table class="table grid_products">
+    <thead>
+    <tr>
+        <th width="60px"><!--a href="{{ grid_products.order('products_id', null, 'desc', false) }}"-->Артикул</th>
+        <th width="120px"><!--a href="{{ grid_products.order('products_barcode') }}"-->Штрихкод</th>
+        <th width="120px"><!--a href="{{ grid_products.order('products_name') }}"-->Наименование</th>
+        <th width="20px"> <!--Картинка--> </th>
+        <th width="120px"><a href="{{ grid_products.order('products_shoppingcart_price') }}"> </a></th>
+        <th width="120px"><!--a href="{{ grid_products.order('products_price') }}"-->Цена </th>
+        <th width="120px"><!--a href="{{ grid_products.order('products_quantity') }}"-->Количество </th>
+        <th width="120px"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in attribute(grid_products, 'getData') %}
+    <tr>
+        <td class="grid-text">{{ row['products_id'] }}</td>
+        <td class="grid-text">{{ row['products_barcode'] }}</td>
+        <td class="grid-text">{{ row['products_name'] }}</td>
+        <td>
+            {% if(row['image_small']) %}
+            <img src="{{ row['image_small'] }}" class="grid-image">
+            {% endif %}
+        </td>
+        <td class="grid-text"> </td>
+        <td class="grid-text">  {{ row.price|round(2) }}</td>
+        <td class="grid-text"> {{ row.products_num }} ({{ row['products_unit'] }})</td>
+        <td class="controls">
+            <a href="{{ url('admin', 'products-crud', {'products_id' : row['products_id']}) }}" class="btn btn-xs btn-primary dialog" data-ajax-method="get">
+                <i class="fa fa-pencil"></i> edit
+            </a>
+            <a href="{{ grid_products.getUrl({'orders_id':orders_id}) }}" onclick="javascript:return false" class="drop-item" data-id="{{ row.products_id }}">del</a>
+            <!--a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
+                <i class="fa fa-times"></i>
+            </a-->
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+{{ partial('grid/empty-rows.phtml', {'grid': grid_products}) }}
+{{ partial('grid/pagination.phtml', {'grid': grid_products}) }}
+{# partial('grid/total.phtml', {'grid': grid_products}) #}
+<ul class="pager pull-left">
+    <li>
+        <a href="{{ baseUrl('orders') }}/grid-products/orders_id/{{ orders_id }}" class="filter">{{ __('Показать все продукты') }}
+            <!--strong>{{ grid_products.total }}</strong--> </a>
+    </li>
+    <li>
+    </li>
+</ul>
+
+
+
+</div>
+
+
+
+
+
+
+

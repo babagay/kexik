@@ -27,3 +27,36 @@
     </script>
 
 {{ dispatch('admin', 'grid-products') }}
+
+<script>
+    require(["jquery", "bluz.notify"  ], function($, notify) {
+        $("#add-product").off().on("click",function(e){
+            var data = {}
+            var url = "admin/products-crud"
+
+            $.ajax({
+                type: "POST",
+                data: data,
+                url: url,
+                context: document.body,
+                cache: false,
+                dataType: "html"
+            }).done(function(response,status,responseObj) {
+                    if(status == "success"){
+                        if(responseObj.status != 200){
+                            notify.addError("Error 404")
+                        }
+
+                        $("#content_box").html(response)
+
+                        //$(".filter-origin").prop("checked",setChecked)
+                        //$(checkbox).prop("checked",setChecked)
+                    }
+            });
+
+            return true;
+        });
+
+    });
+
+</script>

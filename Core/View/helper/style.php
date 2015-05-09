@@ -23,11 +23,10 @@ return
         $_this = \Core\Helper\Registry::getInstance()->view;
 
         $tmp = false;
-
-
+ 
         // Хак с параметрами
-        if(is_array($style)){
-            if(isset($style[0])){
+        if(is_array($style)){ 
+            if(isset($style[0]) OR $style[0] === null){ 
                 $tmp = $style[0];
             }
             if(isset($style[1])){
@@ -39,7 +38,7 @@ return
             $style = $tmp;
         }
 
-
+        if($style === null) return false;
 
 
         if ('.css' == substr($style, -4)) {

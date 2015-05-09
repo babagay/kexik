@@ -5,21 +5,19 @@
     {% endfor %}
     #}
 
-<form class="filter-form" action="{{ baseUrl('/admin/grid-products') }}">
-    <div class="input-group-btn grid-filter-search">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Поле для поиска <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-            <li><a href="#" data-filter="{{ grid.getUid }}-filter-products_id"> Артикул </a></li>
-            <li><a href="#" data-filter="{{ grid.getUid }}-filter-products_barcode"> Штрихкод </a></li>
-            <li><a href="#" data-filter="{{ grid.getUid }}-filter-products_name"> Наименование </a></li>
-        </ul>
-    </div><!-- /btn-group -->
-    <input name="grid-filter-products_id" class="grid-filter-search-input" value="" type="hidden"/>
-    <input name="grid-filter-products_barcode" class="grid-filter-search-input" value="" type="hidden"/>
-    <input name="grid-filter-products_name" class="grid-filter-search-input" value="" type="hidden"/>
+ <form class="filter-form" action="{{ grid.getUrl({'a':1}) }}"> {# grid.getUrl({'a':1}) #}
+     <div class="input-group-btn grid-filter-search _one-line">
+         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ default_filter.title }} <span class="caret"></span></button>
+         <ul class="dropdown-menu">
+             {% for column,filtertitle in filters %}
+             <li><a href="#" data-filter="{{ grid.getUid }}-filter-{{ column }}"> {{ filtertitle }} </a></li>
+             {% endfor %}
+         </ul>
+     </div>
+     <input name="{{ grid.getUid }}-filter-{{ default_filter.key }}" class="grid-filter-search-input" value="{# type }}-{{ value #}" type="hidden"/>
 
-    <input name="search-like" type="search" class="form-control" value="" required />
-</form>
+     <input name="search-like" type="search" class="form-control _one-line-search" value="{# value #}" required/>
+ </form>
 
 {#
 <?php

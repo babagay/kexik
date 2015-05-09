@@ -326,6 +326,10 @@ define(['jquery', 'bluz', 'bluz.notify'], function ($, bluz, notify) {
 
                         // data can be "undefined" if server return
                         // 204 header without content
+
+                        // [!] data может содержать массив, сформированный в Controller|Crud::__invoke() в секции POST: ['row','errors','method']
+                        // Если все без ошибок, этот массив пустой или даже отсутсвует вовсе
+
                         if (data !== undefined && data.errors !== undefined) {
                             $this.trigger('error.form.bluz', arguments);
                             require(['bluz.form'], function(form) {

@@ -15,4 +15,7 @@ return array(
     'Zoqa\\Testspace\\' => array($baseDir . '/Core/Helper'), // работает
     'Application\\Test\\' => array($baseDir . '/Core/Model/Test'), // работает
     'Awakenweb\\Livedocx\\' => array($baseDir . '/lib/Awakenweb/Livedocx'), // работает
+    'Application\\Filters\\' => array($baseDir . '/Core/Model/Filters'), // работает
+    'Application\\Manufacturers\\' => array($baseDir . '/Core/Model/Manufacturers'), // работает
+
 );

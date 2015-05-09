@@ -4,13 +4,19 @@ namespace Application;
 
 //use Application\Users\Table;
 
+use Awakenweb\Livedocx\tests\units\Livedocx;
+use Bluz\Cache\Cache;
+use Bluz\Crud\Table;
+use Zend\Mvc\Application;
+
 return
     /**
      * @return \closure
      * Для корректной работы нужно задать либо $категория (categories_id), либо $продукты (array of products_id)
-     * Всегда нужно передавать все параметры
+     * При вызове из phtml-шаблона Всегда нужно передавать все параметры
+     * $фильтры - массив отмеченных в данный момент фильтров
      */
-    function ($категория = null, $manufacturers_id = null, $продукты = null) {
+    function ($категория = null, $manufacturers_id = null, $продукты = null, $порядок_сортировки = null, $фильтры = null, $поисковая_фраза = null) {
         /**
          * @var \Application\Bootstrap $this
          */
@@ -27,8 +33,31 @@ return
 
         $sub_categories = array();
 
+        $filters = null;
+        $filterKeeper = app()->getFilterKeeper();
 
-        if(!is_null($категория)){
+        if (!is_null($продукты)){
+            /**
+             * Передаем непосредственно массив products_id
+             * Сюда входит либо через поиск, либо через фильтры
+             */
+
+            $products = $продукты; // //fb($products[0] = products_id);
+            $products_str = implode(",",$продукты);
+
+            $query = " SELECT *
+                       FROM categories c
+                       WHERE categories_level = ". $db->quote(2) . "
+                       AND parent_id IN(
+                            SELECT categories_id
+                           FROM products_to_categories
+                           WHERE products_id IN ($products_str)
+                           )
+                        ";
+
+            $sub_categories = $db->fetchAll($query);
+
+        } elseif(!is_null($категория)){
             $query = "  SELECT p2c.products_id
                         FROM products_to_categories p2c
                         WHERE categories_id = " . $db->quote($категория);
@@ -50,25 +79,6 @@ return
 
             //fb($products[0]['products_id'] = products_id);
 
-        } elseif (!is_null($продукты)){
-            /**
-             * Сюда входит через поиск
-             */
-
-            $products = $продукты; // //fb($products[0] = products_id);
-            $products_str = implode(",",$продукты);
-
-            $query = " SELECT *
-                       FROM categories c
-                       WHERE categories_level = ". $db->quote(2) . "
-                       AND parent_id IN(
-                            SELECT categories_id
-                           FROM products_to_categories
-                           WHERE products_id IN ($products_str)
-                           )
-                        ";
-
-            $sub_categories = $db->fetchAll($query);
         }
 
         $query = " SELECT p.manufacturers_id, m.manufacturers_id, m.manufacturers_name
@@ -76,6 +86,7 @@ return
                     JOIN manufacturers m ON m.manufacturers_id = p.manufacturers_id
                     WHERE products_id IN ($products_str)
                     GROUP BY p.manufacturers_id
+                    ORDER BY m.manufacturers_name
         ";
 
         $manufacturers = $db->fetchAll($query);
@@ -92,7 +103,25 @@ return
             }
         }
 
+        // Фильтр по сортировке цены
+        $sort_order_current = "Цена:";
+        if(!is_null($порядок_сортировки)){
+          if(preg_match('/products_shoppingcart_price/',$порядок_сортировки)){
+          if( preg_match('/asc/',$порядок_сортировки) ) $sort_order_current = "по возрастанию";
+          elseif( preg_match('/desc/',$порядок_сортировки) ) $sort_order_current = "по убыванию"; 
+          }          
+        }
+        
         $html = '<div class="position-relative">
+                    <div class="select-cabnet"><span> '.$sort_order_current.'   </span>
+                        <ul class="select-no-display">
+                            <li><a href="'.$view->baseUrl('catalog/products').'" direction="asc" class="filter-price-order">по возрастанию </a></li>
+                            <li><a href="'.$view->baseUrl('catalog/products').'" direction="desc" class="filter-price-order">по убыванию</a></li>
+                        </ul>
+                    </div>
+                </div>';
+        
+        $html .= '<div class="position-relative">
                     <div class="select-cabnet">
                         <span id="filter_manufacturer_name">'.$manufacturer_name.'</span>
                         <ul class="select-no-display">
@@ -110,34 +139,105 @@ return
 
         ///$("#filter_manufacturer_name").html('aиьтиьтиsd1ти')
 
+        $html .= "<div class=\"checkboxes\">";
+
         // Показать субкатегории
         if(isset($sub_categories[0])){
 
             foreach($sub_categories as $sub_category){
                 $checked = false;
-                $html .= "<div>" . $view->checkbox($sub_category['categories_id'],"on",$checked,["data-name" => "asd", "class" => "filter-subcategory"]) . " " . $sub_category['categories_name'] . "</div>" ;
+
+
+
+                $html .= " <div>" . $view->checkbox($sub_category['categories_id'],"on",$checked,["data-name" => "asd", "class" => "filter-subcategory"]) . "<label> " . $sub_category['categories_name'] . "</label></div>" ;
             }
 
         }
 
-        // Показать фильтры
-        $query = "SELECT f.*
-                  FROM filters_to_products f2p
-                  LEFT JOIN filters f ON f.filters_id = f2p.filters_id
-                  WHERE f2p.products_id IN($products_str)
-                   GROUP BY  f2p.filters_id";
 
-        $filters = $db->fetchAll($query);
+
+
+        /*
+        //if(!is_null($фильтры)){
+        if(false){
+            //FIXME зачем нужен этот блок
+            $filters_ids_str = implode(",",$фильтры['filter_origin']);
+
+            $query = "SELECT f.*
+                      FROM filters f
+                      WHERE filters_id IN($filters_ids_str)
+                     ";
+
+            $filters = $db->fetchAll($query);
+
+        }
+        */
+
+        // Берем оригинальные фильтры
+        // - по поисковой фразе
+        // - по  категории и вендору
+        // - по категории
+            if (!is_null($поисковая_фраза)){
+
+                if($фильтры_по_фразе = $filterKeeper->setPhrase($поисковая_фраза)->selectFilterType("origin")->getFilters()){
+                    $filters = $фильтры_по_фразе;
+                } else {
+                    $filters = Filters\Table::getInstance()->getFiltersByProducts($products_str);
+                    $filterKeeper->setFiltersOrigin($filters);
+                }
+
+            } elseif(!is_null($manufacturers_id) AND !is_null($категория)){
+                // получить фильтры для вендора внутри категории
+
+                if($фильтры_вендора = $filterKeeper->setVendor($manufacturers_id,$категория)->selectFilterType("origin")->getFilters()){
+                    $filters = $фильтры_вендора;
+                } else {
+                    $filters = Filters\Table::getInstance()->getFiltersByProducts($products_str);
+                    $filterKeeper->setFiltersOrigin($filters);
+                }
+
+            } elseif(!is_null($категория)) {
+                // Берем фильтры для категории
+
+                if($фильтры_категории = $filterKeeper->clearContext()->selectContext("category",$категория)->selectFilterType("origin")->getFilters()){
+                    $filters = $фильтры_категории;
+                } else {
+                    $filters = Filters\Table::getInstance()->getFiltersByProducts($products_str);
+                    $filterKeeper->setFiltersOrigin($filters);
+                }
+            }
+
+
+
+
+
+
+
 
         if(isset($filters[0])){
             foreach($filters as $filter){
                 $checked = false;
-                $html .= "<div>" . $view->checkbox($filter['key'],"on",$checked,["data-name" => "asd", "class" => "filter-origin"]) . " " . $filter['name'] . "</div>" ;
+
+                if(is_array($фильтры)){
+
+                    if(isset($фильтры['filter_origin'])){
+                        //$фильтры['filter_origin'] = array_unique($фильтры['filter_origin']);
+                        foreach($фильтры['filter_origin'] as $id => $_filter){
+                            if((int)$_filter == (int)$filter['filters_id']){
+                                $checked = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+
+                $html .= ' <div>' . $view->checkbox($filter['key'],"on",$checked,["data-id" => $filter['filters_id'], "class" => "filter-origin"]) . " <label>" . $filter['name'] . "</label></div>" ;
             }
         }
 
 
-
+        $html .= "</div>";
 
         echo $html;
     };
