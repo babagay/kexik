@@ -225,6 +225,7 @@ aside#main-nav nav ul li img {
     float: left;
     min-height: 400px;
     padding: 20px 0;
+    margin-left: -6px;
 }
 .submenu-wrapper .submenu ul{
     list-style: none;
@@ -678,6 +679,13 @@ a.print.form-3 {
 }
 .row-highlite-2 {
     color: #d7a178;
+}
+.row-highlite-1.order-type-2 {
+    color: #101813;
+    _color: #000000;
+}
+.row-highlite-2.order-type-2 {
+    color: #999;
 }
 a.edit-order {
     color: #0000AA;
