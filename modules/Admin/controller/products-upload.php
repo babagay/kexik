@@ -196,10 +196,13 @@
                         $number_of_operatedproducts = $row_xls[0];
 
                         // [!]:ALTERNATE Обработка продуктов , взятых из файла с сокращенным форматом
-                        $products_shoppingcart_price = $row_xls[1];
-                        $products_price = $row_xls[2];
-                        $products_quantity = $row_xls[3];
-                        $products_barcode =  $row_xls[4];
+                        $products_id = $row_xls[1];
+                        $products_name = $row_xls[2];
+                        $products_unit = $row_xls[3];
+                        $products_shoppingcart_price = $row_xls[5];
+                        $products_price = $row_xls[6]; // Оптовая
+                        $products_quantity = $row_xls[7];
+                        $products_barcode =  $row_xls[8];
                         $updateBuilder = $db
                             ->update('products')
                             ->setArray(
@@ -207,14 +210,16 @@
                                     'products_shoppingcart_price' => $products_shoppingcart_price,
                                     'products_price' => $products_price,
                                     'products_quantity' => $products_quantity,
+                                    'products_name' => $products_name,
+                                    'products_unit' => $products_unit,
                                     'products_last_modified' => date('Y-m-d H:i:s'),
                                 )
                             )
                             ->where('products_barcode = ?', $products_barcode);
                         if( $updateBuilder->execute() )
-                            $logger->products("Product updated: (barcode: $products_barcode) ");
+                            $logger->products("Product updated: $products_id (barcode: $products_barcode) ");
                         else
-                            $logger->products("Product not found: (barcode: $products_barcode) ");
+                            $logger->products("Product not found: $products_id (barcode: $products_barcode) ");
                         continue;
                         //
 
