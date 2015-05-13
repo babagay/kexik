@@ -19,6 +19,10 @@
      * - можно указать последний удачно загруженный продукт ($id)
      * - если задать parse_category = 1 , из 12-го поля будут вытаскиваться категории
      * - если $do_update_only = true, тогда модифицируются только существующие продукты, новые не добавляются
+     *
+     * ALTERNATE:
+     * Обработка альтернативного формата исходного файла
+     * Происходит только обновление свойств продуктов
      */
 
     return
@@ -41,6 +45,8 @@
             if( (int)$id === 0) $id = null;           
             
             $operate_the_product = false;
+
+            $number_of_operatedproducts = -1;
 
             /**
              * Только обновлять существующие продукты
@@ -70,7 +76,6 @@
             $app_object = app()->getInstance();
 
             $db =  app()->getDb();
-
 
             $selectBuilder = app()->getDb()
                 ->select('*')
@@ -115,12 +120,14 @@
                         ORDER BY manufacturers_id
                         ";
             $manufacturers = $db->fetchAll($запрос);
+            $logger->products("Existing Manufacturers have been fetched");
 
             // Взять все существующие продукты
             $selectBuilder = app()->getDb()
                 ->select('p.products_id')
                 ->from('products', 'p');
             $products_exist = $selectBuilder->execute();
+            $logger->products("Existing Products have been fetched");
 
             $tmp = array();
             if(is_array($products_exist)) {
@@ -134,18 +141,20 @@
             $objReader = \PHPExcel_IOFactory::createReader('Excel2007');
             //$objPHPExcel = $objReader->load(PUBLIC_PATH . "/data/files/products1.xlsx");
             $objPHPExcel = $objReader->load($path.$filename);
+            $logger->products("File loaded " . $path.$filename);
 
             $new_products_arr = array();
 
             foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
-                // Проход Excel-таблицы
+                // Проход по листам документа
                 ///fb( 'Worksheet - ' . $worksheet->getTitle() ); - название листа
 
                 $ind = 1;
+
                 $header_skipped = false;
 
                 foreach( $worksheet->getRowIterator() as $row ) {
-                    // Проход строки
+                    // Проход по строкам листа
 
                     $row_xls = array();
                     $category_arr = array();
@@ -183,6 +192,31 @@
                                 }
                             }
                         }
+
+                        $number_of_operatedproducts = $row_xls[0];
+
+                        // [!]:ALTERNATE Обработка продуктов , взятых из файла с сокращенным форматом
+                        $products_shoppingcart_price = $row_xls[1];
+                        $products_price = $row_xls[2];
+                        $products_quantity = $row_xls[3];
+                        $products_barcode =  $row_xls[4];
+                        $updateBuilder = $db
+                            ->update('products')
+                            ->setArray(
+                                array(
+                                    'products_shoppingcart_price' => $products_shoppingcart_price,
+                                    'products_price' => $products_price,
+                                    'products_quantity' => $products_quantity,
+                                    'products_last_modified' => date('Y-m-d H:i:s'),
+                                )
+                            )
+                            ->where('products_barcode = ?', $products_barcode);
+                        if( $updateBuilder->execute() )
+                            $logger->products("Product updated: (barcode: $products_barcode) ");
+                        else
+                            $logger->products("Product not found: (barcode: $products_barcode) ");
+                        continue;
+                        //
 
                         $current_manufacturer = trim($row_xls[8]);
 
@@ -592,6 +626,7 @@
 
                    // }
 
+            $logger->products("Products operated number: " . $number_of_operatedproducts);
             $logger->products("Import ended at " . date('Y-m-d H:i:s'));
 
             /**
