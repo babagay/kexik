@@ -77,9 +77,12 @@ class Crud extends \Bluz\Crud\Table
 
         ///$user = app()->getAuth()->getIdentity();
         $user = $this->user;
+        $discount = (int)$user->discount;
 
         $data['users_id'] = $user->id;
-        $data['user_discount'] = $user->discount;
+
+        if( !isset($data['user_discount']) )
+            $data['user_discount'] = $discount;
 
         $row = $this->getTable()->create();
         $row->setFromArray($data);
@@ -119,7 +122,6 @@ class Crud extends \Bluz\Crud\Table
             }
 
             if($calculate_total){
-                $discount = (int)$user->discount;
                 if($discount > 0 AND $discount < 100){
                     // Применить скидку
                     $discount_summ = $total * $discount / 100;
@@ -139,8 +141,10 @@ class Crud extends \Bluz\Crud\Table
                 $updateBuilder->execute();
             }
         } else {
-            $this->exception->setCode(1);
-            throw $this->exception;
+            if((int)$data['order_type'] === Table::ORDERTYPE_FRONTEND){
+                $this->exception->setCode(1);
+                throw $this->exception;
+            }
         }
 
 
@@ -197,6 +201,10 @@ class Crud extends \Bluz\Crud\Table
         }
     }
 
+    /**
+     * @param mixed $primary_key
+     * @return Row
+     */
     function readOne($primary_key)
     {
     /**
@@ -231,12 +239,22 @@ class Crud extends \Bluz\Crud\Table
                     WHERE  payment_types_id = '".$order->payment_types_id."' ");
                 $order->payment_type = $payment_type;
 
+                $order->order_status_str = Table::getInstance()->order_status_arr[$order->order_status];
+                $order->order_type_str = Table::getInstance()->order_type_arr[$order->order_type];
 
                 $products = app()->getDb()->fetchAll ("
                     SELECT op.*, p.*
                      FROM order_products op
                     JOIN products p ON p.products_id = op.products_id
                     WHERE  orders_id = '{$primary_key['orders_id']}' ");
+
+                if(sizeof($products)){
+                    $products_total = 0;
+                    foreach($products as $product){
+                        $products_total += $product['price'] * $product['products_num'];
+                    }
+                    $order->brutotal = $products_total;
+                }
 
                 $order->products = $products;
 
@@ -247,6 +265,10 @@ class Crud extends \Bluz\Crud\Table
         }
 
     }
+
+
+
+
 
 
 }

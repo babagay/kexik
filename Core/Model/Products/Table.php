@@ -10,7 +10,7 @@ namespace Application\Products;
  * Table
  *
  * @category Application
- * @package  table_name
+ * @package  Products
  *
  * @author   Anton Shevchuk
  * @created  08.07.11 17:36

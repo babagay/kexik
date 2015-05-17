@@ -680,12 +680,15 @@ a.print.form-3 {
 .row-highlite-2 {
     color: #d7a178;
 }
-.row-highlite-1.order-type-2 {
+.row-highlite-1.order-type-2, .order-type-highlite-2 {
     color: #101813;
     _color: #000000;
 }
 .row-highlite-2.order-type-2 {
     color: #999;
+}
+.order-type-highlite-1 {
+    color: #1eb25f;
 }
 a.edit-order {
     color: #0000AA;
@@ -698,4 +701,22 @@ table.grid tr.visible-0 {
 }
 select[name=categories_id] {
     max-width: 350px;
+}
+#order-details {
+    margin: 20px;
+}
+.form-control.grid-edit-field-1 {
+    width: 46px;
+    display: inline;
+}
+table#details, table#controls {
+    display: block;
+    float: left;
+    margin: 0 0 20px 0;
+}
+table#controls {
+    float: right;
+}
+#details td, table#controls td {
+    padding: 0 10px 0 0;
 }

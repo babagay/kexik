@@ -62,10 +62,19 @@ class SqlGrid extends \Bluz\Grid\Grid
             if(sizeof($tmp)) $products_str = implode(',',$tmp);
 
             if($products_str != ''){
-                $source = "SELECT  p.*, op.price, op.products_num
+                $source = "SELECT  p.*, op.price, op.products_num,
+                    (op.price * op.products_num) products_total
                     FROM " . $this->table_name . " p
                     LEFT JOIN order_products op ON op.products_id = p.products_id
                     WHERE p.products_id IN ( $products_str   )
+                    ";
+                $adapter->setSource( $source );
+            } else {
+                // заглушка. Нужна, т.к. $source нужно устанавливать при любом раскладе
+                $source = "SELECT  p.*, op.price, op.products_num
+                    FROM " . $this->table_name . " p
+                    LEFT JOIN order_products op ON op.products_id = p.products_id
+                    WHERE p.products_id = 0
                     ";
                 $adapter->setSource( $source );
             }
@@ -106,9 +115,21 @@ class SqlGrid extends \Bluz\Grid\Grid
 
             }
 
-
         } else {
-            $adapter->setSource( 'SELECT * FROM ' . $this->table_name );
+
+            // Параметры поиска переданы вручную - провести поиск
+            if( isset( $this->options['search']) ){
+                $key = $this->options['search'];
+                if( isset( $this->options['search-column']) ){
+                    $search_column = $this->options['search-column'];
+                    $adapter->setSource("SELECT *
+                                                FROM {$this->table_name}
+                                              WHERE $search_column LIKE '%$key%'
+                                              ");
+                }
+            } else
+            // По умолчанию - общий запрос
+                $adapter->setSource( 'SELECT * FROM ' . $this->table_name );
         }
 
          $this->setAdapter($adapter);

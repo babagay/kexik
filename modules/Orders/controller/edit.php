@@ -18,15 +18,19 @@ throw new \Bluz\Application\Exception\ApplicationException("Такого про�
 return $app_object->dispatch('catalog','products', array('продукт' => $param_4));
 
  */
+
+//use \Application\Orders;
+
 return
     /**
      * @param integer $orders_id
      * @param string $operation
      * @param integer $products_id
+     * @param array $params
      * @return \closure
      * @privilege Edit
      */
-    function ($orders_id = null, $operation = null, $products_id = null) use ($view) {
+    function ($orders_id = null, $operation = null, $products_id = null, $params = []) use ($view) {
 
         # Инициализация
         $app_object = app()->getInstance();
@@ -46,6 +50,21 @@ return
 
         $order = null;
 
+        if(isset($get_params['operation'])){
+            if(is_null($operation))
+                $operation = $get_params['operation'];
+        }
+        if(isset($get_params['orders_id'])){
+            if(is_null($orders_id))
+                $orders_id = $get_params['orders_id'];
+        }
+        if(isset($get_params['products_id'])){
+            if(is_null($products_id))
+                $products_id = $get_params['products_id'];
+        }
+
+
+
 
         # Тело
         $crumbs_arr =  array(
@@ -56,26 +75,41 @@ return
 
         switch($operation){
             case 'delete':
-                fb($products_id);
+                // Удалить продукт из заказа
+                $order = Application\Orders\Crud::getInstance()->readOne(['orders_id' => $orders_id]);
+                $order->deleteProduct($products_id);
+                return null;
+                break;
+            case 'add':
+                // Добавить продукт
+                $order = Application\Orders\Crud::getInstance()->readOne(['orders_id' => $orders_id]);
+                $order->addProduct($products_id);
+                return null;
+                break;
+            case 'update':
+                // Изменить продукт
+                $order = Application\Orders\Crud::getInstance()->readOne(['orders_id' => $orders_id]);
+                $order->updateProduct($products_id,$params);
+                return null;
+                break;
+            case 'update-order':
+                // TODO Изменить параметры заказа
+                fb('update-order');
+                ///Application\Orders\Table::getInstance()->updateProduct($products_id, $params);
+                return null;
                 break;
             default:
-                $crudController = new Bluz\Controller\Crud();
-                $crudController->setCrud(Application\Orders\Crud::getInstance());
-                $order = $crudController();
-                fb($crudController());
+                //$crudController = new Bluz\Controller\Crud();
+                //$crudController->setCrud(Application\Orders\Crud::getInstance());
+                //$order = $crudController();
+                //fb($crudController());
                 break;
         }
 
 
 
-
-
-
-
-
-
         # Вывод
-        $view->order = $order;
+        //$view->order = $order;
         $view->orders_id = $orders_id;
        // $view->total = $total;
 

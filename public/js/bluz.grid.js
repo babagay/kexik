@@ -20,18 +20,29 @@ define(['jquery', 'bluz'], function ($, bluz) {
             $grid.bind("reload", function() {
                 // ГРида перегрузилась
                 // console.log("reload fired")
+                // console.log($grid.data('grid')) // атрибут data-grid гриды, которая перегрузилась
+            });
+
+            $grid.bind("item-added", function() {
+                // Добавлен новый продукт
+            });
+
+            $grid.bind("item-updated", function() {
+                // Изменен айтем
             });
 
             // Drop item
-            $grid.on('click.bluz.ajax','a.drop-item', function () {
+            $grid.on('click.bluz.ajax','a.drop-item',  function () {
                 //console.log($grid.data('url')) // Выводит текущий урл, напр /kex/orders/edit/orders_id/89
+                //console.log( $(this).data('ajax-type') ) Берет тип ожидаемых данных (напр html) из атрибута data-ajax-type
+                //console.log( $(this).data('ajax-method') ) Берет http-метод, напр, get
 
                 var id = $(this).attr("data-id")
                 var href = $(this).attr('href');
 
                 $.ajax({
                     url: href,
-                    type: 'get',
+                    type: 'delete',
                     dataType: 'html',
                     success: function (html) {
                         //$grid.data('url', href);
@@ -41,6 +52,62 @@ define(['jquery', 'bluz'], function ($, bluz) {
                     }
                 });
                 return false;
+            });
+
+            // Add item
+            $grid.on('click.bluz.ajax', 'a.add-item', function () {
+                //console.log($grid.data('url')) // Выводит текущий урл, напр /kex/orders/edit/orders_id/89
+                var id = $(this).attr("data-id")
+                var href = $(this).attr('href');
+                var extrafield_name = $(this).data('extrafield-name')
+                var extrafield_value = undefined
+
+                if(extrafield_name != undefined) {
+                    extrafield_value = $("input[name="+extrafield_name+"]").val()
+                }
+
+                if(extrafield_value != undefined)
+                    href += "/" + extrafield_name + "/" + extrafield_value
+
+                $.ajax({
+                    url: href,
+                    type: 'add',
+                    dataType: 'html',
+                    success: function (html) {
+                        //$grid.data('url', href);
+                        $grid.html($(html).children().unwrap());
+
+                        $grid.trigger("item-added");
+                    }
+                });
+                return false;
+            });
+
+            // Update item
+            $grid.on('keypress', '.update-item', function (e) {
+
+                if(e.keyCode == 13){
+
+                    var id = $(this).attr("data-id")
+                    var url = $(this).data('url')
+                    var fileld_name = $(this).data('fileld-name')
+                    var data = {}
+                    data["operation"] = "update"
+                    data[fileld_name] = $(this).val()
+
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        dataType: 'html',
+                        data: data,
+                        success: function (html) {
+                            $grid.html($(html).children().unwrap());
+
+                            $grid.trigger("item-updated");
+                        }
+                    });
+                    return false;
+                }
             });
 
             // Hide item
@@ -105,6 +172,7 @@ define(['jquery', 'bluz'], function ($, bluz) {
                     }
                 });
             });
+
             // refresh grid if confirmed ajax button (e.g. delete record)
             $grid.on('success.ajax.bluz', 'a.ajax.confirm', function () {
                 $.ajax({

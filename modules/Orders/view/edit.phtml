@@ -1,19 +1,52 @@
 <div id="order-edit-wrapper">
 
-    {{ dispatch('orders','grid-products', {'orders_id':orders_id}) }}
+    {{ dispatch('orders','grid-products', {'orders_id':orders_id, 'gid':'order-products'}) }}
 
-    <div class="grid-products-total">Сумма: <span class="total"> {{ order.row.data.total|round(2) }} </span> грн</div>
+    <div id="order-details">
+    {{ dispatch('orders','details', {'orders_id':orders_id}) }}
+    </div>
+
+    <div  style="clear: both;"></div>
+
+    <input name="orders_id" value="{{ orders_id }}" type="hidden"/>
+
+    <!--div class="input-group create-group pull-left">
+        <a class="btn btn-primary pull-left dialog" data-ajax-method="get" href="{{ baseUrl('orders/add-products') }}">Добавить продукт</a>
+    </div-->
+
+    {{ dispatch('orders','grid-products', {'gid':'add-products'}) }}
 
 </div>
 
 
 <script>
     require(["jquery", "bluz.notify"], function($, notify) {
+        function updateOrder(){
+            var orders_id = $("input[name=orders_id]").val()
+            var url = "orders/details/orders_id/" + orders_id
+            $.ajax({
+                url: url,
+                type: "get",
+                dataType: "html",
+                success: function (html) {
+                    $("#order-details").html(html)
+                }
+            });
+        }
+
         $("div[data-grid=order-products-sql]").on("reload",function(){
             // TODO обновить параметры заказа после перезагрузки гридды
             // Вариант: кинуть аякс на edit.php и получить параметры заказа
+            updateOrder( )
+        })
 
-            //$(".total").html(45)
+        $("div[data-grid=add-products-sql]").on("item-added",function(){
+            $("div[data-grid=order-products-sql]").find("a.show-all").click()
+            updateOrder( )
+        })
+
+        $("div[data-grid=order-products-sql]").on("item-updated",function(){
+            updateOrder( )
         })
     });
 

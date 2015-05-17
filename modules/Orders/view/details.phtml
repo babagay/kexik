@@ -1,0 +1,93 @@
+<hr>
+<table id="details">
+    <tbody>
+    <tr>
+        <td>Заказ </td>
+        <td>#{{ order.row.data.orders_id }} (<span class="order-status-highlite-{{ order.row.data.order_status }}">{{ order.row.data.order_status_str }}</span>)
+            <br> <span class="order-type-highlite-{{ order.row.data.order_type }}">{{ order.row.data.order_type_str }}</span></td>
+    </tr>
+    <tr>
+        <td>Пользователь</td>
+        <td>{{ order.row.data.user.name }} {{ order.row.data.user.phone }}</td>
+    </tr>
+    <tr>
+        <td>Дата заказа</td>
+        <td>{{ order.row.data.date_added }}</td>
+    </tr>
+    <tr>
+        <td>Адрес</td>
+        <td>{{ order.row.data.address }} <br> {{ order.row.data.notes }}</td>
+    </tr>
+    <tr>
+        <td>Тип оплаты</td>
+        <td>{{ order.row.data.payment_type.type_name }} {# order.row.data.price_type #}</td>
+    </tr>
+    <tr>
+        <td>Сумма</td>
+        <td>{{ order.row.data.brutotal|round(2) }}</td>
+    </tr>
+    <tr>
+        <td>Скидка</td>
+        <td>{{ order.row.data.user_discount|round(2) }}%</td>
+    </tr>
+    <tr>
+        <td>Итого</td>
+        <td><span class="total"> {{ order.row.data.total|round(2) }} </span> грн</td>
+    </tr>
+    </tbody>
+</table>
+
+{# закрыть/открыть, Распечатать #}
+<table id="controls">
+    <tbody>
+        <tr>
+            <td>Форма заказа   </td>
+            <td> <a href="{{ url('admin', 'download_doc', {'orders_id' : order.row.data.orders_id, 'type': 'type_1'}) }}" title="Сгенерировать форму Заказа" data-ajax-method="post" class="print form-1"><i class="fa fa-print"></i></a>
+            </td>
+        </tr>
+        <tr>
+             <td> Маршрутный лист     </td>
+            <td> <a href="{{ url('admin', 'download_doc', {'orders_id' : order.row.data.orders_id, 'type': 'type_2'}) }}" title="Сгенерировать Маршрутный лист" data-ajax-method="post" class="print form-2"><i class="fa fa-print"></i></a> </td>
+        </tr>
+        <tr>
+            <td>Комплектация   </td>
+            <td> <a href="{{ url('admin', 'download_doc', {'orders_id' : order.row.data.orders_id, 'type': 'type_3'}) }}" title="Сгенерировать Комплектацию" data-ajax-method="post" class="print form-3"><i class="fa fa-print"></i></a> </td>
+        </tr>
+        <tr>
+            <td>Статус   </td>
+            <td> {{ order_status }}  </td>
+        </tr>
+    </tbody>
+</table>
+
+    {#<div class="grid-products-total">Сумма: <span class="total"> {{ order.row.data.total|round(2) }} </span> грн</div>#}
+
+<script>
+
+    require(["jquery", "bluz.notify"],  function ($,notify) {
+
+        $(function(){
+            $("#order_status").off().on("change",function(e){
+
+                var url = "orders/details/operation/change_datails"
+                var data = {}
+                data["orders_id"] = $("input[name=orders_id]").val()
+                data["order_status"] = $(this).val()
+
+                $.ajax({
+                    url: url,
+                    type: "put",
+                    dataType: "html",
+                    data: data,
+                    success: function (html) {
+                        notify.addSuccess(" asd ")
+                        //$("#order-details").html(html);
+                        alert("Статус изменен")
+                    }
+                });
+            });
+        });
+
+    });
+
+</script>

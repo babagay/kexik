@@ -17,5 +17,7 @@ return array(
     'Awakenweb\\Livedocx\\' => array($baseDir . '/lib/Awakenweb/Livedocx'), // работает
     'Application\\Filters\\' => array($baseDir . '/Core/Model/Filters'), // работает
     'Application\\Manufacturers\\' => array($baseDir . '/Core/Model/Manufacturers'), // работает
+    'Application\\PaymentTypes\\' => array($baseDir . '/Core/Model/PaymentTypes'), // работает
+    'Application\\OrderProducts\\' => array($baseDir . '/Core/Model/OrderProducts'), // работает
 
 );

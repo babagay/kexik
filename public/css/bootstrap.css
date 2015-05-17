@@ -2166,6 +2166,16 @@ fieldset[disabled] .btn-success.active {
   background-color: #5bc0de;
   border-color: #46b8da;
 }
+.btn-order-closed {
+    color: #fff;
+    background-color: #e8a25e;
+    border-color: #e8a25e;
+}
+.btn-order-closed.backend {
+    color: #fff;
+    background-color: #727272;
+    border-color: #727272;
+}
 .btn-info:hover,
 .btn-info:focus,
 .btn-info:active,

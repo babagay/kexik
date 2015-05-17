@@ -3,11 +3,11 @@
 </script>
 
 
-<div class="clearfix" data-spy="grid" data-grid="order-products-{{ attribute(grid_products, 'getUid')  }}" >
+<div class="clearfix" data-spy="grid" data-grid="{{ gid }}-{{ attribute(grid_products, 'getUid')  }}" data-url="{{ grid_products.getUrl({'orders_id' : orders_id, 'gid': gid}) }}/gid/{{gid}}">
 
-<form class="filter-form" action="{{ baseUrl('/orders/grid-products') }}">
+<form class="filter-form" action="{{ baseUrl('/orders/grid-products') }}/gid/{{ gid }}">
     <div class="input-group-btn grid-filter-search">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Поле для поиска <span class="caret"></span></button>
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Наименование <span class="caret"></span></button>
         <ul class="dropdown-menu">
             <li><a href="#" data-filter="{{ grid.getUid }}-filter-products_id"> Артикул </a></li>
             <li><a href="#" data-filter="{{ grid.getUid }}-filter-products_barcode"> Штрихкод </a></li>
@@ -15,7 +15,9 @@
         </ul>
     </div><!-- /btn-group -->
     <input name="grid-filter-" class="grid-filter-search-input" value="" type="hidden"/>
+    {% if(gid == 'order-products') %}
     <input name="orders_id"  value="{{ orders_id }}" type="hidden"/>
+    {% endif %}
 
     <input name="search-like" type="search" class="form-control" value="" required />
 </form>
@@ -30,11 +32,43 @@
         <th width="60px"><!--a href="{{ grid_products.order('products_id', null, 'desc', false) }}"-->Артикул</th>
         <th width="120px"><!--a href="{{ grid_products.order('products_barcode') }}"-->Штрихкод</th>
         <th width="120px"><!--a href="{{ grid_products.order('products_name') }}"-->Наименование</th>
-        <th width="20px"> <!--Картинка--> </th>
-        <th width="120px"><a href="{{ grid_products.order('products_shoppingcart_price') }}"> </a></th>
-        <th width="120px"><!--a href="{{ grid_products.order('products_price') }}"-->Цена </th>
-        <th width="120px"><!--a href="{{ grid_products.order('products_quantity') }}"-->Количество </th>
-        <th width="120px"></th>
+        <th width="20px">
+            {% if(gid == 'order-products') %}
+                Цена
+            {% elseif(gid == 'add-products') %}
+                Картинка
+            {% endif %}
+        </th>
+        <th width="120px">
+            {% if(gid == 'order-products') %}
+                Количество
+            {% elseif(gid == 'add-products') %}
+            {#
+                FIXME метод order() не подхватывает текущий фильтр
+                Нужно, чтобы он добавлял к ссылке, напр, /?search-like=mars
+
+                <a href="{{ grid_products.order('products_shoppingcart_price') }}/gid/add-products"> Цена розн </a>
+            #}
+                Цена розн
+            {% endif %}
+        </th>
+        <th width="120px"><!--a href="{{ grid_products.order('products_price') }}"-->
+            {% if(gid == 'order-products') %}
+                Сумма
+            {% elseif(gid == 'add-products') %}
+                {#<a href="{{ grid_products.order('products_price') }}/gid/add-products"> Цена опт </a>#}
+                Цена опт
+            {% endif %}
+        </th>
+        <th width="120px">
+            {% if(gid == 'order-products') %}
+
+            {% elseif(gid == 'add-products') %}
+                {# <a href="{{ grid_products.order('products_quantity') }}/gid/add-products">Количество</a> #}
+                Количество
+            {% endif %}
+        </th>
+        <th width="120px">{# Controls #}</th>
     </tr>
     </thead>
     <tbody>
@@ -43,19 +77,45 @@
         <td class="grid-text">{{ row['products_id'] }}</td>
         <td class="grid-text">{{ row['products_barcode'] }}</td>
         <td class="grid-text">{{ row['products_name'] }}</td>
-        <td>
-            {% if(row['image_small']) %}
-            <img src="{{ row['image_small'] }}" class="grid-image">
+        <td  class="grid-text">
+            {% if(gid == 'order-products') %}
+                {{ row.price|round(2) }}
+            {% elseif(gid == 'add-products') %}
+                {% if(row['image_small']) %}
+                    <img src="{{ row['image_small'] }}" class="grid-image">
+                {% endif %}
             {% endif %}
         </td>
-        <td class="grid-text"> </td>
-        <td class="grid-text">  {{ row.price|round(2) }}</td>
-        <td class="grid-text"> {{ row.products_num }} ({{ row['products_unit'] }})</td>
+        <td class="grid-text">
+            {% if(gid == 'order-products') %}
+                <input class="form-control grid-edit-field-1 update-item" type="text" value="{{ row.products_num|round(2) }}" name="products_num" data-url="{{ url('orders','grid-products',{'orders_id':orders_id, 'gid':gid, 'products_id':row.products_id },true) }}" data-ajax-method="update" data-ajax-type="html" data-id="{{ row.products_id }}" data-fileld-name="products_num"> ({{ row['products_unit'] }})
+            {% elseif(gid == 'add-products') %}
+                {{ row.products_shoppingcart_price|round(2) }}
+            {% endif %}
+        </td>
+        <td class="grid-text">
+            {% if(gid == 'order-products') %}
+                {{ row.products_total|round(2) }}
+            {% elseif(gid == 'add-products') %}
+                 {{ row.products_price|round(2) }}
+            {% endif %}
+        </td>
+        <td class="grid-text">
+            {% if(gid == 'order-products') %}
+
+            {% elseif(gid == 'add-products') %}
+                {{ row.products_quantity }}
+            {% endif %}
+        </td>
         <td class="controls">
-            <a href="{{ url('admin', 'products-crud', {'products_id' : row['products_id']}) }}" class="btn btn-xs btn-primary dialog" data-ajax-method="get">
+            <!--a href="{{ url('admin', 'products-crud', {'products_id' : row['products_id']}) }}" class="btn btn-xs btn-primary dialog" data-ajax-method="get">
                 <i class="fa fa-pencil"></i> edit
-            </a>
-            <a href="{{ grid_products.getUrl({'orders_id':orders_id}) }}" onclick="javascript:return false" class="drop-item" data-id="{{ row.products_id }}">del</a>
+            </a-->
+            {% if(gid == 'order-products') %}
+            <a href="{{ url('orders','grid-products',{'orders_id':orders_id, 'gid':gid, 'products_id':row.products_id },true) }}" onclick="javascript:return false" class="drop-item confirm btn btn-xs btn-danger ajax" data-ajax-method="delete" data-ajax-type="html" data-id="{{ row.products_id }}"><i class="fa fa-times"></i></a>
+            {% elseif(gid == 'add-products') %}
+            <a href="{{ url('orders','grid-products',{'orders_id':orders_id, 'gid':gid, 'products_id':row.products_id },true) }}" onclick="javascript:return false" data-extrafield-name="orders_id" class="add-item" data-id="{{ row.products_id }}"><i class="fa fa-plus"></i> </a>
+            {% endif %}
             <!--a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
                 <i class="fa fa-times"></i>
             </a-->
@@ -69,12 +129,15 @@
 
 
 {{ partial('grid/empty-rows.phtml', {'grid': grid_products}) }}
-{{ partial('grid/pagination.phtml', {'grid': grid_products}) }}
+{# partial('grid/pagination.phtml', {'grid': grid_products}) #}
 {# partial('grid/total.phtml', {'grid': grid_products}) #}
 <ul class="pager pull-left">
     <li>
-        <a href="{{ baseUrl('orders') }}/grid-products/orders_id/{{ orders_id }}" class="filter">{{ __('Показать все продукты') }}
-            <!--strong>{{ grid_products.total }}</strong--> </a>
+        {# <a href="{{ baseUrl('orders') }}/grid-products/orders_id/{{ orders_id }}/gid/{{gid}}" class="filter">{{ __('Показать все продукты') }}
+            <!--strong>{{ grid_products.total }}</strong--> </a> #}
+        {% if(gid == 'order-products') %}
+        <a href="{{ grid_products.getUrl({'orders_id' : orders_id }) }}/gid/{{ gid }}" class="filter show-all">{{ __('Показать все продукты') }} </a>
+        {% endif %}
     </li>
     <li>
     </li>
