@@ -1,20 +1,21 @@
 <?php
 
+use Application\PaymentTypes;
 
 return
     /**
-     * @param string $question
+     * @param integer $step
+     * @param integer $payment_types_id
+     * @param string $address_dostavki
+     * @param string $order_notes
      * @return \closure
      */
-    function ($step = 1,$address_dostavki = null) use ($view) {
+    function ($step = 1,$address_dostavki = null,$order_notes = null,$payment_types_id = null) use ($view) {
         /**
          * @var Вместо Application $this используй $app_object = Application\Bootstrap::getInstance();
          * или так: app()->getRequest();
          * @var View $view - Bluz\View\View
-
-
          */
-
 
         if(app()->getSession()->rollback)
         unset(app()->getSession()->rollback);
@@ -44,7 +45,7 @@ return
 
         $user = app()->getAuth()->getIdentity();
 
-        $total_discounted = null;
+        $total_discounted = $basket_total = null;
 
         # Тело
         $crumbs_arr =  array(
@@ -86,6 +87,13 @@ return
 
                             $products[] = $product;
                         }
+
+                        if( sizeof($products) ){
+                            foreach($products as $product){
+                                $basket_total += $product['products_total'];
+                            }
+                            $view->basket_total = $basket_total;
+                        }
                         
                         app()->getSession()->basket = $basket;
 
@@ -108,6 +116,9 @@ return
                 if(isset( $basket['address_dostavki']))
                      $view->address_dostavki =  $basket['address_dostavki'];
 
+                if(isset( $basket['order_notes']))
+                     $view->order_notes =  $basket['order_notes'];
+
                 break;
 
             case 3:
@@ -118,6 +129,7 @@ return
                 $next_step_head = "Подтвердить заказ";
 
                 $basket['address_dostavki'] = $address_dostavki;
+                $basket['order_notes'] = $order_notes;
 
                 $basket['payment_types_id'] = 60;
 
@@ -154,6 +166,18 @@ return
                     $basket['total'] = $total_discounted;
                 }
 
+                $payment_types = PaymentTypes\Table::getInstance()->getPaymentTypes();
+
+                // Способы оплаты
+                $checkbox_group = '<h4>Оплата производится:</h4>';
+                foreach($payment_types as $payment_type){
+                    $checkbox_group .= "<div>";
+                    $checkbox_group .= $view->radio('payment_types_id',$payment_type['payment_types_id'],false,[]);
+                    $checkbox_group .= " <label for=\"payment_types_id\">{$payment_type['pay_by']}</label>";
+                    $checkbox_group .= "</div>";
+                }
+
+                $view->checkbox_group = $checkbox_group;
                 $view->total = $total;
                 $view->total_discounted = $total_discounted;
 
@@ -172,11 +196,28 @@ return
                     throw new \Bluz\Auth\AuthException("Для совершения покупок нужна  <a href=\"".$view->baseUrl('вход')."\">авторизация</a> ");
                 }
 
-                if($credit < $basket['total'])
-                    throw new \Application\Exception("Не достаточно средств");
-
                 $data = app()->getSession()->basket;
                 $data['address'] = $data['address_dostavki'];
+                $data['notes'] = $data['order_notes'];
+                $data['payment_types_id'] = $payment_types_id;
+
+                $payment_types_key = PaymentTypes\Table::getInstance()->findRow(['payment_types_id' => $payment_types_id])->key;
+
+                $message = "";
+                switch($payment_types_key){
+                    case 'cache':
+                        $message = "Итоговая сумма будет востребована при выдаче заказа";
+                        break;
+                    case 'credit':
+                        $message = "Итоговая сумма будет снята с текущего баланса пользователя";
+                        break;
+                    default:
+                        throw new \Application\Exception("Не допустимый способ оплаты");
+                        break;
+                }
+
+                if($credit < $basket['total'] AND $payment_types_key == 'credit')
+                    throw new \Application\Exception("Не достаточно средств");
 
                 try{
                     $crudController = new \Bluz\Controller\Crud();
@@ -213,6 +254,8 @@ return
                 unset(app()->getRegistry()->new_orders_id);
 
                 unset(app()->getSession()->basket);
+
+                $view->message = $message;
 
                 break;
         }

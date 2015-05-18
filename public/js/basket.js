@@ -1,16 +1,16 @@
 /**
-     require(["basket"], function(basket) {
+ require(["basket"], function(basket) {
           console.log( basket.trim("Hello World", "Hdle") );
      });
 
  */
-define(['jquery','bluz'], function ($,bluz) {
+define(['jquery', 'bluz', 'basic'], function ($, bluz, basic) {
 
     "use strict";
 
     var basket = {
         name: "Basket",
-        getName: function() {
+        getName: function () {
             return this.name
         },
         recalcProductsInBasket: function (products_id) {
@@ -23,21 +23,37 @@ define(['jquery','bluz'], function ($,bluz) {
 
             delay *= 1000
 
-            setTimeout(function(){
+            setTimeout(function () {
                 $.ajax({
                     type: "POST",
                     data: data,
                     url: "users/widget/cabinet",
                     context: document.body,
                     dataType: "html"
-                }).done(function(response,status,responseObj) {
-                        if(status == "success"){
+                }).done(function (response, status, responseObj) {
+                        if (status == "success") {
                             $(".widget.wg-cabinet").html(response)
                         }
                     });
-            },delay)
+            }, delay)
         },
-        clearBasket: function() {
+        recalcTotal: function () {
+            var total = 0;
+            $(".product-item").each(function () { //display: none;
+
+                var disp = /([\w]*:[: \w\d;]*)*(display[: ]*none[; ]*)([\w]*:[: \w\d;]*)*/i
+                if (disp.test($(this).attr("style"))) {
+                }
+                else {
+                    var products_id = $(this).find("input[name=products_id]").val()
+                    var products_shoppingcart_price = $(this).find("input[name=products_shoppingcart_price]").val()
+                    var products_num = $(this).find("input.num").val()
+                    total += (products_shoppingcart_price * products_num)
+                }
+            });
+            $(".basket-total").html( basic.round(total,2) )
+        },
+        clearBasket: function () {
             var data = {}
             var url = "basket/ajax/modify_basket"
 
@@ -49,11 +65,11 @@ define(['jquery','bluz'], function ($,bluz) {
                 url: url,
                 context: document.body,
                 dataType: "json"
-            }).done(function(response,status,responseObj) {
-                    $( this ).addClass( "done" );
-                    if(status == "success"){
+            }).done(function (response, status, responseObj) {
+                    $(this).addClass("done");
+                    if (status == "success") {
 
-                        if(response.response == "ok"){
+                        if (response.response == "ok") {
                             ///console.log("ок")
                             //$("#basket-items").html("")
 
@@ -66,12 +82,12 @@ define(['jquery','bluz'], function ($,bluz) {
                                 url: "корзина",
                                 context: document.body,
                                 dataType: "html"
-                            }).done(function(response,status,responseObj) {
-                                    $( this ).addClass( "done" );
-                                    if(status == "success"){
+                            }).done(function (response, status, responseObj) {
+                                    $(this).addClass("done");
+                                    if (status == "success") {
                                         $("#content_box").html(response)
 
-                                        if(responseObj.status != 200){
+                                        if (responseObj.status != 200) {
                                             // notify.addError("Error 404")
                                         }
                                     }
@@ -82,18 +98,19 @@ define(['jquery','bluz'], function ($,bluz) {
                         }
 
 
-                        if(responseObj.status != 200){
+                        if (responseObj.status != 200) {
                             // notify.addError("Error 404")
                         }
                     }
 
+                    $(".basket-total").html("0")
                     basket.redrawCabinetWg(2);
                 });
         }
     };
 
     // on DOM ready state
-    $(function(){
+    $(function () {
 
     });
 

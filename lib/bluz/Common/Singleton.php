@@ -18,7 +18,7 @@ namespace Bluz\Common;
  * @author   Anton Shevchuk
  * @created  16.05.12 14:26
  */
-class Singleton
+trait Singleton
 {
     /**
      * @var self

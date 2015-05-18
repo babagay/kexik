@@ -63,9 +63,6 @@ return
                 $products_id = $get_params['products_id'];
         }
 
-
-
-
         # Тело
         $crumbs_arr =  array(
              $view->ahref('Админка', array('admin', 'Base') ),

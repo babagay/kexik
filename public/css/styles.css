@@ -671,13 +671,13 @@ a.print.form-3 {
 .grid-image {
     width: 20px;
 }
-.row-highlite-0 {
+.row-highlite-0,.order-status-highlite-0 {
     color: #e66764;
 }
 .row-highlite-1 {
     _color: #999;
 }
-.row-highlite-2 {
+.row-highlite-2, .order-status-highlite-2 {
     color: #d7a178;
 }
 .row-highlite-1.order-type-2, .order-type-highlite-2 {

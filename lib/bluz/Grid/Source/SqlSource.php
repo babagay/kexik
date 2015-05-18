@@ -106,6 +106,9 @@ class SqlSource extends AbstractSource
         }
         $dataSql .= $limit;
 
+        // [FIXME]: ошибка при  $this->source = NULL
+        if($dataSql == $limit) $dataSql = '';
+
         // run queries
         $data = Db\Db::getDefaultAdapter()->fetchAll($dataSql);
         $total = Db\Db::getDefaultAdapter()->fetchOne($countSql);

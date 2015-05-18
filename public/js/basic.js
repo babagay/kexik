@@ -25,6 +25,16 @@ define(['jquery','bluz'], function ($,bluz) {
             if (window.console !== undefined) {
                 window.console.error(error, "Response Text:", text);
             }
+        },
+        round: function (value, ndec) {
+            var n = 10;
+            for (var i = 1; i < ndec; i++) {
+                n *= 10;
+            }
+            if (!ndec || ndec <= 0)
+                return Math.round(value);
+            else
+                return Math.round(value * n) / n;
         }
     };
 

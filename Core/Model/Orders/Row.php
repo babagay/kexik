@@ -119,7 +119,6 @@ class Row extends \Bluz\Db\Row
             $total = $products_total - ($products_total * $discount);
         }
 
-
         Table::getInstance()->update(['total' => $total],['orders_id' => $this->orders_id]);
 
         parent::refresh();

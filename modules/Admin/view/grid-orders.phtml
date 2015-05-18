@@ -30,6 +30,10 @@
 
     {# grid.getUrl() #}
 
+    <div class="input-group create-group pull-left">
+        <a class="btn btn-primary pull-left dialog" data-ajax-method="get" href="{{ baseUrl('admin/orders-crud') }}">Создать</a>
+    </div>
+
     {{ partial('grid/limit.phtml', {'grid': grid}) }}
 
     <table class="table grid">
@@ -46,22 +50,27 @@
         </thead>
         <tbody>
         {% for row in attribute(grid, 'getData') %}
-        <tr class="row-highlite-{{  row['order_status'] }}">
+        <tr class="row-highlite-{{  row['order_status'] }} order-type-{{  row['order_type'] }}">
             <td>{{ row['orders_id'] }} </td>
             <td>{# row['users_id'] #} {{ row['login'] }} ({{ row['email'] }})</td>
             <td>{{ row['date_added']|date("j F G:i ") }}</td>
             <td>{{ row['address'] }}</td>
-            <td>{{ row['total'] }}</td>
+            <td>{{ row['total']|round(2) }}</td>
             <td>{{ row['notes'] }}</td>
             <td class="controls">
                 <a href="{{ url('admin', 'download_doc', {'orders_id' : row['orders_id'], 'type': 'type_1'}) }}" title="Сгенерировать форму Заказа" data-ajax-method="post" class="print form-1"><i class="fa fa-print"></i></a>
                 <a href="{{ url('admin', 'download_doc', {'orders_id' : row['orders_id'], 'type': 'type_2'}) }}" title="Сгенерировать Маршрутный лист" data-ajax-method="post" class="print form-2"><i class="fa fa-print"></i></a>
                 <a href="{{ url('admin', 'download_doc', {'orders_id' : row['orders_id'], 'type': 'type_3'}) }}" title="Сгенерировать Комплектацию" data-ajax-method="post" class="print form-3"><i class="fa fa-print"></i></a>
 
-                <a href="{{ url('admin', 'orders-crud', {'orders_id' : row['orders_id']}) }}" class="btn btn-xs btn-primary dialog"
+                {% if row['order_status'] == 0 %} {# Отменен #}
+                {% else %}
+                <a href="{{ url('admin', 'orders-crud', {'orders_id' : row['orders_id']}) }}" class="btn btn-xs {% if(row['order_status'] == 2) %} btn-order-closed {% else %} btn-primary {% endif %} {% if(row['order_type'] == 2) %} backend {% endif %} dialog"
                    data-ajax-method="get">
                     <i class="fa fa-pencil"></i>
                 </a>
+                {% endif %}
+
+
                 <a href="{{ url('orders', 'edit', {'orders_id' : row['orders_id']}) }}" class="btn btn-xs btn-default edit-order" >
                     <i class="fa fa-edit"></i>
                 </a>

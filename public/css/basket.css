@@ -7,12 +7,18 @@
 
 .basket-navigation {
     width: 100%;
-    left: 50%;
+    left: 40%;
     margin: 0 0 30px -198px;
     position: relative;
     overflow: hidden;
 }
-
+.basket-total-wrapper {
+    width:100%;
+}
+.basket-total-wrapper .box-1 {
+    float: right;
+    margin: 0 60px 0 0;
+}
 .button-basket,
 .button-type-of-payment,
 .button-adress {
@@ -50,10 +56,11 @@
 
 .basket-navigation-second {
     width: 100%;
-    left: 50%;
+    left: 25%;
     margin: 0 0 30px -200px;
     position: relative;
     overflow: hidden;
+    margin: 20px 0 0 0;
 }
 
 .basket-navigation-second > .button-basket,
@@ -115,7 +122,9 @@ table td:nth-child(2) {
     padding: 15px 2%;
     margin-bottom: 20px;
 }
-
+.white.basket-products, .white.note {
+    width: 100%;
+}
 #basket-items .image-box {
     border-radius: 10px;
     position: static ;
@@ -130,7 +139,9 @@ table td:nth-child(2) {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6C7807', endColorstr='#C6DB0E', GradientType=0);
     behavior: url(js/PIE.htc);
 }
-
+.user-order-details {
+    margin: 20px;
+}
 .image-box img {
     border-radius: 5px;
     width: 100%;
@@ -188,3 +199,6 @@ h4 {
 }
 
 /*чтобы убрать стрелки из number*/
+.header-4 {
+    color: #8e8e8e;
+}

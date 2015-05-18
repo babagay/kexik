@@ -45,11 +45,11 @@ class Crud extends \Bluz\Crud\Table
      * @param array $params
      * @return int
      */
-    function updateOne($primary, $params)
+    function _updateOne($primary, $params)
     {
         $self = Table::getInstance();
 
-        $data = $self->filterColumns($params);
+        $params = $self->filterColumns($params);
 
         return parent::updateOne($primary, $params);
     }

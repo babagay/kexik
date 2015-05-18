@@ -43,7 +43,7 @@ use Bluz\Db\Exception\TableNotFoundException;
  * @author   Anton Shevchuk
  * @created  07.07.11 19:47
  */
-class Row implements /* \JsonSerializable, */  \ArrayAccess
+class Row implements \JsonSerializable, \ArrayAccess
 {
     /**
      * Table class or instance.

@@ -67,6 +67,20 @@
     require(["jquery", "bluz.notify"],  function ($,notify) {
 
         $(function(){
+            var order_status = $("#order_status").val()
+
+            if(order_status == 0 || order_status == 2){
+                $("a.drop-item").hide()
+                $("a.add-item").hide()
+                $("input.update-item").attr("disabled","disabled")
+            } else {
+                $("a.drop-item").show()
+                $("a.add-item").show()
+                $("input.update-item").prop("disabled", false)
+            }
+
+            if(order_status == 0)  $("#order_status").hide()
+
             $("#order_status").off().on("change",function(e){
 
                 var url = "orders/details/operation/change_datails"
@@ -81,8 +95,16 @@
                     data: data,
                     success: function (html) {
                         notify.addSuccess(" asd ")
-                        //$("#order-details").html(html);
-                        alert("Статус изменен")
+
+                        var url = "orders/details/orders_id/" + $("input[name=orders_id]").val()
+                        $.ajax({
+                            url: url,
+                            type: "get",
+                            dataType: "html",
+                            success: function (html) {
+                                $("#order-details").html(html);
+                            }
+                        });
                     }
                 });
             });

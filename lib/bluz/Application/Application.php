@@ -36,7 +36,7 @@ use Bluz\Translator\Translator;
 use Bluz\View\Layout;
 use Bluz\View\View;
 
-use Core\FilterKeeper;
+//use Core\FilterKeeper;
 use \Core\Helper\Registry as AppRegistry;
 
 /**
@@ -57,14 +57,14 @@ use \Core\Helper\Registry as AppRegistry;
  */
 class Application
 {
-    //use Singleton;
+    use Singleton;
     //use Helper;
     // FIXME введена переменная $this->helper
 
     /**
      * @var self
      */
-    protected static $instance;
+    //protected static $instance;
 
     /**
      * @var Acl

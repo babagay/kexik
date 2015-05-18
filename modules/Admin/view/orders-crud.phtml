@@ -6,31 +6,66 @@
     <input type="hidden" name="orders_id" value="{{ row.orders_id }}"/>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h3 class="modal-title">Заказ</h3>
+        <h3 class="modal-title">Заказ {{ row.orders_id }}</h3>
+        {% if row.order_type == 1 %}Создан в магазине
+        {% elseif row.order_type == 2 %}Создан в админке
+        {% endif %}
     </div>
     <div class="modal-body">
         <div class="form-group">
             <label class="control-label col-lg-2" for="address">{{ __('Адрес доставки') }}</label>
             <div class="col-lg-10">
-                <input type="text" class="form-control" id="address" name="address" value="{{ row.address }}" _required />
+                <input type="text" class="form-control" id="address" name="address" value="{{ row.address }}" _required  {% if row.order_status == 2 %} disabled {% endif %} />
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-lg-2" for="notes">{{ __('Замечания') }}</label>
             <div class="col-lg-10">
-                <input type="text" class="form-control" id="notes" name="notes" value="{{ row.notes }}" _required />
+                <input type="text" class="form-control" id="notes" name="notes" value="{{ row.notes }}" _required  {% if row.order_status == 2 %} disabled {% endif %}/>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-lg-2" for="status">{{ __('Статус') }}</label>
             <div class="col-lg-10">
                 <select id="order_status" name="order_status" class="form-control">
-                    <option {% if row.order_status == 1 %} selected {% endif %} value="1">Открыт</option>
-                    <option {% if row.order_status == 2 %} selected {% endif %} value="2">Закрыт</option>
-                    <option {% if row.order_status == 0 %} selected {% endif %} value="0">Отменён</option>
+                    {% if row.orders_id %}
+                        <option {% if row.order_status == 1 %} selected {% endif %} value="1">Открыт</option>
+                        <option {% if row.order_status == 2 %} selected {% endif %} value="2">Закрыт</option>
+                        <option {% if row.order_status == 0 %} selected {% endif %} value="0">Отменён</option>
+                    {% else %}
+                        <option   value="1">Открыт</option>
+                        <option   value="2">Закрыт</option>
+                        <option   value="0">Отменён</option>
+                    {% endif %}
                 </select>
             </div>
         </div>
+
+        {% if row.orders_id %}
+        {% else %}
+        <input type="hidden" name="order_type" value="2"/>
+        {% endif %}
+
+        {% if payment_types %}
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="payment_types_id">{{ __('Тип оплаты') }}</label>
+            <div class="col-lg-10">
+                <select id="payment_types_id" name="payment_types_id" class="form-control"  {% if row.order_status == 2 %} disabled {% endif %}>
+                    {% for pt in payment_types %}
+                    <option {% if row.payment_types_id == pt.payment_types_id %} selected {% endif %} value="{{ pt.payment_types_id }}">{{ pt.type_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="user_discount">{% if row.orders_id %} {{ __('Скидка') }} {% else %} Применить скидку {% endif %}</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="user_discount" name="user_discount" value="{% if row.orders_id %} {{ row.user_discount }} {% else %} 0 {% endif %}" _required  {% if row.order_status == 2 %} disabled {% endif %}/>
+            </div>
+        </div>
+
     </div>
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary">{{ __('Сохранить') }}</button>

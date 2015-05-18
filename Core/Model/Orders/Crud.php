@@ -266,6 +266,30 @@ class Crud extends \Bluz\Crud\Table
 
     }
 
+    function updateOne($primary, $data)
+    {
+        $total  = 0;
+
+        $selectBuilder = app()->getDb()
+            ->select('op.*')
+            ->from('order_products', 'op')
+            ->where("orders_id = '{$primary['orders_id']}'");
+        $products = $selectBuilder->execute();
+
+        if(sizeof($products)){
+            $products_total = 0;
+            foreach($products as $product){
+                $products_total += $product['price'] * $product['products_num'];
+            }
+            $discount = $data['user_discount'] / 100;
+            $total = $products_total - ($products_total * $discount);
+        }
+
+        $data['total'] = $total;
+
+        return parent::updateOne($primary, $data);
+    }
+
 
 
 
