@@ -198,22 +198,22 @@ class Application
      */
     protected $dispatchResult = null;
 
-    private function __construct()
+    protected function __construct()
     {
 
     }
 
-    private function __invoke()
+    function __invoke()
     {
 
     }
 
-    private function __clone()
+    protected function __clone()
     {
 
     }
 
-    private function __wakeup()
+    protected function __wakeup()
     {
 
     }
@@ -240,13 +240,6 @@ class Application
                 throw new \Exception("Helper '$name' is not exists in " . __METHOD__);
             }
         }
-    }
-
-    public static function getInstance()
-    {
-        return isset(static::$instance)
-            ? static::$instance
-            : static::$instance = new static;
     }
 
     /**
@@ -329,8 +322,6 @@ class Application
      */
     public function getConfig($environment = null)
     {
-
-
         if (!$this->config) {
             $this->config = new Config();
             $this->config->setPath($this->getCorePath() . '/configs');
