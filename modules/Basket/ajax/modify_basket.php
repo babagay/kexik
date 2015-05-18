@@ -43,7 +43,7 @@ return
         //  $db = app()->getDb();
 
         $basket = $_this->getSession()->basket;
-        $redir = null;
+        $redir = $total = null;
 
         switch($mode){
             case 'add':
@@ -105,7 +105,7 @@ return
 
             $response = 'ok';
 
-            $result = array('response' => $response, 'redir' => $redir);
+            $result = array('response' => $response, 'redir' => $redir );
 
             return $result;
         };

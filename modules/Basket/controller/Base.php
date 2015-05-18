@@ -201,6 +201,15 @@ return
                 $data['notes'] = $data['order_notes'];
                 $data['payment_types_id'] = $payment_types_id;
 
+                if( !sizeof($data['products']) )
+                    throw new \Application\Exception("Нет товаров в корзине");
+
+                $tmp = array();
+                foreach($data['products'] as $id => $num){
+                    $tmp[$id] = $num;
+                }
+                $data['products'] = $tmp;
+
                 $payment_types_key = PaymentTypes\Table::getInstance()->findRow(['payment_types_id' => $payment_types_id])->key;
 
                 $message = "";
