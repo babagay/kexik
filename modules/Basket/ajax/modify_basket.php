@@ -39,6 +39,8 @@ return
 
                 }
          */
+        $response = 'ok';
+        $error = false;
 
         //  $db = app()->getDb();
 
@@ -52,9 +54,18 @@ return
                     $basket = array();
                 }
 
-                $basket['products'][$products_id] = $products_num;
+                if(isset($basket['products'][$products_id])){
+                    if($basket['products'][$products_id] == $products_num){
+                        $response = "Товар уже в корзине";
+                        $error = true;
+                    }
+                }
 
-                $_this->getSession()->basket = $basket;
+                if(!$error){
+                    $basket['products'][$products_id] = $products_num;
+
+                    $_this->getSession()->basket = $basket;
+                }
 
                 break;
 
@@ -75,6 +86,10 @@ return
             case 'update':
                 if(is_null($products_id))
                     throw new Bluz\Application\Exception\ApplicationException("product is not set");
+
+                if($products_num == 0)
+                    app()->dispatch("Basket","ajax/modify_basket",['products_id'=>$products_id,'mode'=>'remove']);
+
                 $basket['products'][$products_id] = $products_num;
                 $_this->getSession()->basket = $basket;
 
@@ -101,9 +116,9 @@ return
 
 
 
-        return function () use($redir) {
+        return function () use($redir,$response) {
 
-            $response = 'ok';
+
 
             $result = array('response' => $response, 'redir' => $redir );
 

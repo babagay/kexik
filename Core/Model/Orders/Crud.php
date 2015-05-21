@@ -5,9 +5,11 @@
 namespace Application\Orders;
 
 use Application\Auth;
+use Application\Users;
 use Application\Exception;
 
 use Application\UsersActions;
+use Bluz\Application\Application;
 use Bluz\Crud\ValidationException;
 
  
@@ -47,7 +49,6 @@ class Crud extends \Bluz\Crud\Table
      */
     public function createOne($data)
     {
-
         /**
          * Создёт Заказ в orders
          * Сохраняет продукты в order_products
@@ -65,45 +66,56 @@ class Crud extends \Bluz\Crud\Table
 
         $this->exception = new \Bluz\Application\Exception\OrderException( );
 
+        if( !isset($data['payment_types_key']) ) $data['payment_types_key'] = 'credit';
 
-        $total = null;
-        $calculate_total = false;
+        $total = 0; // null
+        $calculate_total = true;
 
-        if(!is_null($this->total)) $total = $this->total;
+        /*
+        if(!is_null($this->total))
+            $total = $this->total;
+
         if(is_null($total)){
             if(isset($data['total']))
                 $total = $data['total'];
         }
 
-        ///$user = app()->getAuth()->getIdentity();
-        $user = $this->user;
-        $discount = (int)$user->discount;
+        if(is_null($total)){
+            $calculate_total = true;
+            $total = 0;
+        }
+        */
 
+        $this->validateUser($data);
+
+        $user = $data['user'];
+        $discount = (int)$user->discount;
+        $usercredit_current = $user->getCredit();
         $data['users_id'] = $user->id;
 
         if( !isset($data['user_discount']) )
             $data['user_discount'] = $discount;
 
+        /*
         $row = $this->getTable()->create();
         $row->setFromArray($data);
         $row->save();
         $orders_id = $row->orders_id;
+        */
 
+        // [!] родительский метод возвращает массив
+        $order = parent::createOne($data);
 
-        if(!$orders_id){
-            // TODO проверить
+        $orders_id = false;
+        if(isset($order['orders_id'])){
+            $orders_id = $order['orders_id'];
+        } else {
             $this->exception->setCode(2);
             throw $this->exception;
         }
 
-
-        if(is_null($total)){
-            $calculate_total = true;
-            $total = 0;
-        }
-
-        if(sizeof($this->products)){
-            foreach($this->products as $products_id => $products_num){
+        if(sizeof($data['products'])){
+            foreach($data['products'] as $products_id => $products_num){
                 $product = \Application\Products\Table::findRow(array('products_id' => $products_id));
 
                 $insertBuilder        = app()->getDb()
@@ -140,13 +152,17 @@ class Crud extends \Bluz\Crud\Table
                     ->where('orders_id = ?', $orders_id);
                 $updateBuilder->execute();
             }
-        } else {
-            if((int)$data['order_type'] === Table::ORDERTYPE_FRONTEND){
-                $this->exception->setCode(1);
-                throw $this->exception;
-            }
-        }
 
+            if($data['payment_types_key'] == 'credit'){
+                if($total > ($usercredit_current * 1) ){
+                    Crud::deleteOne(['orders_id' => $orders_id]);
+
+                    $this->exception->setCode(3);
+                    throw $this->exception;
+                }
+            }
+
+        }
 
         $orders_to_bonus = $user->orders_to_bonus;
         $orders_to_bonus--;
@@ -165,19 +181,16 @@ class Crud extends \Bluz\Crud\Table
             $orders_to_bonus = 10;
         }
 
-        app()->getSession()->identity->orders_to_bonus = $orders_to_bonus;
-
-        /**
-         * Можно перезаписать сессиюю:
-         *  $_user = \Application\Users\Table::findRow( array('id' => 20) );
-         * app()->getSession()->identity = $_user;
-         */
+        if($data['payment_types_key'] == 'credit')
+            $usercredit =  $usercredit_current - $total;
+        else
+            $usercredit = $usercredit_current;
 
         $updateBuilder = app()->getDb()
             ->update('users')
             ->setArray(
                 array(
-                    'credit' => $user->getCredit() - $total,
+                    'credit' => $usercredit,
                     'orders_to_bonus' => $orders_to_bonus,
                 )
             )
@@ -185,16 +198,49 @@ class Crud extends \Bluz\Crud\Table
         $updateBuilder->execute();
 
         app()->getRegistry()->new_orders_id = $orders_id;
+
+        /**
+         * перезаписать сессиюю
+         */
+        $_user = \Application\Users\Table::findRow(['id' => $user->id]);
+        app()->getSession()->identity = $_user;
+    }
+
+    public function validate($primary, $data)
+    {
+
     }
 
     public function validateCreate($data)
     {
-        if(false){
-            $this->addError('error','fieldname');
+        if(!sizeof($data['products']))
+            if((int)$data['order_type'] === Table::ORDERTYPE_FRONTEND){
+                $this->addError('Нет продуктов','products');
+                $this->exception->setCode(1);
+                throw $this->exception;
+            }
+
+
+
+        //TODO валидация полей
+    }
+
+    private function validateUser($data)
+    {
+        if(!isset($data['user'])){
+            $this->exception->setCode(4);
+            throw $this->exception;
+        }
+
+        if($data['user'] instanceof  Users\Row) {}
+        else {
+            $this->exception->setCode(4);
+            throw $this->exception;
         }
     }
 
-    public function validateUpdate($id,$data)
+
+    public function validateUpdate($primary, $data)
     {
         if(false){
             $this->addError('error','fieldname');

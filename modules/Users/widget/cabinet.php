@@ -50,13 +50,23 @@ return
         }
 
         if(isset($basket['products'])){
+            if(sizeof($basket['products'])){
+                $tmp = array();
+                foreach($basket['products'] as $products_id => $products_num){
+                    if($products_num == 0){
+                        app()->dispatch("Basket","ajax/modify_basket",['products_id'=>$products_id,'mode'=>'remove']);
+                    } else {
+                        $tmp[$products_id] = $products_num;
+                    }
+                }
+                $basket['products'] = $tmp;
+            }
             $products_count = count($basket['products']);
 
             $product_title = app()->wordEnd("товар",$products_count);
 
             $in_basket = " - <span id=\"basket_products_counter\">".$products_count . "</span> $product_title";
         }
-
 
         $btn_1 = "ВЫХОД";
 

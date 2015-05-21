@@ -16,6 +16,12 @@ class OrderException extends ApplicationException
                 case 2:
                     $message = "Заказ не создан";
                     break;
+                case 3:
+                    $message = "Не достаточно средств на кредитном счету";
+                    break;
+                case 4:
+                    $message = "Не установлен пользователь";
+                    break;
                 default:
                     $message = "Ошибка заказа";
                     break;

@@ -65,7 +65,7 @@ class SqlGrid extends \Bluz\Grid\Grid
                 $source = "SELECT  p.*, op.price, op.products_num,
                     (op.price * op.products_num) products_total
                     FROM " . $this->table_name . " p
-                    LEFT JOIN order_products op ON op.products_id = p.products_id
+                    LEFT JOIN order_products op ON op.products_id = p.products_id AND orders_id = '{$this->orders_id}'
                     WHERE p.products_id IN ( $products_str   )
                     ";
                 $adapter->setSource( $source );
@@ -73,7 +73,7 @@ class SqlGrid extends \Bluz\Grid\Grid
                 // заглушка. Нужна, т.к. $source нужно устанавливать при любом раскладе
                 $source = "SELECT  p.*, op.price, op.products_num
                     FROM " . $this->table_name . " p
-                    LEFT JOIN order_products op ON op.products_id = p.products_id
+                    LEFT JOIN order_products op ON op.products_id = p.products_id AND orders_id = '{$this->orders_id}'
                     WHERE p.products_id = 0
                     ";
                 $adapter->setSource( $source );

@@ -1,9 +1,17 @@
 {% if(empty_basket) %}
-Корзина пуста
+<h4>Корзина пуста</h4>
+<script>
+    require(["jquery", "bluz.notify", "basket", "basic"], function ($, notify, basket, basic) {
+        $(function () {
+            basket.redrawCabinetWg()
+        });
+    });
+</script>
+
 {% else %}
 <div class="wrapper-goods">
 {% if(step != 4) %}
-<div class="basket-navigation">
+<div class="basket-controls basket-navigation">
     <div class="basket-btn-navi button-basket {% if(step == 1) %}active{% endif %}" data-step="1">Корзина</div>
     <div class="separator"></div>
     <div class="basket-btn-navi button-adress {% if(step == 2) %}active{% endif %}" data-step="2">Адрес</div>
@@ -103,7 +111,7 @@
 
 
     {% if(step != 4) %}
-    <div class="basket-navigation-second">
+    <div class="basket-controls basket-navigation-second">
         <!--button class="button-basket">В Каталог</button-->
         <button class="button-adress clear-basket"> Очистить Корзину</button>
         <a href="JavaScript:void(0);" data-next_step="{{ next_step }}" class="next_step button-type-of-payment">{{
@@ -116,10 +124,17 @@
 <script>
 
 
-require(["jquery", "bluz.notify", "basket"], function ($, notify, basket) {
+require(["jquery", "bluz.notify", "basket", "basic"], function ($, notify, basket, basic) {
     $(function () {
 
+         function updateBasket() {
+            // TODO перенести в модуль
+            basket.redrawCabinetWg(2);
+            basket.recalcTotal()
+        }
+
         $(".basket-btn-navi").off().on("click", function (e) {
+            // TODO перенести в модуль
             var data = {}
             var url = "корзина"
             var target_step = $(this).attr("data-step") * 1
@@ -151,7 +166,7 @@ require(["jquery", "bluz.notify", "basket"], function ($, notify, basket) {
         });
 
         $(".remove_product").on("click", function (e) {
-            // TODO попробовать перенести код в модуль
+            // TODO перенести в модуль
             var products_id = $(this).closest("tr").attr("data-products_id")
 
             var data = {}
@@ -178,7 +193,9 @@ require(["jquery", "bluz.notify", "basket"], function ($, notify, basket) {
 
         $(".next_step").off()
             .on("click", function (e) {
-                // TODO попробовать перенести код в модуль
+                // TODO перенести в модуль
+                // return basket.nextStep()
+
                 var payment_types_id = $("input[name=payment_types_id]:checked").val()
 
                 var next_step = $(this).attr("data-next_step");
@@ -197,7 +214,7 @@ require(["jquery", "bluz.notify", "basket"], function ($, notify, basket) {
                 if (step == 3) {
                     // Передать способ оплаты
                     if(payment_types_id == undefined){
-                        alert("Выберите способ оплаты")
+                        basic.fastPopup("Ошибка","Выберите способ оплаты","width:500px;")
                         return false;
                     }
                     data["payment_types_id"] = payment_types_id
@@ -253,9 +270,27 @@ require(["jquery", "bluz.notify", "basket"], function ($, notify, basket) {
                 return false;
             });
 
+        $("input.num").off()
+            .on("keypress", function (e) {
+                var code = e.keyCode || e.which;
+
+                if(code == 13){
+
+                    var num = $(this).val()
+                    var products_id = $(this).closest(".product-item").find("input[name=products_id]").val()
+
+                    basket.updateProduct(products_id,num)
+
+                    var products_shoppingcart_price = $(this).closest(".product-item").find("input[name=products_shoppingcart_price]").val()
+                    $(this).closest(".product-item").find(".products_total").html(Math.round(products_shoppingcart_price * num * 100) / 100)
+
+                    return false
+                }
+            });
+
         $(".arrow.inc").off()
             .on("click", function (e) {
-                // TODO перенести код в модуль
+                // TODO перенести в модуль
                 var num = $(this).closest(".product-item").find("input.num").val();
                 num++
                 $(this).closest(".product-item").find("input.num").val(num)
@@ -277,9 +312,9 @@ require(["jquery", "bluz.notify", "basket"], function ($, notify, basket) {
                     context: document.body,
                     dataType: "json"
                 }).done(function (response, status, responseObj) {
-                        $(this).addClass("done");
+                        // $(this).addClass("done");
                         if (status == "success") {
-                            basket.recalcTotal()
+                            updateBasket()
                         }
                     });
 
@@ -288,7 +323,7 @@ require(["jquery", "bluz.notify", "basket"], function ($, notify, basket) {
 
         $(".arrow.dec").off()
             .on("click", function (e) {
-                // TODO перенести код в модуль
+                // TODO перенести в модуль
                 var num = $(this).closest(".product-item").find("input.num").val();
                 //num *= 1
 
@@ -314,9 +349,8 @@ require(["jquery", "bluz.notify", "basket"], function ($, notify, basket) {
                     context: document.body,
                     dataType: "json"
                 }).done(function (response, status, responseObj) {
-                        $(this).addClass("done");
                         if (status == "success") {
-                            basket.recalcTotal()
+                            updateBasket()
                         }
                     });
 
@@ -326,6 +360,7 @@ require(["jquery", "bluz.notify", "basket"], function ($, notify, basket) {
         $(".clear-basket").off()
             .on("click", function (event, arrdata, textStatus, jqXHR) {
                 basket.clearBasket()
+                return false;
                 /*
                  var data = {}
                  var url = "basket/ajax/modify_basket"
@@ -380,7 +415,7 @@ require(["jquery", "bluz.notify", "basket"], function ($, notify, basket) {
                  });
                  */
 
-                return false;
+
             });
 
         /*

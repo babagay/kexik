@@ -1384,7 +1384,7 @@ class Application
      * @param  string $module
      * @param  string $controller
      * @return string
-     * @throws Exception
+     * @throws Exception\ApplicationException
      *
      * Если контроллер - ajax, то ожидается, что есть третий параметр (имя файла в папке ajax данного контроллера)
      */
@@ -1429,9 +1429,14 @@ class Application
             $controllerPath = $this->getPath() . '/modules/' . ucfirst( $module )
                 . '/controller/' . $controller . '.php';
 
+            if( preg_match('/^(ajax\/)[\w]*/i',$controller) ){
+                $controller = preg_replace('/ajax\//',"",$controller);
+                $controllerPath = $this->getPath() . '/modules/' . ucfirst( $module )
+                    . '/ajax/' . $controller . '.php';
+            }
 
             if( !file_exists( $controllerPath ) ) {
-                if( getenv( 'ZOQA_ENV' ) == 'debug' ) fb( "Debug info: " . __METHOD__ . " " . $controllerPath );
+                if( getenv( 'ZOQA_ENV' ) == 'debug' ) fb( "Error in " . __METHOD__ . ": Controller not found - $module/$controller Path: " . $controllerPath );
                 throw new ApplicationException( "Controller not found '$module/$controller' [$controllerPath]", 404 );
             }
         }

@@ -4,12 +4,14 @@
  * сделать отдельный класс для выборки продуктов
  *
  * FIXME происходит отвал в Application, если в докКоментах указать кириллическое имя параметра
+ *
+ * [!] app()->getRequest()->getParam('filter-categories_id') - берёт параметр не зависимо от метода Post или Get
  */
 
 return
     /**
      * @param int $manufacturers_id
-     * @return \closure     *
+     * @return \closure
      */
     function ($категория = null, $продукт = null, $products_id = null, $manufacturers_id = null) use ($view) {
 

@@ -76,9 +76,6 @@
         </div>
     </header>
 
-
-
-
     <!------------------------------------------>
     {# php if (app()->hasMessages()): #}
 
@@ -101,7 +98,6 @@
                     window.location = "поиск/" + search
                 });
 
-
                 $("#search-global-field").on("keypress",function(e){
                     var code = e.keyCode || e.which;
 
@@ -110,82 +106,10 @@
                         window.location = "поиск/" + search
                     }
                 });
-
         });
     </script>
 
     <div id="loading_2" class="hidden">
-        <img src="{{ baseUrl('public/images/loader_2.gif') }}">
+        <img src="{{ baseUrl('public/images/ajax-loader_1.gif') }}">
     </div>
 
-    <script>
-
-/*
-        require(["jquery","jcarousel" ], function(  $, jcarousel_obj  ) {
-            var jcarousel = $('.jcarousel');
-
-            jcarousel
-                .on('jcarousel:reload jcarousel:create', function () {
-                    var carousel = $(this),
-                        width = carousel.innerWidth();
-
-
-
-                    carousel.jcarousel('items').css('width', Math.ceil(width) + 'px');
-                })
-                .jcarousel({
-                    wrap: 'circular'
-                });
-
-            $('.jcarousel-control-prev')
-                .jcarouselControl({
-                    target: '-=1'
-                });
-
-            $('.jcarousel-control-next')
-                .jcarouselControl({
-                    target: '+=1'
-                });
-
-            $('.jcarousel-pagination')
-                .on('jcarouselpagination:active', 'a', function() {
-                    $(this).addClass('active');
-                })
-                .on('jcarouselpagination:inactive', 'a', function() {
-                    $(this).removeClass('active');
-                })
-                .on('click', function(e) {
-                    e.preventDefault();
-                })
-                .jcarouselPagination({
-                    perPage: 1,
-                    item: function(page) {
-                        return '<a href="#' + page + '">' + page + '</a>';
-                    }
-                });
-
-            $('.jcarousel')
-                .jcarousel({
-                    // Core configuration goes here
-                })
-                .jcarouselAutoscroll({
-                    interval: 3000,
-                    target: '+=1',
-                    autostart: true
-                })
-            ;
-
-        });
-
-*/
-
-        /*
-        require(["jCarousel" ], function(  jCarousel  ) {
-
-        });
-        */
-
-
-
-
-    </script>
