@@ -1,6 +1,8 @@
+{#
 <script>
     require(["basket"],  function (basket) {  });
 </script>
+#}
 
 <input type="hidden" name="is_search" value="{{ is_search }}">
 <input type="hidden" name="search_text" value="{{ search_text }}">
@@ -164,7 +166,7 @@
             data["direction"] = direction; //?
 
             var url = $(this).attr("href") + "?" + state;
-            //url = "catalog/products" + "?" + state + "&noCache="  + (new Date().getTime()) + Math.random()
+            // url = "catalog/products" + "?" + state + "&noCache="  + (new Date().getTime()) + Math.random()
 
             var is_search = $("input[name=is_search]").val()
 
@@ -308,5 +310,130 @@
     {% endfor %}
 </div>
 {% endif %}
+
+<script>
+
+    require(["jquery", "bluz.notify", "basket"], function ($, notify, basket) {
+        //notify.addSuccess("Event `success.ajax.bluz` is fired")
+        //notify.add("success","asd")
+
+        // [!] перенести в модуль пока не получилось, т.к. require не работает через аджакс
+
+        $(".goods a.dec").off()
+            .on("click", function (e) {
+                var num = $(this).closest(".goods").find("input.num").val();
+                num--
+                if (num < 0) num = 0;
+
+                if (num == 0) return false;
+
+                $(this).closest(".goods").find("input.num").val(num)
+                var products_shoppingcart_price = $(this).closest(".goods").find("input[name=products_shoppingcart_price]").val()
+
+                $(this).closest(".goods").find(".price").html(Math.round(products_shoppingcart_price * num * 100) / 100)
+
+                var data = {}
+                var url = "basket/ajax/modify_basket"
+                data["products_id"] = $(this).closest(".goods").find("input[name=products_id]").val()
+
+
+                data["mode"] = "update"
+                data["products_num"] = num
+
+                $.ajax({
+                    type: "POST",
+                    data: data,
+                    url: url,
+                    context: document.body,
+                    dataType: "json"
+                }).done(function (response, status, responseObj) {
+                        $(this).addClass("done");
+                        if (status == "success") {
+
+
+                        }
+                    });
+
+                return false;
+            });
+
+        $(".goods a.inc").off()
+            .on("click", function (e) {
+                var num = $(this).closest(".goods").find("input.num").val();
+                num++
+
+                $(this).closest(".goods").find("input.num").val(num)
+                var products_shoppingcart_price = $(this).closest(".goods").find("input[name=products_shoppingcart_price]").val()
+
+                $(this).closest(".goods").find(".price").html(Math.round(products_shoppingcart_price * num * 100) / 100)
+
+                var data = {}
+                var url = "basket/ajax/modify_basket"
+                data["products_id"] = $(this).closest(".goods").find("input[name=products_id]").val()
+
+
+                data["mode"] = "update"
+                data["products_num"] = num
+
+                $.ajax({
+                    type: "POST",
+                    data: data,
+                    url: url,
+                    context: document.body,
+                    dataType: "json"
+                }).done(function (response, status, responseObj) {
+                        $(this).addClass("done");
+                        if (status == "success") {
+                            basket.redrawCabinetWg(2);
+                        }
+                    });
+
+                return false;
+            });
+
+        $("a.push-to-basket").off().on("click", function (event, anydata, textStatus, jqXHR) {
+            var products_id = $(this).closest(".goods").find("input[name=products_id]").val();
+            var products_num = $(this).closest(".goods").find("input.num").val();
+
+            var data = {};
+            data["products_id"] = products_id
+            data["products_num"] = products_num
+            data["mode"] = "add"
+
+            $.ajax({
+                type: "POST",
+                data: data,
+                url: "basket/" + $(this).attr("data-href"),
+                context: document.body,
+                dataType: "json"
+            }).done(function (response, status, responseObj) {
+                    $(this).addClass("done");
+                    if (status == "success") {
+
+                        // responseObj.responseText - is response
+                        if (response.response == "ok") {
+
+                            basket.redrawCabinetWg(2);
+                            //alert("Товар добавлен в корзину")
+
+                        } else {
+                            // console.log("Ошибка данных")
+                        }
+
+
+                        if (responseObj.status != 200) {
+                            // notify.addError("Error 404")
+                        }
+
+                        //$("#article-items").append(response)
+                    }
+                });
+
+            return false;
+        });
+
+    });
+
+</script>
 
 
