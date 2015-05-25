@@ -503,11 +503,21 @@ abstract class Grid extends Options
         $params = $this->getParams($params);
 
         // retrieve URL
+        $url = app()->getRouter()->url(
+            $this->getModule(),
+            $this->getController(),
+            $params
+        );
+
+        return str_replace(PUBLIC_URL . "/", '', $url);
+
+        /*
         return app()->getRouter()->url(
             $this->getModule(),
             $this->getController(),
             $params
         );
+        */
     }
 
     /**
