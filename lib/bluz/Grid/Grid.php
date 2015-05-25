@@ -520,6 +520,19 @@ abstract class Grid extends Options
         */
     }
 
+    function url($module, $controller, $params)
+    {
+        $params = $this->getParams($params);
+
+        $url = app()->getRouter()->url(
+            $module,
+            $controller,
+            $params
+        );
+
+        return str_replace(PUBLIC_URL . "/", '', $url);
+    }
+
     /**
      * setAllowOrders
      *

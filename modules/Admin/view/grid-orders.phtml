@@ -43,7 +43,7 @@
             <th width="120px"><a href="{{ grid.order('address') }}">Адрес доставки</a></th>
             <th width="120px"><a href="{{ grid.order('total') }}">Сумма</a></th>
             <th width="120px"><a href="{{ grid.order('notes') }}">Замечания</a></th>
-            <th width="120px">Действия</th>
+            <th width="160px">Действия</th>
         </tr>
         </thead>
         <tbody>
@@ -62,14 +62,16 @@
 
                 {% if row['order_status'] == 0 %} {# Отменен #}
                 {% else %}
-                <a href="{{ url('admin', 'orders-crud', {'orders_id' : row['orders_id']}) }}" class="btn btn-xs {% if(row['order_status'] == 2) %} btn-order-closed {% else %} btn-primary {% endif %} {% if(row['order_type'] == 2) %} backend {% endif %} dialog"
-                   data-ajax-method="get">
+                <a href="{{ grid.url('admin', 'orders-crud', {'orders_id' : row['orders_id']}) }}"
+                   class="btn btn-xs {% if(row['order_status'] == 2) %} btn-order-closed {% else %} btn-primary {% endif %} {% if(row['order_type'] == 2) %} backend {% endif %} dialog"
+                   data-ajax-method="get">Edit
                     <i class="fa fa-pencil"></i>
                 </a>
                 {% endif %}
 
 
-                <a href="{{ url('orders', 'edit', {'orders_id' : row['orders_id']}) }}" class="btn btn-xs btn-default edit-order" >
+                <a href="{{ grid.url('orders', 'edit', {'orders_id' : row['orders_id']}) }}"
+                   class="btn btn-xs btn-default edit-order">View
                     <i class="fa fa-edit"></i>
                 </a>
                 <!--a href="{{ url('admin', 'user-crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
@@ -78,12 +80,12 @@
                 {# set asd = grid.getUid ~ '-filter-parent_id' #}
                 {#
                 {% if(row['parent_id'] == 0) %}
-                <a href="{{ url('admin', 'grid-categories', {  'sql-filter-parent_id': row['categories_id']}) }}"
+                <a href="{{ grid.url('admin', 'grid-categories', {  'sql-filter-parent_id': row['categories_id']}) }}"
                    class="confirm filter btn btn-xs btn-default ajax" data-ajax-method="get">
                     <i class="fa fa-table"></i>
                 </a>
                 {% else %}
-                <a href="{{ url('admin', 'grid-categories') }}" class="confirm filter btn btn-xs btn-default ajax"
+                <a href="{{ grid.url('admin', 'grid-categories') }}" class="confirm filter btn btn-xs btn-default ajax"
                    data-ajax-method="get">
                     <i class="fa fa-table"></i>
                 </a>
