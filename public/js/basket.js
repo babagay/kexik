@@ -187,7 +187,7 @@ define(['jquery', 'bluz', 'basic', 'bluz.ajax'], function ($, bluz, basic, bajax
     $(function () {
 
         // ОБработка продуктов каталога
-        $('.goods').each(function (i, el) {
+        $('._goods').each(function (i, el) {
             var $product = $(el);
 
             $product.bind("added-to-basket", function() {
@@ -315,7 +315,7 @@ define(['jquery', 'bluz', 'basic', 'bluz.ajax'], function ($, bluz, basic, bajax
         }); // $goods end
 
         // ОБработка продуктов в корзине
-        $('.product-item').each(function (i, el) {
+        $('._product-item').each(function (i, el) {
             var $product_item = $(el);
 
             $product_item.bind("the-basket-was-modified", function() {
