@@ -11,37 +11,38 @@ namespace Core\View\Helper;
 return
 
 
-    function ($module, $controller = null, array $params = array(), $checkAccess = false) {
+    function ($module, $controller = null, array $params = array(), $checkAccess = false, $relative = true) {
         /** @var View $this */
         $_this = \Core\Helper\Registry::getInstance()->view;
-
-
-
-        ///fb($module);
 
         // Bug с параметрами
         $mdl = false;
 
-        if(is_array($module)){
-            if(isset($module[0])){
+        if (is_array($module)) {
+            if (isset($module[0])) {
                 $mdl = $module[0];
             }
-            if(isset($module[1])){
-                if(is_null($controller)) $controller =  $module[1];
+            if (isset($module[1])) {
+                if (is_null($controller)) $controller = $module[1];
             }
-            if(isset($module[2])){
-                if(count($params) == 0){
+            if (isset($module[2])) {
+                if (count($params) == 0) {
                     $params = $module[2];
                 }
             }
-            if(isset($module[3])){
-                if($checkAccess === false){
+            if (isset($module[3])) {
+                if ($checkAccess === false) {
                     $checkAccess = $module[3];
+                }
+            }
+            if (isset($module[4])) {
+                if ($relative === true) {
+                    $relative = $module[4];
                 }
             }
         }
 
-        if($mdl !== false){
+        if ($mdl !== false) {
             $module = $mdl;
         }
 
@@ -71,7 +72,11 @@ return
             $params = $app->getRequest()->getParams();
         }
 
-        return $app->getRouter()
-            ->url($module, $controller, $params);
+        if ($relative === true) {
+            return str_replace(PUBLIC_URL . "/", '', $app->getRouter()->url($module, $controller, $params));
+        } else {
+            return $app->getRouter()
+                ->url($module, $controller, $params);
+        }
 
     };
