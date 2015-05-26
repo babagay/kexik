@@ -2,13 +2,19 @@
     require(["bluz.grid"]);
 </script>
 
-
 <div class="clearfix" data-spy="grid" data-grid="{{ attribute(grid, 'getUid')  }}"
-     data-url="{{ baseUrl('admin/grid-users') }}">
+     data-url="{{ grid.getUrl({}) }}">
 
+    {#
+    <div>
+        {{ grid.url( grid.getModule(), grid.getController(),{'orders_id':12}) }}
+        <br> {{ grid.getUrl({"orders_id":12}) }}
+        - результат аналогичный (относительный путь)
+    </div>
+    #}
 
-    <form class="filter-form" action="{{ baseUrl('/admin/grid-users') }}">
-        <div class="input-group-btn grid-filter-search">
+    <form class="filter-form" action="{{ grid.getUrl({}) }}">
+    <div class="input-group-btn grid-filter-search">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ field }} <span
                     class="caret"></span></button>
             <ul class="dropdown-menu">
@@ -23,7 +29,6 @@
 
         <input name="search-like" type="search" class="form-control" value="{{ value }}" required/>
     </form>
-
 
     <!--div class="input-group">
         <a href="{{ url('admin', 'users-crud') }}" class="btn btn-primary pull-left dialog" data-ajax-method="get">Создать</a>

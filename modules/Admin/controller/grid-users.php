@@ -105,7 +105,7 @@ return
         $view->grid    = $grid;
         $view->filters = $filters;
         $view->field   = $field;
-        $view->value   = $value;
+        $view->value = Bluz\Translator\Translator::translitBackToCyr($value);
         $view->type    = $type;
 
         ///$view->products_name_filter = $products_name_filter;

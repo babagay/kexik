@@ -7797,7 +7797,10 @@
                     // akin to a jigsaw puzzle, we simply never set it to be sure.
                     // (it can always be set on a per-request basis or even using ajaxSetup)
                     // For same-domain requests, won't change header if already provided.
-                    if ( !options.crossDomain && !headers["X-Requested-With"] ) {
+                    //console.log(options.crossDomain)
+                    //console.log(headers)
+                    //console.trace()
+                    if (!options.crossDomain && !headers["X-Requested-With"]) {
                         headers["X-Requested-With"] = "XMLHttpRequest";
                     }
                     // Set headers

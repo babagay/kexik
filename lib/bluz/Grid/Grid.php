@@ -475,7 +475,6 @@ abstract class Grid extends Options
         }
         foreach ($filters as $column => $columnFilters) {
 
-
             $columnFilter = array();
             foreach ($columnFilters as $filterName => $filterValue) {
                 $filterValue = \Bluz\Translator\Translator::translit(str_replace("fulltext-","",$filterValue));
@@ -520,9 +519,11 @@ abstract class Grid extends Options
         */
     }
 
-    function url($module, $controller, $params)
+    function url($module, $controller, $params = [])
     {
-        $params = $this->getParams($params);
+        $now_params = $this->getParams($params);
+
+        $params = array_merge($params, $now_params);
 
         $url = app()->getRouter()->url(
             $module,
