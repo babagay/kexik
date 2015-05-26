@@ -225,4 +225,12 @@ class Crud extends \Bluz\Crud\Table
         }
         return true;
     }
+
+    public function updateOne($primary, $data)
+    {
+
+        if (isset($data['delivery_address_1'])) $data['delivery_address_1'] = trim($data['delivery_address_1']);
+
+        return parent::updateOne($primary, $data);
+    }
 }

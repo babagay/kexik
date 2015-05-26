@@ -37,14 +37,16 @@
         <thead>
         <tr>
             <th width="60px"><a href="{{ grid.order('id', null, 'desc', false) }}">Id</a></th>
-            <th width="100px"><a href="{{ grid.order('login') }}">Логин</a></th>
+            <th width="80px"><a href="{{ grid.order('login') }}">Логин</a></th>
+            <th width="80px"><a href="{{ grid.order('name') }}">Имя</a></th>
+            <th width="80px"><a href="{{ grid.order('phone') }}">Телефон</a></th>
             <th width="120px"><a href="{{ grid.order('email') }}">Адрес почты</a></th>
             <th width="120px"><a href="{{ grid.order('status') }}">Статус</a></th>
             <th width="50px"><a href="{{ grid.order('credit') }}">Кредит</a></th>
             <th width="50px"><a href="{{ grid.order('discount') }}">Скидка</a></th>
             <th width="120px"><a href="{{ grid.order('orders_to_bonus') }}">До подарка заказов</a></th>
-            <th width="120px"><a href="{{ grid.order('presents') }}">Заработал подарков</a></th>
-            <th width="120px">Действия</th>
+            <th width="50px"><a href="{{ grid.order('presents') }}">Заработал подарков</a></th>
+            <th width="100px">Действия</th>
         </tr>
         </thead>
         <tbody>
@@ -52,6 +54,8 @@
         <tr>
             <td>{{ row['id'] }}</td>
             <td>{{ row['login'] }}</td>
+            <td>{{ row['name'] }}</td>
+            <td>{{ row['phone'] }}</td>
             <td>{{ row['email'] }}</td>
             <td>
                 {% if(row['status'] == 'active') %}
@@ -67,6 +71,9 @@
             <td>{{ row['orders_to_bonus'] }}</td>
             <td>{{ row['presents'] }}</td>
             <td class="controls">
+                {% if( row.login == 'system' ) %}
+                {% elseif( row.login == 'admin') %}
+                {% else %}
                 <a href="{{ url('admin', 'users-crud', {'id' : row['id']}) }}" class="btn btn-xs btn-primary dialog"
                    data-ajax-method="get">
                     <i class="fa fa-pencil"></i>
@@ -88,6 +95,7 @@
                 </a>
                 {% endif %}
                 #}
+                {% endif %}
             </td>
         </tr>
         {% endfor %}

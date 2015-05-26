@@ -19,5 +19,39 @@ function () {
      */
     $crudController = new Controller\Crud();
     $crudController->setCrud(Users\Crud::getInstance());
-    return $crudController();
+
+
+    app()->useLayout(false);
+
+
+    if (app()->getRequest()->getMethod() == 'PUT') {
+        // Сохранение параметров пользователя
+        $crudController();
+
+        return function () {
+            return ['status' => 'ok', 'result' => 'saved'];
+        };
+    }
+
+
+    if (!app()->getRequest()->isPost()) {
+
+        return $crudController();
+
+    } else {
+        // Вызов аяксом
+
+
+        $crud = $crudController();
+
+        if ($crud === null)
+            // При создании новой записи
+            return $crud;
+
+        // При возникновении ошибок
+        return function () use ($crud) {
+            return $crud;
+        };
+    }
+
 };

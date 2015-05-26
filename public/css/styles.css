@@ -368,6 +368,7 @@ aside#right {
     width: 90%;
     float: right;
     margin: 0 0 10px;
+    display: none;
 }
 
 .partners img {
@@ -719,4 +720,8 @@ table#controls {
 }
 #details td, table#controls td {
     padding: 0 10px 0 0;
+}
+
+#cabinet_header {
+    color: #ffffff;
 }

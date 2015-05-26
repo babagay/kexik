@@ -101,10 +101,12 @@ return
         if( !is_null($identity) ){
         ?>
             <div class="cabnet-form">
-                <div class="select-cabnet"><span>Личный кабинет:  <span>&#9660;</span>  </span>
+                <div class="select-cabnet"><a href="кабинет" id="cabinet_header">Личный
+                        кабинет: </a>&#9660;</span>  </span>
                     <ul class="select-no-display">
-                        <li><a href="">Система СКИДОК</a></li>
-                        <li><a href="">Пополнение счета</a></li>
+                        <!--li><a href="">Система СКИДОК</a></li-->
+                        <!--li><a href="">Пополнение счета</a></li-->
+                        <li><a href="кабинет/мой_профиль">Мой профиль</a></li>
                     </ul>
                 </div>
                 <p>Текущая скидка: <span class="discount"><?php echo $discount; ?> %</span></p>

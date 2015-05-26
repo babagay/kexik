@@ -12,6 +12,7 @@ namespace Bluz\Grid\Source;
 use Bluz\Application\Application;
 use Bluz\Db;
 use Bluz\Grid;
+use Bluz\Translator\Translator;
 
 /**
  * SQL Source Adapter for Grid package
@@ -55,13 +56,14 @@ class SqlSource extends AbstractSource
             foreach ($settings['filters'] as $column => $filters) {
                 foreach ($filters as $filter => $value) {
 
-
                     if(preg_match('/fulltext-/i',$value,$m)){
                         $value = str_replace ('fulltext-','',$value);
+                        $value = Translator::translitBackToCyr($value);
                         // TODO fulltext search here
                     } else {
 
                         if( $filter == Grid\Grid::FILTER_LIKE ) {
+                            $value = Translator::translitBackToCyr($value);
                             $value = '%' . $value . '%';
                         }
                         $where[] = $column . ' ' .

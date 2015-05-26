@@ -15,10 +15,9 @@ $.post(basePath+"my/Base/вопрос/78", {asd: 'asd'}, function (res) {
  */
 return
     /**
-     * @param string $question
      * @return \closure
      */
-    function ($question = null, $asd = null, $вопрос = null, $code = null) use ($view) {
+    function () use ($view) {
         /**
          * @var Вместо Application $this используй $app_object = Application\Bootstrap::getInstance();
          * или так: app()->getRequest();
@@ -27,22 +26,31 @@ return
         //$app_object = Application\Bootstrap::getInstance();
         $app_object = app()->getInstance();
 
-        $title = 'Автор';
-		
+        $uri_param_2 = app()->getRequest()->get(2);
+
+        // change layout
+        $app_object->useLayout('front_end.phtml');
+
+        switch ($uri_param_2) {
+            case 'мой_профиль':
+
+                return app()->dispatch('users', 'profile');
+                break;
+            default:
+                break;
+        }
 
 
+        $title = 'Личный кабинет';
 
         $app_object->getLayout()->title($title);
 
 
-
-        $crumbs_arr =  array(
+        $crumbs_arr = array(
             //$view->ahref('Автор', array('автор', '') ),
             __($title)
         );
 
-        // change layout
-        $app_object->useLayout('front_end.phtml');
 
         $app_object->getLayout()->breadCrumbs($crumbs_arr);
     };

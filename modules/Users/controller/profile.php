@@ -33,12 +33,14 @@ function ($id = null) use ($view) {
         $id = $app_object->getAuth()->getIdentity()->id;
     }
 
+    if ($id === null)
+        return null;
+
     /**
      * @var Users\Row $user
      */
     $user = Users\Table::findRow($id); // Application\Users\Row
     $view_user = $view->user(); // Application\Users\Row  Bluz\View\View
-
 
 
 
@@ -56,5 +58,15 @@ function ($id = null) use ($view) {
 
         $view->user = $user;
         $view->view_user = $view_user;
+
+        $crumbs_arr = array(
+            $view->ahref('Личный кабинет', array('кабинет', '')),
+            "Профиль"
+        );
+
+
+        $app_object->getLayout()->breadCrumbs($crumbs_arr);
+
+        return 'profile.phtml';
     }
 };
