@@ -2,11 +2,11 @@
     require(["bluz.grid"]);
 </script>
 
-<div class="clearfix" data-spy="grid" data-grid="{{ attribute(grid, 'getUid')  }}" data-url="{{ baseUrl('admin/grid-categories') }}">
+<div class="clearfix" data-spy="grid" data-grid="{{ attribute(grid, 'getUid')  }}" data-url="admin/grid-categories">
 
 
-    <form class="filter-form" action="{{ baseUrl('/admin/grid-categories') }}">
-        <div class="input-group-btn grid-filter-search">
+    <form class="filter-form" action="admin/grid-categories">
+    <div class="input-group-btn grid-filter-search">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Поле для поиска <span class="caret"></span></button>
             <ul class="dropdown-menu">
                 <li><a href="#" data-filter="{{ grid.getUid }}-filter-categories_name"> Название </a></li>
