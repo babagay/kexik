@@ -83,7 +83,6 @@ class SqlGrid extends \Bluz\Grid\Grid
             if( isset( $this->options['search']) ){
                 $key = $this->options['search'];
 
-
                 if( isset( $this->options['search-column']) ){
                     if( $this->options['search-column'] == 'products_name' ){
                         $adapter->setSource(
@@ -101,7 +100,7 @@ class SqlGrid extends \Bluz\Grid\Grid
                                               WHERE tmp.products_id LIKE '%$key%'
                                               ");
 
-                    } elseif($this->options['search-column'] == 'barcode'  ){
+                    } elseif ($this->options['search-column'] == 'products_barcode') {
                         $adapter->setSource("SELECT tmp.*
                                               FROM (
                                                 SELECT *
