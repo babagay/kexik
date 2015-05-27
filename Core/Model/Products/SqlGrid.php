@@ -86,28 +86,33 @@ class SqlGrid extends \Bluz\Grid\Grid
                 if( isset( $this->options['search-column']) ){
                     if( $this->options['search-column'] == 'products_name' ){
                         $adapter->setSource(
-                            'SELECT * FROM '.
-                            '(SELECT * FROM ' . $this->table_name . ' WHERE MATCH (products_name) AGAINST (\''.$key.'\') ) tmp'.
-                             " WHERE tmp.products_id IN($products_str)"   );
+                            'SELECT *, (op.price * op.products_num) products_total FROM ' .
+                            '(SELECT * FROM ' . $this->table_name . ' WHERE MATCH (products_name) AGAINST (\'' . $key . '\') ) p' .
+                            " LEFT JOIN order_products op ON op.products_id = p.products_id AND orders_id = '{$this->orders_id}'" .
+                            " WHERE p.products_id IN($products_str)"
+
+                        );
                         $this->fulltext_search = true;
                     } elseif( $this->options['search-column'] == 'products_id' ){
-                        $adapter->setSource("SELECT tmp.*
+                        $adapter->setSource("SELECT p.*, op.*, (op.price * op.products_num) products_total
                                               FROM (
                                                 SELECT *
                                                 FROM {$this->table_name}
                                                 WHERE products_id IN($products_str)
-                                                ) tmp
-                                              WHERE tmp.products_id LIKE '%$key%'
+                                                ) p
+                                              LEFT JOIN order_products op ON op.products_id = p.products_id AND orders_id = '{$this->orders_id}'
+                                              WHERE p.products_id LIKE '%$key%'
                                               ");
 
                     } elseif ($this->options['search-column'] == 'products_barcode') {
-                        $adapter->setSource("SELECT tmp.*
+                        $adapter->setSource("SELECT p.*, op.*, (op.price * op.products_num) products_total
                                               FROM (
                                                 SELECT *
                                                 FROM {$this->table_name}
                                                 WHERE products_id IN($products_str)
-                                                ) tmp
-                                              WHERE tmp.products_barcode LIKE '%$key%'
+                                                ) p
+                                              LEFT JOIN order_products op ON op.products_id = p.products_id AND orders_id = '{$this->orders_id}'
+                                              WHERE p.products_barcode LIKE '%$key%'
                                               ");
                     }
                 }
