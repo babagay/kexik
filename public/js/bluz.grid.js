@@ -78,6 +78,7 @@ define(['jquery', 'bluz'], function ($, bluz) {
                         $grid.html($(html).children().unwrap());
 
                         $grid.trigger("item-added");
+                        $grid.trigger("reload");
                     }
                 });
                 return false;
@@ -104,6 +105,7 @@ define(['jquery', 'bluz'], function ($, bluz) {
                             $grid.html($(html).children().unwrap());
 
                             $grid.trigger("item-updated");
+                            $grid.trigger("reload");
                         }
                     });
                     return false;
@@ -153,6 +155,7 @@ define(['jquery', 'bluz'], function ($, bluz) {
                          */
                         $grid.data('url', href);
                         $grid.html($(html).children().unwrap());
+                        $grid.trigger("reload");
                     }
                 });
                 return false;
@@ -169,6 +172,7 @@ define(['jquery', 'bluz'], function ($, bluz) {
                     },
                     success: function (html) {
                         $grid.html($(html).children().unwrap());
+                        $grid.trigger("reload");
                     }
                 });
             });
@@ -184,6 +188,7 @@ define(['jquery', 'bluz'], function ($, bluz) {
                     },
                     success: function (html) {
                         $grid.html($(html).children().unwrap());
+                        $grid.trigger("reload");
                     }
                 });
             });
@@ -209,6 +214,7 @@ define(['jquery', 'bluz'], function ($, bluz) {
                     },
                     success: function (html) {
                         $grid.html($(html).children().unwrap());
+                        $grid.trigger("reload");
                     }
                 });
                 return false;

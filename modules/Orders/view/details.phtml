@@ -66,20 +66,29 @@
 
     require(["jquery", "bluz.notify"],  function ($,notify) {
 
-        $(function(){
+        function checkOrderStatus() {
             var order_status = $("#order_status").val()
 
-            if(order_status == 0 || order_status == 2){
+            if (order_status == 0 || order_status == 2) {
                 $("a.drop-item").hide()
                 $("a.add-item").hide()
-                $("input.update-item").attr("disabled","disabled")
+                $("input.update-item").attr("disabled", "disabled")
             } else {
                 $("a.drop-item").show()
                 $("a.add-item").show()
                 $("input.update-item").prop("disabled", false)
             }
 
-            if(order_status == 0)  $("#order_status").hide()
+            if (order_status == 0)  $("#order_status").hide()
+        }
+
+        $(function(){
+
+            $("div[data-spy=grid]").on("reload", function () {
+                checkOrderStatus()
+            });
+
+            checkOrderStatus()
 
             $("#order_status").off().on("change",function(e){
 
