@@ -4,13 +4,13 @@
     //add-product
 </script>
 
-<div class="clearfix" data-spy="grid" data-grid="{{ attribute(grid, 'getUid')  }}" data-url="{{ baseUrl('admin/grid-products') }}">
+<div class="clearfix" data-spy="grid" data-grid="{{ attribute(grid, 'getUid')  }}" data-url="admin/grid-products">
 
-{{ partial('grid/filter-search.phtml', {'grid': grid}) }}
+    {{ partial('grid/filter-search.phtml', {'grid': grid}) }}
 
 
 <div class="input-group create-group pull-left">
-    <a class="btn btn-primary pull-left dialog" data-ajax-method="get" href="{{ baseUrl('admin/products-crud-2') }}">Создать</a>
+    <a class="btn btn-primary pull-left dialog" data-ajax-method="get" href="admin/products-crud-2">Создать</a>
 </div>
 
 {{ partial('grid/limit.phtml', {'grid': grid}) }}

@@ -12,6 +12,7 @@ namespace Bluz\Grid;
 use Bluz\Application\Application;
 use Bluz\Common\Helper;
 use Bluz\Common\Options;
+use Bluz\Translator\Translator;
 use Core\Helper\Registry;
 
 /**
@@ -336,6 +337,7 @@ abstract class Grid extends Options
 
         foreach ($this->allowFilters as $column) {
             $filter = $request->getParam($this->prefix . 'filter-' . $column);
+            $filter = Translator::translitBackToCyr($filter);
             if ($filter) {
                 if (strpos($filter, '-')) {
                     $filter = trim($filter, ' -');
@@ -352,11 +354,11 @@ abstract class Grid extends Options
                             $filterValue = $filter;
                         }
 
-                        $this->addFilter($column, $filterType, $filterValue);
+                        $this->addFilter($column, $filterType, Translator::translitBackToCyr($filterValue));
                     }
 
                 } else {
-                    $this->addFilter($column, self::FILTER_EQ, $filter);
+                    $this->addFilter($column, self::FILTER_EQ, Translator::translitBackToCyr($filter));
                 }
             }
         }
@@ -477,7 +479,8 @@ abstract class Grid extends Options
 
             $columnFilter = array();
             foreach ($columnFilters as $filterName => $filterValue) {
-                $filterValue = \Bluz\Translator\Translator::translit(str_replace("fulltext-","",$filterValue));
+                $filterValue = str_replace("fulltext-", "", $filterValue);
+
                 if ($filterName == self::FILTER_EQ) {
                     $columnFilter[] = $filterValue;
                 } else {
@@ -498,25 +501,24 @@ abstract class Grid extends Options
      */
     public function getUrl($params)
     {
-        // prepare params
-        $params = $this->getParams($params);
+        if (!sizeof($params)) {
+            $url = app()->getRouter()->url(
+                $this->getModule(),
+                $this->getController()
+            );
+        } else {
+            // prepare params
+            $params = $this->getParams($params);
 
-        // retrieve URL
-        $url = app()->getRouter()->url(
-            $this->getModule(),
-            $this->getController(),
-            $params
-        );
+            // retrieve URL
+            $url = app()->getRouter()->url(
+                $this->getModule(),
+                $this->getController(),
+                $params
+            );
+        }
 
-        return str_replace(PUBLIC_URL . "/", '', $url);
-
-        /*
-        return app()->getRouter()->url(
-            $this->getModule(),
-            $this->getController(),
-            $params
-        );
-        */
+        return str_replace(PUBLIC_URL . "/", '', Translator::translitBackToCyr($url));
     }
 
     function url($module, $controller, $params = [])
@@ -531,7 +533,7 @@ abstract class Grid extends Options
             $params
         );
 
-        return str_replace(PUBLIC_URL . "/", '', $url);
+        return str_replace(PUBLIC_URL . "/", '', Translator::translitBackToCyr($url));
     }
 
     /**
@@ -693,7 +695,6 @@ abstract class Grid extends Options
      */
     public function addFilter($column, $filter, $value)
     {
-
         if (!in_array($column, $this->allowFilters) &&
             !array_key_exists($column, $this->allowFilters)
         ) {
@@ -710,11 +711,9 @@ abstract class Grid extends Options
             $this->filters[$column] = array();
         }
 
-
         if($this->fulltext_search) $value = 'fulltext-' . $value;
 
         $this->filters[$column][$filter] = $value;
-
 
         return $this;
     }
@@ -867,8 +866,6 @@ abstract class Grid extends Options
      */
     public function __call($method, $args)
     {
-
-        //if($method == 'filter')            fb($args);
         $path = PATH_LIB . '/bluz/Grid/Helper';
 
         self::addHelperPath($path);

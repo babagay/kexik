@@ -5,8 +5,10 @@
     {% endfor %}
     #}
 
- <form class="filter-form" action="{{ grid.url() }}"> {# grid.getUrl({'a':1}) #}
-     <div class="input-group-btn grid-filter-search _one-line">
+ {# grid.url(grid.getModule(),grid.getController()) #}
+
+ <form class="filter-form" action="{{ grid.getUrl({}) }}">
+ <div class="input-group-btn grid-filter-search _one-line">
          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ default_filter.title }} <span class="caret"></span></button>
          <ul class="dropdown-menu">
              {% for column,filtertitle in filters %}

@@ -19,6 +19,7 @@
     return
         /**
          * @return string|null $url
+         * @use Grid\Grid $_this
          */
         function ($limit = 25) use($_this) {
             /**
