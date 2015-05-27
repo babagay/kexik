@@ -10,6 +10,7 @@
 namespace Application\Categories;
 //namespace Core\Model\Categories;
 
+use Application\Users\Row;
 use Bluz\Crud\Table;
 
 /**
@@ -150,10 +151,32 @@ class Crud extends Table
 
         $price_index = $data['price_index']/100;
 
+// TODO обновлять кеш , связанный с продуктами
+
         if( isset($data['price_index']) ){
             if( (int)$data['price_index'] > 0 ){
 
-                app()->getDb()->query("
+                $category = Crud::getInstance()->readOne(['categories_id' => $categories_id]);
+
+                if ((int)$category->parent_id === 0) {
+                    $sub_categories = app()->getDb()->fetchAll("SELECT * FROM categories WHERE parent_id = '$categories_id'");
+                    if (sizeof($sub_categories)) {
+                        foreach ($sub_categories as $sub_category) {
+                            app()->getDb()->query("
+                                    UPDATE products
+                                    SET products_shoppingcart_price = (products_price * $price_index) + products_price
+                                    WHERE  products_id  IN (
+                                        SELECT products_id
+                                        FROM products_to_categories
+                                        WHERE categories_id = '{$sub_category['categories_id']}'
+                                    )
+                                    ");
+                        }
+                        app()->getDb()->query("UPDATE categories SET price_index = '{$data['price_index']}' WHERE parent_id = '$categories_id'");
+                    }
+
+                } else {
+                    app()->getDb()->query("
                     UPDATE products
                     SET products_shoppingcart_price = (products_price * $price_index) + products_price
                     WHERE  products_id  IN (
@@ -162,6 +185,7 @@ class Crud extends Table
                         WHERE categories_id = '$categories_id'
                     )
                     ");
+                }
             }
         }
     }
@@ -176,6 +200,11 @@ class Crud extends Table
      */
     function updateOne($primary,$data)
     {
+        // TODO обновлять кеш , связанный с категорией
+
+        // FIXME дата не заносится
+        // $data['last_modified'] = date("Y-m-d H:i:s", strtotime("now"));
+
         $data =  $this->getTable()->filterColumns($data) ;
 
         $row = $this->getTable()->findRow($primary);
