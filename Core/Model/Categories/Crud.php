@@ -132,6 +132,7 @@ class Crud extends Table
     protected function checkPriceIndex($index)
     {
         if((int)$index < 0) $this->addError('Наценка не может быть отрицательной', 'price_index');
+        if ((int)$index == 0) $this->addError('Наценка не может быть нулевой', 'price_index');
         if((int)$index > 100) $this->addError('Наценка не может быть больше 100 %', 'price_index');
     }
 
