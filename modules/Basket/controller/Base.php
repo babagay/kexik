@@ -121,6 +121,8 @@ return
 
                 if (isset($basket['address_dostavki']))
                     $view->address_dostavki = $basket['address_dostavki'];
+                else
+                    $view->address_dostavki = $user->delivery_address_1;
 
                 if (isset($basket['order_notes']))
                     $view->order_notes = $basket['order_notes'];
