@@ -40,7 +40,13 @@
         {% for product in products %}
         <tr class="product-item" data-products_id="{{ product.products_id }}">
             <td>
-                <div class="image-box"><img src="{{ baseUrl('public/images/goods1.jpg') }}"></div>
+                {% if(product.image_small) %}
+                {% set product_image = product.image_small %}
+                {% else %}
+                {% set product_image = baseUrl('public/images/stumb.jpg') %}
+                {% endif %}
+
+                <div class="image-box"><img src="{{ product_image }}"></div>
             </td>
             <td>{{ product.products_name }}</td>
             <td>{{ product.products_shoppingcart_price|round(2, 'ceil') }} грн.</td>
