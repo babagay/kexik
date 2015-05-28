@@ -18,6 +18,7 @@ return
     /**
      * @param string $question
      * @return \closure
+     * @privilege Management
      */
     function ($question = null, $asd = null, $вопрос = null, $code = null) use ($view) {
         /**
