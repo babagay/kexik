@@ -22,10 +22,13 @@ return
     $grid->setController($controller);
 
     $filters = array(
-        'orders_id' => 'Id',
+        'orders_id' => 'Id заказа',
         //'users_id' => 'Id пользователя',
+        'name'      => 'Имя пользователя',
+        'email'     => 'Электропочта пользователя',
+        'phone'     => 'Телефон пользователя',
         'login' => 'Логин пользователя',
-        'date_added' => 'Дата',
+        //'date_added' => 'Дата',
         'address' => 'Адрес',
         'total' => 'Сумма',
         'notes' => 'Заметки',

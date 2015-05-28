@@ -50,7 +50,7 @@
         {% for row in attribute(grid, 'getData') %}
         <tr class="row-highlite-{{  row['order_status'] }} order-type-{{  row['order_type'] }}">
             <td>{{ row['orders_id'] }} </td>
-            <td>{# row['users_id'] #} {{ row['login'] }} ({{ row['email'] }})</td>
+            <td>{# row['users_id'] #} {{ row['login'] }} ({{ row['email'] }}) <br> {{ row.phone }} {{ row.name }}</td>
             <td>{{ row['date_added']|date("j F G:i ") }}</td>
             <td>{{ row['address'] }}</td>
             <td>{{ row['total']|round(2) }}</td>
