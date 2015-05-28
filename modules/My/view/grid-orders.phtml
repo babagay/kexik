@@ -1,0 +1,122 @@
+<script>
+    require(["bluz.grid"]);
+</script>
+
+<div class="clearfix" data-spy="grid" data-grid="{{ attribute(grid, 'getUid')  }}"
+     data-url="my/grid-orders">
+
+    {#
+    <form class="filter-form" action="{{ grid.getUrl({}) }}">
+        <div class="input-group-btn grid-filter-search _one-line">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ field }} <span
+                    class="caret"></span></button>
+            <ul class="dropdown-menu">
+                {% for column,filtertitle in filters %}
+                <li><a href="#" data-filter="{{ grid.getUid }}-filter-{{ column }}"> {{ filtertitle }} </a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- /btn-group -->
+        <input name="{{ grid.getUid }}-filter-{{ field }}" class="grid-filter-search-input"
+               value="{{ type }}-{{ value }}" type="hidden"/>
+
+        <input name="search-like" type="search" class="form-control _one-line-search" value="{{ value }}" required/>
+    </form>
+    #}
+
+    {#
+    <!--div class="input-group">
+        <a href="{{ url('admin', 'orders-crud') }}" class="btn btn-primary pull-left dialog" data-ajax-method="get">Создать</a>
+    </div-->
+
+
+    <div class="input-group create-group pull-left">
+        <a class="btn btn-primary pull-left dialog" data-ajax-method="get" href="{{ baseUrl('admin/orders-crud') }}">Создать</a>
+    </div>
+    #}
+
+    {{ partial('grid/limit.phtml', {'grid': grid}) }}
+
+    <table class="table grid">
+        <thead>
+        <tr>
+            {#
+            <th width="50px"><a href="{{ grid.order('orders_id', null, 'desc', false) }}">Id заказа</a></th>
+            #}
+            <th width="120px"><a href="{{ grid.order('orders_id') }}">Пользователь</a></th>
+            <th width="120px"><a href="{{ grid.order('users_id') }}">Пользователь</a></th>
+            <th width="120px"><a href="{{ grid.order('date_added') }}">Дата</a></th>
+            <th width="120px"><a href="{{ grid.order('address') }}">Адрес доставки</a></th>
+            <th width="120px"><a href="{{ grid.order('total') }}">Сумма</a></th>
+            <th width="120px"><a href="{{ grid.order('notes') }}">Замечания</a></th>
+            {#
+            <th width="160px">Действия</th>
+            #}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in attribute(grid, 'getData') %}
+        <tr class="row-highlite-{{  row['order_status'] }} order-type-{{  row['order_type'] }}">
+            <td>{{ row['orders_id'] }}</td>
+            <td>{# row['users_id'] #} {{ row['login'] }} ({{ row['email'] }})</td>
+            <td>{{ row['date_added']|date("j F G:i ") }}</td>
+            <td>{{ row['address'] }}</td>
+            <td>{{ row['total']|round(2) }}</td>
+            <td>{{ row['notes'] }}</td>
+            {#
+            <td class="controls">
+                <a href="{{ url('admin', 'download_doc', {'orders_id' : row['orders_id'], 'type': 'type_1'}) }}"
+                   title="Сгенерировать форму Заказа" data-ajax-method="post" class="print form-1"><i
+                        class="fa fa-print"></i></a>
+                <a href="{{ url('admin', 'download_doc', {'orders_id' : row['orders_id'], 'type': 'type_2'}) }}"
+                   title="Сгенерировать Маршрутный лист" data-ajax-method="post" class="print form-2"><i
+                        class="fa fa-print"></i></a>
+                <a href="{{ url('admin', 'download_doc', {'orders_id' : row['orders_id'], 'type': 'type_3'}) }}"
+                   title="Сгенерировать Комплектацию" data-ajax-method="post" class="print form-3"><i
+                        class="fa fa-print"></i></a>
+
+                {% if row['order_status'] == 0 %}
+                {% else %}
+                <a href="{{ grid.url('admin', 'orders-crud', {'orders_id' : row['orders_id']}) }}"
+                   class="btn btn-xs {% if(row['order_status'] == 2) %} btn-order-closed {% else %} btn-primary {% endif %} {% if(row['order_type'] == 2) %} backend {% endif %} dialog"
+                   data-ajax-method="get">Edit
+                    <i class="fa fa-pencil"></i>
+                </a>
+                {% endif %}
+
+
+                <a href="{{ grid.url('orders', 'edit', {'orders_id' : row['orders_id']}) }}"
+                   class="btn btn-xs btn-default edit-order">View
+                    <i class="fa fa-edit"></i>
+                </a>
+                <!--a href="{{ url('admin', 'user-crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
+                    <i class="fa fa-times"></i>
+                </a-->
+
+                {% if(row['parent_id'] == 0) %}
+                <a href="{{ grid.url('admin', 'grid-categories', {  'sql-filter-parent_id': row['categories_id']}) }}"
+                   class="confirm filter btn btn-xs btn-default ajax" data-ajax-method="get">
+                    <i class="fa fa-table"></i>
+                </a>
+                {% else %}
+                <a href="{{ grid.url('admin', 'grid-categories') }}" class="confirm filter btn btn-xs btn-default ajax"
+                   data-ajax-method="get">
+                    <i class="fa fa-table"></i>
+                </a>
+                {% endif %}
+
+            </td>
+            #}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+    {{ partial('grid/empty-rows.phtml', {'grid': grid}) }}
+    {{ partial('grid/pagination.phtml', {'grid': grid}) }}
+    {{ partial('grid/total.phtml', {'grid': grid}) }}
+
+
+</div>
+

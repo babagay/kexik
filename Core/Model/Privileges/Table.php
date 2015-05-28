@@ -8,9 +8,9 @@
  * @namespace
  */
 namespace Application\Privileges;
-// FIXME: может, понадобится перенести из этих трейтов функционал
-//use Bluz\Cache\Cache;
-//use Application\Roles;
+
+use Bluz\Cache\Cache;
+use Application\Roles;
 
 /**
  * Table
@@ -95,7 +95,7 @@ class Table extends \Bluz\Db\Table
      */
     public function getRolePrivileges($roleId)
     {
-        $cacheKey = 'privileges:role:'.$roleId;
+        $cacheKey = 'privileges:role:' . $roleId;
 
         if (!$data = app()->getCache()->get($cacheKey)) {
             $data = app()->getDb()->fetchColumn(
@@ -103,12 +103,13 @@ class Table extends \Bluz\Db\Table
                 FROM acl_privileges AS p, acl_roles AS r
                 WHERE p.roleId = r.id AND r.id = ?
                 ORDER BY module, privilege",
-                array((int) $roleId)
+                array((int)$roleId)
             );
 
             app()->getCache()->set($cacheKey, $data, Cache::TTL_NO_EXPIRY);
             app()->getCache()->addTag($cacheKey, 'privileges');
         }
+
         return $data;
     }
 }

@@ -16,6 +16,7 @@ $.post(basePath+"my/Base/вопрос/78", {asd: 'asd'}, function (res) {
 return
     /**
      * @return \closure
+     * ____pri vileg e Edit
      */
     function () use ($view) {
         /**
@@ -33,8 +34,10 @@ return
 
         switch ($uri_param_2) {
             case 'мой_профиль':
-
                 return app()->dispatch('users', 'profile');
+                break;
+            case 'мои_заказы':
+                return app()->dispatch('my', 'orders');
                 break;
             default:
                 break;

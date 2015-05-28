@@ -10,25 +10,16 @@ $_this = $this;
 
 return
 
-function ($orders_id = null) use ($view, $module, $controller, $_this) {
-    /**
+    function ($orders_id = null, $users_id = null) use ($view, $module, $controller, $_this) {
+        /**
      * @var \Application\Bootstrap $this
      * @var \Bluz\View\View $view
      */
 
     //$grid = new \Core\Model\Products\SqlGrid();
-    $grid = new \Application\Orders\SqlGrid();
-    $grid->setModule($module);
+        $grid = new \Application\Orders\SqlGrid(['users_id' => $users_id]);
+        $grid->setModule($module);
     $grid->setController($controller);
-
-
-
-
-
-
-
-
-
 
     $filters = array(
         'orders_id' => 'Id',
