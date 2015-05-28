@@ -59,8 +59,9 @@ return
 
         } elseif (!is_null($категория)) {
             $query = "  SELECT p2c.products_id
-                        FROM products_to_categories p2c
-                        WHERE categories_id = " . $db->quote($категория);
+                        FROM products_to_categories p2c, products p
+                        WHERE p.products_id = p2c.products_id AND p.products_visibility = 1
+                                AND categories_id = " . $db->quote($категория);
 
             $products = $db->fetchAll($query);
 
