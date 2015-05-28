@@ -16,7 +16,7 @@ $.post(basePath+"my/Base/вопрос/78", {asd: 'asd'}, function (res) {
 return
     /**
      * @return \closure
-     * ____pri vileg e Edit
+     * @privilege Edit
      */
     function () use ($view) {
         /**

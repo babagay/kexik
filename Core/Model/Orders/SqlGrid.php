@@ -34,13 +34,13 @@ class SqlGrid extends \Bluz\Grid\Grid
         $key = null;
 
         if (isset($this->options['users_id'])) {
-            $adapter->setSource('SELECT o.*, u.login, u.email
+            $adapter->setSource('SELECT o.*, u.login, u.email, u.phone, u.name
              FROM ' . $this->table_name . ' o
              LEFT JOIN users u ON u.id = o.users_id
              WHERE u.id = ' . " '" . $this->options['users_id'] . "'"
             );
         } else {
-            $adapter->setSource('SELECT o.*, u.login, u.email
+            $adapter->setSource('SELECT o.*, u.login, u.email, u.phone, u.name
              FROM ' . $this->table_name . ' o
              LEFT JOIN users u ON u.id = o.users_id '
             );
@@ -51,7 +51,7 @@ class SqlGrid extends \Bluz\Grid\Grid
 
         $this->setAllowOrders(array('orders_id', 'users_id', 'date_added', 'address', 'total', 'notes'));
         $this->setDefaultOrder('date_added', "DESC");
-        $this->setAllowFilters(array('orders_id', 'users_id', 'date_added', 'address', 'login'));
+        $this->setAllowFilters(array('orders_id', 'users_id', 'date_added', 'address', 'login', 'email', 'phone', 'name', 'notes', 'total'));
 
         return $this;
     }
