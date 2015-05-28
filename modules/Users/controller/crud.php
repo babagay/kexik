@@ -9,49 +9,50 @@ use Application\Users;
 use Bluz\Controller;
 
 return
-/**
- * @privilege Management
- * @return \closure
- */
-function () {
     /**
-     * @var \Application\Bootstrap $this
+     * @privilege Management
+     * @return \closure
      */
-    $crudController = new Controller\Crud();
-    $crudController->setCrud(Users\Crud::getInstance());
+    function () {
+        /**
+         * @var \Application\Bootstrap $this
+         */
+        $crudController = new Controller\Crud();
+        $crudController->setCrud(Users\Crud::getInstance());
 
+        app()->useLayout(false);
 
-    app()->useLayout(false);
+        if (app()->getRequest()->getMethod() == 'PUT') {
+            // Сохранение параметров пользователя
+            $crudController();
 
+            // Обновление сессии
+            $id                           = app()->getRequest()->getParam('id', null);
+            $_user                        = \Application\Users\Table::findRow(['id' => $id]);
+            app()->getSession()->identity = $_user;
 
-    if (app()->getRequest()->getMethod() == 'PUT') {
-        // Сохранение параметров пользователя
-        $crudController();
+            return function () {
+                return ['status' => 'ok', 'result' => 'saved'];
+            };
+        }
 
-        return function () {
-            return ['status' => 'ok', 'result' => 'saved'];
-        };
-    }
+        if (!app()->getRequest()->isPost()) {
 
+            return $crudController();
 
-    if (!app()->getRequest()->isPost()) {
+        } else {
+            // Вызов аяксом
 
-        return $crudController();
+            $crud = $crudController();
 
-    } else {
-        // Вызов аяксом
+            if ($crud === null)
+                // При создании новой записи
+                return $crud;
 
+            // При возникновении ошибок
+            return function () use ($crud) {
+                return $crud;
+            };
+        }
 
-        $crud = $crudController();
-
-        if ($crud === null)
-            // При создании новой записи
-            return $crud;
-
-        // При возникновении ошибок
-        return function () use ($crud) {
-            return $crud;
-        };
-    }
-
-};
+    };
