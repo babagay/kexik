@@ -60,7 +60,17 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label col-lg-2" for="products_seo_page_name">СЕО-имя</label>
+                <label class="control-label col-lg-2" for="filters_id">Фильтр</label>
+
+                <div class="controls col-lg-10">
+                    <div class="col-lg-10"> {{ filters_select }}
+                    </div>
+                    <p class="help-block hb-2"></p>
+                </div>
+            </div>
+
+            <div class="form-group">
+            <label class="control-label col-lg-2" for="products_seo_page_name">СЕО-имя</label>
                 <div class="controls col-lg-10">
                     <div class="col-lg-10">
                         <input type="text" class="form-control" id="products_seo_page_name" name="products_seo_page_name" value="{{ row.products_seo_page_name }}"  />

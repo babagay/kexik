@@ -10,6 +10,7 @@
 namespace Application\Products;
 
 use Bluz\Crud\Table;
+use Application\FiltersToProducts;
 
 /**
  * Crud based on Db\Table
@@ -210,6 +211,13 @@ class Crud extends Table
                     ->set( 'products_id', $data['products_id'] )
                 ;
                 $insertBuilder->execute();
+            }
+        }
+
+        FiltersToProducts\Table::getInstance()->dropFilters(['products_id' => $data['products_id']]);
+        if (isset($data['filters_id'])) {
+            if (sizeof($data['filters_id'])) {
+                FiltersToProducts\Table::getInstance()->insertFilters(['filters_id' => $data['filters_id'], 'products_id' => [$data['products_id']]]);
             }
         }
 

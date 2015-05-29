@@ -44,7 +44,7 @@
             <td class="grid-text">{{ row['products_quantity'] }} ({{ row['products_unit'] }})</td>
             <td class="controls">
                 <a href="{{ url('admin', 'products-crud', {'products_id' : row['products_id']}) }}" class="btn btn-xs btn-primary dialog" data-ajax-method="get">
-                    <i class="fa fa-pencil"></i> edit
+                    <i class="fa fa-pencil"></i> Img
                 </a>
                 {% if( row.products_visibility == 1 ) %}
                     {% set operation_hide = "hide" %}
@@ -55,7 +55,7 @@
                 {% endif %}
 
                 <a class="btn btn-xs btn-primary dialog" data-ajax-method="get" href="{{ url('admin', 'products-crud-2', {'products_id' : row['products_id']}) }}">
-                    <i class="fa fa-pencil"></i>
+                    <i class="fa fa-pencil"></i> Edit
                 </a>
 
                 <a onclick="javascript:return false;" href="{{ url('admin','grid-products', {'products_id' : row['products_id'], 'operation': operation_hide} ) }}" class="hide-item"><i class="fa {{operation_hide_style}}"></i> </a>

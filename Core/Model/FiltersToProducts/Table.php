@@ -90,5 +90,43 @@ class Table extends \Bluz\Db\Table
         */
     }
 
+    function insertFilters(array $data)
+    {
+        if (isset($data['filters_id']) AND isset($data['products_id'])) {
+            foreach ($data['filters_id'] as $filter) {
+                foreach ($data['products_id'] as $product) {
+                    $row = new Row(['filters_id' => $filter, 'products_id' => $product]);
+                    $row->save();
+                }
+            }
+        }
+    }
+
+    function dropFilters(array $data)
+    {
+        if (isset($data['filters_id']) AND isset($data['products_id'])) {
+            //TODO
+            foreach ($data['filters_id'] as $filter) {
+                foreach ($data['products_id'] as $product) {
+                    fb($filter);
+                    fb($product);
+                    //$this->delete(['filters_id' => $filter, ])
+                }
+            }
+        } elseif (isset($data['filters_id'])) {
+            //TODO
+        } elseif (isset($data['products_id'])) {
+
+            if (is_array($data['products_id']))
+                $str = implode(",", $data['products_id']);
+            else
+                $str = (int)$data['products_id'];
+
+            return app()->getDb()->query("DELETE FROM {$this->table} WHERE products_id IN($str)");
+
+            //return $this->delete($data['products_id']);
+        }
+    }
+
 
 }
