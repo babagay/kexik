@@ -74,4 +74,31 @@ class Table extends \Bluz\Db\Table
         return $filters;
     }
 
+    function getFilters()
+    {
+        $cacheKey = 'filters:all:';
+
+        if (!$data = app()->getCache()->get($cacheKey)) {
+
+            $query = "SELECT f.*
+                      FROM filters f
+                     ";
+
+            $filters = app()->getDb()->fetchAll($query);
+
+            $data = [];
+            if (sizeof($filters)) {
+                foreach ($filters as $id => $filter) {
+                    $data[$filter['filters_id']] = $filter['name'];
+                }
+            }
+
+            app()->getCache()->set($cacheKey, $data, \Bluz\Cache\Cache::TTL_NO_EXPIRY);
+            app()->getCache()->addTag($cacheKey, 'filters');
+
+        }
+
+        return $data;
+    }
+
 }
