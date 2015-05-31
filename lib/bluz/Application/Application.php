@@ -82,6 +82,11 @@ class Application
     protected $cache;
 
     /**
+     * @var Storage
+     */
+    protected $storage;
+
+    /**
      * @var Config
      */
     protected $config;
@@ -386,6 +391,20 @@ class Application
             }
         }
         return $this->cache;
+    }
+
+    /**
+     * @return Storage|\Bluz\Cache\Storage
+     */
+    public function getStorage()
+    {
+        if (!$this->storage) {
+            $conf          = $this->getConfigData('storage');
+            $this->storage = new \Bluz\Cache\Storage();
+            $this->storage->setOptions($conf);
+        }
+
+        return $this->storage;
     }
 
     /**

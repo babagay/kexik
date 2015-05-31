@@ -203,7 +203,6 @@ return
             }
         }
 
-
         if (isset($filters[0])) {
             foreach ($filters as $filter) {
                 $checked = false;
@@ -225,7 +224,6 @@ return
                 $html .= ' <div>' . $view->checkbox($filter['key'], "on", $checked, ["data-id" => $filter['filters_id'], "class" => "filter-origin"]) . " <label>" . $filter['name'] . "</label></div>";
             }
         }
-
 
         $html .= "</div>";
 

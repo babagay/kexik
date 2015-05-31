@@ -18,7 +18,7 @@ namespace Core;
  * TODO
  * Подключить в качестве резервного стораджа обертку для работы с базой|файлом|сессией|куки
  *
- * Реализовать логику ранения наборов фильтрв в базе.
+ * Реализовать логику хранения наборов фильтрв в базе.
  *      Filtersets
  *      hash    categories_id   manufacturers_id    phrase
  *
@@ -239,6 +239,12 @@ final class FilterKeeper2 {
 
         $this->getStorage()->set($hash,$filters);
 
+        if (is_array($filters)) {
+            foreach ($filters as $filter) {
+                $this->getStorage()->addTag($hash, 'filters_id:' . $filter['filters_id']);
+            }
+        }
+
         return $this;
     }
 
@@ -414,11 +420,18 @@ final class FilterKeeper2 {
         throw new \Exception(__CLASS__ . ": Не возможно вернуть фильтры набора продуктов [$hash, {$this->productset_hash}]");
     }
 
+    /**
+     * Взвращает кэш либо альтернативное хранилище данных
+     * @return \Bluz\Cache\Cache|\Bluz\Common\Nil|\Bluz\Cache\Storage
+     */
     function getStorage()
     {
-        // TODO возвращать длступное хранилище, напр, БД-обертку или кэш-обертку
+        $adapter = app()->getCache();
 
-        return app()->getCache();
+        if ($adapter instanceof \Bluz\Common\Nil)
+            $adapter = app()->getStorage();
+
+        return $adapter;
     }
 
     function getItemFromStorage ($hash)

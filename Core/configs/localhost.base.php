@@ -23,6 +23,10 @@ return array(
             )
         )
     ),
+    "storage" => array(
+        "adaptertype" => "file", // Вместо этого можно установить name:Name, setting:[]
+        "cacheDir"    => "storage",
+    ),
     "auth" => array(
         "equals" => array(
             "encryptFunction" => function ($password, $salt) {

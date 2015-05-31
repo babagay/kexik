@@ -23,6 +23,10 @@ return array(
             )
         )
     ),
+    "storage" => array(
+        "adaptertype" => "file",
+        "cacheDir"    => "storage",
+    ),
     "auth" => array(
         "equals" => array(
             "encryptFunction" => function ($password, $salt) {
@@ -69,9 +73,9 @@ return array(
         "connect" => array(
             "type" => "mysql",
             "host" => "localhost",
-            "name" => "keks",
-            "user" => "keks_user",
-            "pass" => "zxVo_Ipk",
+            "name" => "keksik_ukr", //"keks",
+            "user" => "keksik_ukr_user", //"keks_user",
+            "pass" => "zXcRTy8_cVlkJD", //"zxVo_Ipk",
             "options" => array(\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''),
         ),
     ),
