@@ -288,14 +288,15 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #428bca;
-  text-decoration: none;
+    /*color: #428bca;*/
+    color: #de0709;
+    text-decoration: none;
 }
 a:hover,
 a:focus {
-  _color: #2a6496;
-  color: #702f2f;
-  text-decoration: underline;
+    color: #b80709;
+    /*color: #702f2f;*/
+    text-decoration: underline;
 }
 a:focus {
   outline: thin dotted;
@@ -2081,8 +2082,10 @@ fieldset[disabled] .btn-default.active {
 }
 .btn-primary {
   color: #fff;
-  background-color: #428bca;
-  border-color: #357ebd;
+    /*_background-color: #428bca;*/
+    background-color: #99ae0e;
+    /*_border-color: #357ebd;*/
+    border-color: #7a8708;
 }
 .btn-primary:hover,
 .btn-primary:focus,
@@ -2090,8 +2093,10 @@ fieldset[disabled] .btn-default.active {
 .btn-primary.active,
 .open .dropdown-toggle.btn-primary {
   color: #fff;
-  background-color: #3276b1;
-  border-color: #285e8e;
+    /*background-color: #3276b1;*/
+    background-color: #754414;
+    /*border-color: #285e8e;*/
+    border-color: #ae7317;
 }
 .btn-primary:active,
 .btn-primary.active,

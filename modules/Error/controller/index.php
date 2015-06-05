@@ -95,7 +95,15 @@ function ($code, $message = '') use ($view) {
 
             $boot_object->getMessages()->addError($message);
             //return $view;
-            return $view->render();
+
+            /**
+             * [!] Заменил return $view->render(); на 4 строчки ниже:
+             */
+            $view->title       = $title;
+            $view->description = $description;
+            $view->message     = $message;
+
+            return 'index.phtml';
         }
 
         // dialog AJAX call

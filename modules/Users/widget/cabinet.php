@@ -117,7 +117,7 @@ return
 
                 <p>Заказов до ПОДАРКА: <span class="discount"><?php echo $orders_to_bonus; ?></span></p>
                 <!--button-->
-                <a href="<?php echo $link_enter_cabinet; ?>"><?php echo $btn_1; ?></a>
+                <a class="btn btn-primary" href="<?php echo $link_enter_cabinet; ?>"><?php echo $btn_1; ?></a>
                 <!--/button-->
             </div>
         <?php

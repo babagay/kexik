@@ -341,6 +341,10 @@ define(['jquery', 'bluz', 'bluz.notify'], function ($, bluz, notify) {
                         }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
+                        var html = jqXHR.responseJSON
+                        require(['basic'], function (basic) {
+                            basic.createModal(html)
+                        });
                         $this.trigger('error.ajax.bluz', arguments);
                     },
                     complete: function () {
