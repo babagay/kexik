@@ -202,7 +202,7 @@
                         $products_shoppingcart_price = $row_xls[5];
                         $products_price = $row_xls[6]; // Оптовая
                         $products_quantity = $row_xls[7];
-                        $products_barcode =  $row_xls[8];
+                        $products_barcode = $row_xls[9];
                         $updateBuilder = $db
                             ->update('products')
                             ->setArray(
