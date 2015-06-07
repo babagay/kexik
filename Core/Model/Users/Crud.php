@@ -14,6 +14,7 @@ use Application\Auth;
 use Application\Exception;
 
 use Application\UsersActions;
+use Application\UsersRoles;
 use Bluz\Crud\ValidationException;
 
 /**
@@ -44,13 +45,24 @@ class Crud extends \Bluz\Crud\Table
         // FIXME поменять STATUS_ACTIVE на STATUS_PENDING
         //$row->status = Table::STATUS_PENDING;
         $row->status = Table::STATUS_ACTIVE;
-        $row->save();
+        $user = $row->save();
 
-        $userId = $row->id;
+        $userId = $user['id'];
 
         // create auth
         $password = isset($data['password'])?$data['password']:null;
         Auth\Table::getInstance()->generateEquals($row, $password);
+
+        // create role
+        $roleId = 2; // member
+        if (isset($data['role'])) {
+            $roleId = $data['role'];
+        }
+
+        $acl_roles         = new UsersRoles\Row();
+        $acl_roles->userId = $userId;
+        $acl_roles->roleId = $roleId;
+        $acl_roles->save();
 
         // create activation token
         // valid for 5 days
@@ -228,7 +240,6 @@ class Crud extends \Bluz\Crud\Table
 
     public function updateOne($primary, $data)
     {
-
         if (isset($data['delivery_address_1'])) $data['delivery_address_1'] = trim($data['delivery_address_1']);
 
         return parent::updateOne($primary, $data);
