@@ -2,6 +2,8 @@
 
 namespace Application;
 
+use Core\Helper\getDate;
+
 return
 
     /**
@@ -14,34 +16,33 @@ return
         //$app_object = Application\Bootstrap::getInstance();
         $app_object = app()->getInstance();
 
-
         /**
          * Тип документа
          */
-        if(is_null($type))
-            $type = app()->getRequest()->getParam('type',null);
+        if (is_null($type))
+            $type = app()->getRequest()->getParam('type', null);
 
         /**
          * ID заказа
          */
-        if(is_null($orders_id))
-            $orders_id = app()->getRequest()->getParam('orders_id',null);
+        if (is_null($orders_id))
+            $orders_id = app()->getRequest()->getParam('orders_id', null);
 
         # Проверка авторизации
         $user = app()->getAuth()->getIdentity();
 
-        if(!is_object($user))
-            throw new \Bluz\Application\Exception\ApplicationException("Такой страницы нет",404);
+        if (!is_object($user))
+            throw new \Bluz\Application\Exception\ApplicationException("Такой страницы нет", 404);
 
         $access_is_open = $user->hasPrivilege($module = 'admin', $privilege = 'Management');
-        if($access_is_open !== true)
-            throw new \Bluz\Application\Exception\ApplicationException("Такой страницы нет",404);
+        if ($access_is_open !== true)
+            throw new \Bluz\Application\Exception\ApplicationException("Такой страницы нет", 404);
 
         $file_tpl = $fieldValues = $localTemplateName = $remoteTemplateName = $products = $fileName = null;
         $total_header = "Сумма заказа";
 
-        if( is_null($orders_id))
-            throw new \Bluz\Application\Exception\ApplicationException("Такой страницы нет",404);
+        if (is_null($orders_id))
+            throw new \Bluz\Application\Exception\ApplicationException("Такой страницы нет", 404);
 
         # TODO выгребаем заказ
         $crudController = new \Bluz\Controller\Crud();
@@ -50,26 +51,24 @@ return
 
         $order = $crudController();
 
-        $orders_data =  $order['row'] -> getData();
-
+        $orders_data = $order['row']->getData();
 
         $total_cache = $total_recalculated_discounted = $total_recalculated = 0;
-        $index = 1;
+        $index       = 1;
 
         #
-        $livedocx_options_arr = app()->getConfig()->getData('auth','livedocx') ;
-        $wsdl = $livedocx_options_arr['base_url'];
+        $livedocx_options_arr = app()->getConfig()->getData('auth', 'livedocx');
+        $wsdl                 = $livedocx_options_arr['base_url'];
 
+        // [!] При отсутсвии соединения с инетом здесь вываливает Error 503
         $soap = new \Awakenweb\Livedocx\Soap\Client(new \SoapClient($wsdl));
         $soap->connect($livedocx_options_arr['username'], $livedocx_options_arr['password']);
         $livedocx = new \Awakenweb\Livedocx\Livedocx($soap, new \Awakenweb\Livedocx\Container());
 
         $template = $livedocx->createLocalTemplate();
 
-
-
         # Выбор шаблона
-        switch($type){
+        switch ($type) {
             case 'type_1': // TODO имя типа
 
                 $localTemplateName = $remoteTemplateName = "form_1.docx";
@@ -91,57 +90,53 @@ return
                 )->render();
                 */
 
+                if ((string)$orders_data['delivery_date'] == '') $delivery_date = date("F j, Y") . " 13-00";
+                else $delivery_date = app()->getDate()->transformDate($orders_data['delivery_date']);
+
                 // Задаём значения переменным
-                $fieldValues = array (
-                    'date'  => date("F j, Y, g:i a"),
-                    'customer'  => $orders_data['user']['name'] ,
-                    'delivery_address'  => $orders_data['address'],
-                    'phone'  => $orders_data['user']['phone'],
-                    'notes'  => $orders_data['notes'],
-                    'price_type'  => $orders_data['price_type'],
-                    'delivery_time'  => $orders_data['delivery_date'],
-                    'payment_type'  => $orders_data['payment_type']['type_name'],
+                $fieldValues = array(
+                    'date'             => app()->getDate()->today(),
+                    'customer'         => $orders_data['user']['name'],
+                    'delivery_address' => $orders_data['address'],
+                    'delivery_date'    => $delivery_date,
+                    'phone'            => $orders_data['user']['phone'],
+                    'notes'            => $orders_data['notes'],
+                    'price_type'       => $orders_data['price_type'],
+                    'delivery_time'    => $delivery_date,
+                    'payment_type'     => $orders_data['payment_type']['type_name'],
                 );
 
                 $discount = (int)$orders_data['user_discount'];
 
-
-
-
-
                 $products = array();
-                foreach($orders_data['products'] as $product){
-                    if($product['products_num'] < 0) continue;
-                    $tmp = array();
-                    $tmp['products_name'] = $product['products_name'];
-                    $tmp['products_num'] = $product['products_num'];
-                    $tmp['products_unit'] = $product['products_unit'];
+                foreach ($orders_data['products'] as $product) {
+                    if ($product['products_num'] < 0) continue;
+                    $tmp                              = array();
+                    $tmp['products_name']             = $product['products_name'];
+                    $tmp['products_num']              = $product['products_num'];
+                    $tmp['products_unit']             = $product['products_unit'];
                     $tmp['products_shoppingcart_price'] = $product['price']; // Берем зафиксированную цену
-                    $tmp['products_price_discounted'] = $product['price'] - ($product['price'] * $discount/100); // Цена со скидкой
-                    $tmp['products_total'] =  $tmp['products_shoppingcart_price'] * $tmp['products_num'];
-                    $tmp['products_total_discounted'] =  $tmp['products_price_discounted'] * $tmp['products_num'];
+                    $tmp['products_price_discounted'] = $product['price'] - ($product['price'] * $discount / 100); // Цена со скидкой
+                    $tmp['products_total']            = $tmp['products_shoppingcart_price'] * $tmp['products_num'];
+                    $tmp['products_total_discounted'] = $tmp['products_price_discounted'] * $tmp['products_num'];
 
                     $total_recalculated_discounted += $tmp['products_total_discounted'];
                     $total_recalculated += $tmp['products_total'];
 
-                    $tmp['products_shoppingcart_price'] =  \PHPExcel_Calculation_MathTrig::ROUNDUP($tmp['products_shoppingcart_price'],2);
-                    $tmp['products_total'] =  \PHPExcel_Calculation_MathTrig::ROUNDUP($tmp['products_total'],2);//round($tmp['products_total'] * 100, 2) / 100;
+                    $tmp['products_shoppingcart_price'] = \PHPExcel_Calculation_MathTrig::ROUNDUP($tmp['products_shoppingcart_price'], 2);
+                    $tmp['products_total']              = \PHPExcel_Calculation_MathTrig::ROUNDUP($tmp['products_total'], 2); //round($tmp['products_total'] * 100, 2) / 100;
 
                     $products[] = $tmp;
-
-
                 }
 
-
-                if($discount > 0) $total_header = "Сумма заказа со скидкой $discount%";
+                if ($discount > 0) $total_header = "Сумма заказа со скидкой $discount%";
 
                 //$total_recalculated = round($total_recalculated * 100, 2) / 100;
-                $total_recalculated = \PHPExcel_Calculation_MathTrig::ROUNDUP($total_recalculated , 2)  ;
+                $total_recalculated = \PHPExcel_Calculation_MathTrig::ROUNDUP($total_recalculated, 2);
                 //$total_recalculated_discounted = round($total_recalculated_discounted * 100, 2) / 100;
-                $total_recalculated_discounted = \PHPExcel_Calculation_MathTrig::ROUNDUP($total_recalculated_discounted , 2)  ;
+                $total_recalculated_discounted = \PHPExcel_Calculation_MathTrig::ROUNDUP($total_recalculated_discounted, 2);
 
-                if($orders_data['payment_type']['key'] == 'cache') $total_cache = $total_recalculated_discounted;
-
+                if ($orders_data['payment_type']['key'] == 'cache') $total_cache = $total_recalculated_discounted;
 
                 break;
 
@@ -154,38 +149,41 @@ return
                 // Путь к файлу шаблона
                 $file_tpl = PATH_DATA . '/files/' . $localTemplateName;
 
+                if ((string)$orders_data['delivery_date'] == '') $delivery_date = date("F j, Y") . " 13-00";
+                else $delivery_date = app()->getDate()->transformDate($orders_data['delivery_date']);
+
                 // Задаём значения переменным
-                $fieldValues = array (
-                    'delivery_date'  => date("F j, Y") . " 13-00",
-                    'date'  => date("F j, Y, g:i a"),
-                    'orders_date'  => $orders_data['date_added'],
-                    'customer'  => $orders_data['user']['name'] ,
-                    'employee'  => "Артём" ,
-                    'delivery_address'  => $orders_data['address'],
-                    'phone'  => $orders_data['user']['phone'],
-                    'notes'  => $orders_data['notes'],
-                    'total'  => $orders_data['total'],
-                    'id'  => $orders_data['orders_id'],
+                $fieldValues = array(
+                    'delivery_date'    => $delivery_date,
+                    'date'             => app()->getDate()->today(),
+                    'orders_date'      => app()->getDate()->transformDate($orders_data['date_added']),
+                    'customer'         => $orders_data['user']['name'],
+                    'employee'         => "Артём",
+                    'delivery_address' => $orders_data['address'],
+                    'phone'            => $orders_data['user']['phone'],
+                    'notes'            => $orders_data['notes'],
+                    'total'            => $orders_data['total'],
+                    'id'               => $orders_data['orders_id'],
                 );
 
                 $discount = (int)$orders_data['user_discount'];
                 $products = array();
-                foreach($orders_data['products'] as $product){
-                    if($product['products_num'] < 0) continue;
-                    $tmp = array();
+                foreach ($orders_data['products'] as $product) {
+                    if ($product['products_num'] < 0) continue;
+                    $tmp                 = array();
                     $tmp['products_name'] = $product['products_name'];
                     $tmp['products_num'] = $product['products_num'];
                     $tmp['products_unit'] = $product['products_unit'];
 
-                    $tmp['products_price_discounted'] = $product['price'] - ($product['price'] * $discount/100); // Цена со скидкой
-                    $tmp['products_total'] =  $product['price'] * $product['products_num'];
-                    $tmp['products_total_discounted'] =  $tmp['products_price_discounted'] * $tmp['products_num'];
+                    $tmp['products_price_discounted'] = $product['price'] - ($product['price'] * $discount / 100); // Цена со скидкой
+                    $tmp['products_total']            = $product['price'] * $product['products_num'];
+                    $tmp['products_total_discounted'] = $tmp['products_price_discounted'] * $tmp['products_num'];
                     $total_recalculated_discounted += $tmp['products_total_discounted'];
 
                     $products[] = $tmp;
                 }
 
-                $total_recalculated_discounted = \PHPExcel_Calculation_MathTrig::ROUNDUP($total_recalculated_discounted , 2)  ;
+                $total_recalculated_discounted = \PHPExcel_Calculation_MathTrig::ROUNDUP($total_recalculated_discounted, 2);
 
                 break;
 
@@ -197,54 +195,57 @@ return
                 // Путь к файлу шаблона
                 $file_tpl = PATH_DATA . '/files/' . $localTemplateName;
 
-                $fieldValues = array (
-                    'customer'  => $orders_data['user']['name'] ,
-                    'phone'  => $orders_data['user']['phone'],
-                    'delivery_address'  => $orders_data['address'],
-                    'delivery_date'  => date("F j, Y") . " 13-00",
-                    'date'  => date("F j, Y, g:i a"),
-                    'orders_date'  => $orders_data['date_added'],
-                    'notes'  => $orders_data['notes'],
-                    'payment_type'  => $orders_data['payment_type']['type_name'],
-                    'id'  => $orders_data['orders_id'],
+                if ((string)$orders_data['delivery_date'] == '') $delivery_date = date("F j, Y") . " 13-00";
+                else $delivery_date = app()->getDate()->transformDate($orders_data['delivery_date']);
+
+                $fieldValues = array(
+                    'customer'         => $orders_data['user']['name'],
+                    'phone'            => $orders_data['user']['phone'],
+                    'delivery_address' => $orders_data['address'],
+                    'delivery_date'    => $delivery_date,
+                    'date'             => app()->getDate()->today(),
+                    'orders_date'      => $orders_data['date_added'],
+                    'notes'            => $orders_data['notes'],
+                    'payment_type'     => $orders_data['payment_type']['type_name'],
+                    'id'               => $orders_data['orders_id'],
                 );
 
                 $discount = (int)$orders_data['user_discount'];
                 $products = array();
 
-                foreach($orders_data['products'] as $product){
-                    if($product['products_num'] < 0) continue;
-                    $tmp = array();
-                    $tmp['index'] = $index++;
-                    $tmp['products_name'] = $product['products_name'];
-                    $tmp['price'] = \PHPExcel_Calculation_MathTrig::ROUNDUP($product['price'],2);
-                    $tmp['products_price'] = \PHPExcel_Calculation_MathTrig::ROUNDUP($product['products_price'],2);
-                    $tmp['barcode'] = $product['products_barcode'];
-                    $tmp['products_id'] = $product['products_id'];
-                    $tmp['number'] = $product['products_num'];
-                    $tmp['unit'] = $product['products_unit'];
+                foreach ($orders_data['products'] as $product) {
+                    if ($product['products_num'] < 0) continue;
+                    $tmp                   = array();
+                    $tmp['index']          = $index++;
+                    $tmp['products_name']  = $product['products_name'];
+                    $tmp['price']          = \PHPExcel_Calculation_MathTrig::ROUNDUP($product['price'], 2);
+                    $tmp['products_price'] = \PHPExcel_Calculation_MathTrig::ROUNDUP($product['products_price'], 2);
+                    $tmp['barcode']        = $product['products_barcode'];
+                    $tmp['products_id']    = $product['products_id'];
+                    $tmp['number']         = $product['products_num'];
+                    $tmp['unit']           = $product['products_unit'];
 
 
-                    $tmp['products_price_discounted'] = $product['price'] - ($product['price'] * $discount/100); // Цена со скидкой
-                    $tmp['products_total'] =  $product['price'] * $product['products_num'];
-                    $tmp['products_total_discounted'] =  $tmp['products_price_discounted'] * $product['products_num'];
+                    $tmp['products_price_discounted'] = $product['price'] - ($product['price'] * $discount / 100); // Цена со скидкой
+                    $tmp['products_total']            = $product['price'] * $product['products_num'];
+                    $tmp['products_total_discounted'] = $tmp['products_price_discounted'] * $product['products_num'];
                     $total_recalculated_discounted += $tmp['products_total_discounted'];
 
                     $products[] = $tmp;
                 }
 
-                $total_recalculated_discounted = \PHPExcel_Calculation_MathTrig::ROUNDUP($total_recalculated_discounted , 2)  ;
+                $total_recalculated_discounted = \PHPExcel_Calculation_MathTrig::ROUNDUP($total_recalculated_discounted, 2);
 
                 break;
         }
 
         #
-        if(is_null($file_tpl) OR is_null($fieldValues) )
-            throw new \Bluz\Application\Exception\ApplicationException("Такой страницы нет",404);
+        if (is_null($file_tpl) OR is_null($fieldValues))
+            throw new \Bluz\Application\Exception\ApplicationException("Такой страницы нет", 404);
 
         # Генерация документа
         $template->setName($localTemplateName, PATH_DATA . '/files/');
-        $template         ->upload();
+        $template->upload();
 
         // Блок
         $block = $livedocx->createBlock();
@@ -260,7 +261,6 @@ return
         $livedocx->assign('total_header', $total_header);
         $livedocx->assign('total', $total_recalculated_discounted /*$orders_data['total']*/);
         $livedocx->assign('total_cache', $total_cache);
-
 
 
         $remoteTemplate = $livedocx->createRemoteTemplate();
