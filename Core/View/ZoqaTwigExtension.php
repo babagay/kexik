@@ -115,6 +115,7 @@ class ZoqaTwigExtension extends \Twig_Extension{
             'publicUrl' => new \Twig_Function_Method($this, 'publicUrl'),
             'getRequest' => new \Twig_Function_Method($this, 'getRequest'),
             'setGlobalParam' => new \Twig_Function_Method($this, 'setGlobalParam'),
+            'cropByWords' => new \Twig_Function_Method($this, 'cropByWords'),
             // new \Twig_SimpleFunction('lipsum', 'priceFilter'),
             //'getTest' => new \Twig_Function_Function('test')
         );
@@ -549,5 +550,24 @@ class ZoqaTwigExtension extends \Twig_Extension{
 
             return $result;
         };
+    }
+
+    function cropByWords($text, $words_num)
+    {
+        if ($words_num < 0 OR $words_num == 0) return $text;
+
+        $arr = explode(" ", $text);
+
+        $str = '';
+
+        if (sizeof($arr))
+            for ($t = 0; $t < sizeof($arr); $t++) {
+                $str .= $arr[$t] . " ";
+                if ($t > ($words_num - 2))
+                    break;
+            }
+
+
+        return $str;
     }
 } 
