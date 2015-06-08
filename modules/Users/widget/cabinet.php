@@ -42,11 +42,12 @@ return
         $in_basket       = '';
 
         if (is_object($user)) {
-            $userData = $db->fetchObject("SELECT * FROM users WHERE id = " . $db->quote($user->id));
 
-            $credit          = round($userData->credit * 100, 0) / 100; // Отсекает 3 и 4 знаки после запятой, не затрагивая значение в базе
-            $discount        = $userData->discount;
-            $orders_to_bonus = $userData->orders_to_bonus;
+            if ($userData = $db->fetchObject("SELECT * FROM users WHERE id = " . $db->quote($user->id))) {
+                $credit          = round($userData->credit * 100, 0) / 100; // Отсекает 3 и 4 знаки после запятой, не затрагивая значение в базе
+                $discount        = $userData->discount;
+                $orders_to_bonus = $userData->orders_to_bonus;
+            }
         }
 
         if (isset($basket['products'])) {
