@@ -10,7 +10,7 @@ return
      * @param string $order_notes
      * @return \closure
      */
-    function ($step = 1, $address_dostavki = null, $order_notes = null, $payment_types_id = null) use ($view) {
+    function ($step = 1, $address_dostavki = null, $order_notes = null, $delivery_phone = null, $delivery_date = null, $payment_types_id = null) use ($view) {
         /**
          * @var Вместо Application $this используй $app_object = Application\Bootstrap::getInstance();
          * или так: app()->getRequest();
@@ -124,20 +124,29 @@ return
                 else
                     $view->address_dostavki = $user->delivery_address_1;
 
+                if (isset($basket['delivery_phone']))
+                    $view->delivery_phone = $basket['delivery_phone'];
+                else
+                    $view->delivery_phone = $user->phone;
+
+                if (isset($basket['delivery_date']))
+                    $view->delivery_date = $basket['delivery_date'];
+                else {
+                    $view->delivery_date = $app_object->getDate()->now('d/m/Y H:i'); // 2015-06-05 16:47[:s]
+                }
+
                 if (isset($basket['order_notes']))
                     $view->order_notes = $basket['order_notes'];
 
                 break;
 
             case 3:
-                // TODO Внести адрес доставки
-                // TODO проверить длоступное количество продуктов
-                // TODO payment_types_id должно прилетать из браузера как результат выбора
-
                 $next_step_head = "Подтвердить заказ";
 
                 $basket['address_dostavki'] = $address_dostavki;
                 $basket['order_notes']      = $order_notes;
+                $basket['delivery_phone'] = $delivery_phone;
+                $basket['delivery_date'] = $delivery_date;
 
                 $basket['payment_types_id'] = 60;
 
@@ -214,6 +223,10 @@ return
                 $data['order_type']        = Application\Orders\Table::ORDERTYPE_FRONTEND;
                 $data['user']              = $user;
 
+                if (isset($data['delivery_date'])) {
+                    $data['delivery_date'] = $app_object->getDate()->prepare($data['delivery_date']);
+                }
+
                 $tmp = array();
                 foreach ($data['products'] as $id => $num) {
                     if ($num > 0)
@@ -223,7 +236,6 @@ return
 
                 if (!sizeof($data['products']))
                     throw new \Application\Exception("Нет товаров в корзине");
-
 
                 $message = "";
                 switch ($payment_types_key) {

@@ -60,10 +60,10 @@ class Options
 
         // apply options
         foreach ($options as $key => $value) {
-            $method = 'set' . $this->normalizeKey($key); 
+            $method = 'set' . $this->normalizeKey($key);
             if (method_exists($this, $method)) {
                 $this->$method($value);
-                
+
                 // fb(" metod found : $method");
             } else {
                 // fb("No metod found : $method");
@@ -132,6 +132,7 @@ class Options
     {
         $option = str_replace('_', ' ', strtolower($key));
         $option = str_replace(' ', '', ucwords($option));
+
         return $option;
     }
 }

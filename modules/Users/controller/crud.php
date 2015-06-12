@@ -22,17 +22,30 @@ return
 
         app()->useLayout(false);
 
+        $status = 'ok';
+        $result = 'saved';
+
         if (app()->getRequest()->getMethod() == 'PUT') {
             // Сохранение параметров пользователя
-            $crudController();
+            $crud = $crudController();
 
-            // Обновление сессии
-            $id                           = app()->getRequest()->getParam('id', null);
-            $_user                        = \Application\Users\Table::findRow(['id' => $id]);
-            app()->getSession()->identity = $_user;
+            if (isset($crud['errors'])) {
+                $status = 'error';
+                $result = 'not saved';
 
-            return function () {
-                return ['status' => 'ok', 'result' => 'saved'];
+                //TODO выводить ошибки
+                //fb($crud['errors']);
+
+            } else {
+                // Обновление сессии
+                $id                           = app()->getRequest()->getParam('id', null);
+                $_user                        = \Application\Users\Table::findRow(['id' => $id]);
+                app()->getSession()->identity = $_user;
+
+            }
+
+            return function () use ($status, $result) {
+                return ['status' => $status, 'result' => $result];
             };
         }
 

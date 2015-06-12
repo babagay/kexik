@@ -8,6 +8,13 @@
  * [!] app()->getRequest()->getParam('filter-categories_id') - берёт параметр не зависимо от метода Post или Get
  */
 
+namespace Application;
+
+use Application\Categories;
+use Application\Products;
+
+//use Bluz\Application\Application;
+
 return
     /**
      * @param int $manufacturers_id
@@ -39,7 +46,6 @@ return
                     }
             }
 
-
             if(sizeof($products_filtered)){
                 $tmp = array();
                 foreach($products as $product){
@@ -51,6 +57,8 @@ return
                     }
                 }
                 $products = $tmp;
+            } else {
+                $products = [];
             }
 
             return $products;
@@ -157,7 +165,6 @@ return
                     ->from('categories', 'c')
                     ->where("categories_seo_page_name = '$категория'")
                     ->orWhere("categories_id = '$категория'")
-
                 ;
                 $category = $selectBuilder->execute();
 
@@ -209,25 +216,77 @@ return
                             ORDER BY p.{$order} {$direction}
                             ";
                     $products = $db->fetchAll ($pr_query);
+                    $products_ids = array();
 
                     // наложение оригинальных фильтров
-                    if(isset($products[0]))
+                    if (isset($products[0])) {
+                        $actual_filters = null;
                         if(isset($filter_origin[0]))
                             if($filter_origin[0] != ""){
                                 $products = filterProducts($products,$filter_origin );
 
-                                $products_ids = array();
                                 foreach($products as $product){
                                     $products_ids[] = $product['products_id'];
                                 }
-                                $view->products_ids = $products_ids;
-                                $actual_filters['filter_origin'] = $filter_origin;
 
-                                $view->actual_filters = $actual_filters;
+                                $actual_filters['filter_origin'] = $filter_origin;
                             }
+
+                        if (isset($filter_subcategory[0]))
+                            if ($filter_subcategory[0] != "") {
+
+                                $products = Categories\Table::getInstance()->filterProductsByCategories($products, $filter_subcategory);
+
+                                $products_ids = [];
+                                foreach ($products as $product) {
+                                    $products_ids[] = $product['products_id'];
+                                }
+
+                                $actual_filters['filter_subcategory'] = $filter_subcategory;
+                            }
+
+                        // TODO сортировка вручную
+                        /*
+                        if(!is_null($actual_filters)){
+                            // отсортировать
+                            $sort = function($products,$direction){
+                                $tmp = [];
+                                $tmp[] = $products[0];
+                                foreach($products as $product){
+                                    if($product['products_shoppingcart_price'] > $tmp[0]['products_shoppingcart_price']){
+                                        $tmp[0] = $product;
+                                    }
+                                }
+
+                            };
+
+
+                            if($direction == 'desc'){
+                                // по убыванию
+
+                            } else {
+
+                            }
+                        }
+                        */
+
+                        $view->actual_filters = $actual_filters;
+                    }
+
+                    if (!sizeof($products)) {
+                        $products[] = 'empty';
+                    }
+
+                    if (sizeof($actual_filters)) {
+                        // Если использованы фильтры, отсортировать принудительно
+                        $products = Products\Table::getInstance()->sortProducts($products, $direction);
+                    }
 
                     // вывод
                     $view->products = $products;
+
+                    if (sizeof($products_id))
+                        $view->products_ids = $products_ids;
 
                 } else {
                     fb("test metka zxcvfgbe");
@@ -251,7 +310,7 @@ return
                 $view->title($category[0]['categories_name'],"append");
 
             } else {
-                // Эта секция выполняется только через аякс
+                // Эта секция выполняется только через аякс при выборе производителя
 
                 $products = array();
 
@@ -295,7 +354,6 @@ return
                             SELECT p.*
                             FROM products p
                             LEFT JOIN manufacturers m ON p.manufacturers_id = m.manufacturers_id
-
                             WHERE p.products_id > 0
                             AND p.products_id IN($tmp)
                             AND m.manufacturers_id = '$manufacturers_id'
@@ -304,30 +362,51 @@ return
                             ");
                     //LEFT JOIN  products_description pd ON p.products_id = pd.products_id
                     //TODO категорию
-
                 }
 
                 $products_ids = array();
-                // наложение оригинальных фильтров
+
                 $filters_defined = false;
                 if(isset($products[0])){
+
+                    $actual_filters = [];
+
                     if(isset($filter_origin[0])){
+                        // наложение оригинальных фильтров
                         if($filter_origin[0] != ""){
 
-                            $products = filterProducts($products,$filter_origin );
+                            $products = Filters\Table::getInstance()->filterProducts($products, $filter_origin);
 
                             foreach($products as $product){
                                 $products_ids[] = $product['products_id'];
                             }
                             $filters_defined = true;
-                            //$view->products_ids = $products_ids;
-                            $actual_filters['filter_origin'] = $filter_origin;
-                            $view->actual_filters = $actual_filters;
-                        }
-                    }  else {
-                    }
-                }
 
+                            $actual_filters['filter_origin'] = $filter_origin;
+                        }
+                    }
+
+                    if (isset($filter_subcategory[0]))
+                        if ($filter_subcategory[0] != "") {
+                            // наложение фильтров по категориям
+                            $products = Categories\Table::getInstance()->filterProductsByCategories($products, $filter_subcategory);
+
+                            $products_ids = [];
+                            foreach ($products as $product) {
+                                $products_ids[] = $product['products_id'];
+                            }
+
+                            $filters_defined = true;
+
+                            $actual_filters['filter_subcategory'] = $filter_subcategory;
+                        }
+
+                    if (!is_null($actual_filters)) {
+                        // TODO сортировка $products вручную
+                    }
+
+                    $view->actual_filters = $actual_filters;
+                }
 
                 if($filters_defined === false){
                     // FIXME зачем этот блок кода?
@@ -338,13 +417,14 @@ return
                     }
                 }
 
-                /*
-               if($фильтры_вендора = $filterKeeper->selectContext("vendor",$manufacturers_id)->selectFilterType("origin")->getFilters()){
-                   $filters = $фильтры_вендора;
-               } else {
-                   fb($products);
-               }
-               */
+                if ($filters_defined === true) {
+                    // Если использованы фильтры, отсортировать принудительно
+                    $products = Products\Table::getInstance()->sortProducts($products, $direction);
+                }
+
+                if (!sizeof($products)) {
+                    $products[] = 'empty';
+                }
 
                 $view->products = $products;
                 $view->categories_id = $категория;

@@ -45,12 +45,12 @@ class Crud extends \Bluz\Crud\Table
         // FIXME поменять STATUS_ACTIVE на STATUS_PENDING
         //$row->status = Table::STATUS_PENDING;
         $row->status = Table::STATUS_ACTIVE;
-        $user = $row->save();
+        $user        = $row->save();
 
         $userId = $user['id'];
 
         // create auth
-        $password = isset($data['password'])?$data['password']:null;
+        $password = isset($data['password']) ? $data['password'] : null;
         Auth\Table::getInstance()->generateEquals($row, $password);
 
         // create role
@@ -66,6 +66,8 @@ class Crud extends \Bluz\Crud\Table
 
         // create activation token
         // valid for 5 days
+        // FIXME разблокировать, когда будет работать почта
+        /*
         $actionRow = UsersActions\Table::getInstance()->generate($userId, UsersActions\Table::ACTION_ACTIVATION, 5);
 
         // send activation email
@@ -86,6 +88,7 @@ class Crud extends \Bluz\Crud\Table
                 'vars' => array('user' => $row, 'activationUrl' => $activationUrl, 'password' => $password)
             )
         )->render();
+        */
 
         // FIXME отправка почты
         // mail($data['email'], $subject, $body);
@@ -126,7 +129,7 @@ class Crud extends \Bluz\Crud\Table
         // app()->redirectTo('index', 'index');
         // throw new \Bluz\Application\Exception\RedirectException('http://localhost/kex');
         app()->getRegistry()->user_created_successfully = true; // вариант с этим реестром работает
-        app()->getRegistry()->user_created_mess = "Аккаунт создан успешно";
+        app()->getRegistry()->user_created_mess         = "Аккаунт создан успешно";
 
         // \Core\Helper\Registry::getInstance()->user_created_successfully === true;
 
@@ -141,9 +144,9 @@ class Crud extends \Bluz\Crud\Table
         // login
         $this->checkLogin($data);
 
-        $login = isset($data['login'])?$data['login']:null;
+        $login = isset($data['login']) ? $data['login'] : null;
         // check unique
-        if ($this->getTable()->findRowWhere(array('login' => $login) )) {
+        if ($this->getTable()->findRowWhere(array('login' => $login))) {
             $this->addError(
                 __('User with login "%s" already exists', esc($login)),
                 'login'
@@ -153,7 +156,7 @@ class Crud extends \Bluz\Crud\Table
         // email
         $this->checkEmail($data);
 
-        $email = isset($data['email'])?$data['email']:null;
+        $email = isset($data['email']) ? $data['email'] : null;
         // TODO: add solution for check gmail accounts (because a.s.d@gmail.com === asd@gmail.com)
         // check unique
 
@@ -165,8 +168,8 @@ class Crud extends \Bluz\Crud\Table
         }
 
         // password
-        $password = isset($data['password'])?$data['password']:null;
-        $password2 = isset($data['password2'])?$data['password2']:null;
+        $password  = isset($data['password']) ? $data['password'] : null;
+        $password2 = isset($data['password2']) ? $data['password2'] : null;
         if (empty($password)) {
             $this->addError('Password can\'t be empty', 'password');
         }
@@ -196,7 +199,7 @@ class Crud extends \Bluz\Crud\Table
      */
     protected function checkLogin($data)
     {
-        $login = isset($data['login'])?$data['login']:null;
+        $login = isset($data['login']) ? $data['login'] : null;
         if (empty($login)) {
             $this->addError('Login can\'t be empty', 'login');
         }
@@ -213,15 +216,17 @@ class Crud extends \Bluz\Crud\Table
      */
     public function checkEmail($data)
     {
-        $email = isset($data['email'])?$data['email']:null;
+        $email = isset($data['email']) ? $data['email'] : null;
 
         if (empty($email)) {
             $this->addError('Email can\'t be empty', 'email');
+
             return false;
         }
 
         if (strlen($email) > 255) {
             $this->addError('Email can\'t be bigger than 255 symbols', 'email');
+
             return false;
         }
 
@@ -229,12 +234,15 @@ class Crud extends \Bluz\Crud\Table
             list($user, $domain) = explode("@", $email, 2);
             if (!checkdnsrr($domain, "MX") && !checkdnsrr($domain, "A")) {
                 $this->addError('Email has invalid domain name', 'email');
+
                 return false;
             }
         } else {
             $this->addError('Email is invalid', 'email');
+
             return false;
         }
+
         return true;
     }
 

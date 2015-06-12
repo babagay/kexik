@@ -37,7 +37,8 @@ return
          *
          *  if (app()->getInstance()->getRequest()->getHeader('X-Requested-With') != 'XMLHttpRequest') {
 
-                }
+                *
+* }
          */
         $response = 'ok';
         $error = false;

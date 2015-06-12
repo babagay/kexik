@@ -48,7 +48,7 @@ use Core\View\Zoqa_Twig_Extension;
  * @author   Anton Shevchuk, ErgallM
  * @created  08.07.11 11:49
  */
-class View extends Options implements ViewInterface , \JsonSerializable
+class View extends Options implements ViewInterface, \JsonSerializable
 {
     //use Options;
     //use Helper;
@@ -59,7 +59,7 @@ class View extends Options implements ViewInterface , \JsonSerializable
      */
     const POS_PREPEND = 'prepend';
     const POS_REPLACE = 'replace';
-    const POS_APPEND = 'append';
+    const POS_APPEND  = 'append';
 
     /**
      * @var string
@@ -129,7 +129,7 @@ class View extends Options implements ViewInterface , \JsonSerializable
      *
      * @var null
      */
-   // protected $asd = null;
+    // protected $asd = null;
 
 
     /**
@@ -172,7 +172,8 @@ class View extends Options implements ViewInterface , \JsonSerializable
         return $this->baseUrl;
     }
 
-    public function getHelper(){
+    public function getHelper()
+    {
         return $this->helper;
     }
 
@@ -234,7 +235,7 @@ class View extends Options implements ViewInterface , \JsonSerializable
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
-            $className = __CLASS__;
+            $className      = __CLASS__;
             self::$instance = new $className;
         }
 
@@ -316,6 +317,7 @@ class View extends Options implements ViewInterface , \JsonSerializable
     public function setData($data = array())
     {
         $this->data = array_merge($this->data, $data);
+
         return $this;
     }
 
@@ -336,6 +338,7 @@ class View extends Options implements ViewInterface , \JsonSerializable
     public function mergeData($data = array())
     {
         $this->data = array_replace_recursive($this->data, $data);
+
         return $this;
     }
 
@@ -375,6 +378,7 @@ class View extends Options implements ViewInterface , \JsonSerializable
     public function setPath($path)
     {
         $this->path = $path;
+
         return $this;
     }
 
@@ -389,6 +393,7 @@ class View extends Options implements ViewInterface , \JsonSerializable
     public function setTemplate($file)
     {
         $this->template = $file;
+
         return $this;
     }
 
@@ -401,6 +406,7 @@ class View extends Options implements ViewInterface , \JsonSerializable
     public function addPartialPath($path)
     {
         $this->partialPath[] = $path;
+
         return $this;
     }
 
@@ -431,6 +437,7 @@ class View extends Options implements ViewInterface , \JsonSerializable
         } else {
             self::$instance->system[$key] = $value;
         }
+
         return self::$instance;
     }
 
@@ -439,9 +446,9 @@ class View extends Options implements ViewInterface , \JsonSerializable
      * @param $name
      * @param $value
      */
-    function addTwigParam($name,$value)
+    function addTwigParam($name, $value)
     {
-        $this->twig_data[$name] = $value;
+        $this->twig_data[$name]                         = $value;
         \Core\Helper\Registry::getInstance()->twig_data = $this->twig_data;
     }
 
@@ -455,35 +462,35 @@ class View extends Options implements ViewInterface , \JsonSerializable
         // пересылка в twig тестовых переменных
         // [!] twig_data надо пробрасывать через реестр, т.к. TwigRender() вызывается 2 раза (это видно в  \FB::trace('asd');) и на втором проходе поля класса View сбрасываются
         //$this->twig_data = array(
-            //  'request' => new \Bluz\Request\HttpRequest(),
-            //'zoqa_title' => app()->getInstance()->getRequest()->getController(),
-            //'zoqa_title' => $this->title(),
+        //  'request' => new \Bluz\Request\HttpRequest(),
+        //'zoqa_title' => app()->getInstance()->getRequest()->getController(),
+        //'zoqa_title' => $this->title(),
 
-            // извращение - передача в твиг самого себя
-            //   'view' => &$this
-            //    'view' => "asd"
+        // извращение - передача в твиг самого себя
+        //   'view' => &$this
+        //    'view' => "asd"
         //);
 
         $twig_data = array();
-        if( \Core\Helper\Registry::getInstance()->has('twig_data') )
+        if (\Core\Helper\Registry::getInstance()->has('twig_data'))
             $twig_data = \Core\Helper\Registry::getInstance()->twig_data;
-        $this->twig_data = array_merge($this->twig_data,$twig_data );
+        $this->twig_data = array_merge($this->twig_data, $twig_data);
 
-        if(!is_null($data)){
+        if (!is_null($data)) {
             $this->twig_data = array_merge($this->twig_data, $data);
         }
-        if(!is_null($path)){
+        if (!is_null($path)) {
             $this->path = $path;
         }
-        if(!is_null($template)){
-            $this->template =  $template;
+        if (!is_null($template)) {
+            $this->template = $template;
         }
 
         // пересылка в twig переменных из контроллера
         $this->twig_data = array_merge($this->twig_data, $this->data);
 
-        if(!is_object($this->twig_loader))
-                $this->setTwig();
+        if (!is_object($this->twig_loader))
+            $this->setTwig();
 
         $this->twig_loader->addPath($this->path);
 
@@ -502,14 +509,17 @@ class View extends Options implements ViewInterface , \JsonSerializable
 
     /**
      * Render
-     *
+     * @param $template
+     * @param $path
+     * @param $data
      * @throws ViewException
      * @return string
      */
-    public function render()
+    public function render($template = null, $path = null, $data = null)
     {
+
         // Use twig rendering as alternative
-        return $this->TwigRender();
+        return $this->TwigRender($template, $path, $data);
 
         ob_start();
         try {
@@ -527,9 +537,11 @@ class View extends Options implements ViewInterface , \JsonSerializable
             if (app()->isDebug()) {
                 return $e->getMessage() . "\n<br/>" . $e->getTraceAsString();
             }
+
             // nothing for production
             return '';
         }
+
         return ob_get_clean();
     }
 
@@ -558,15 +570,15 @@ class View extends Options implements ViewInterface , \JsonSerializable
         // но после этого в хелперах (например, breadCrumbs) произошло дополнительное обворачивание, которого ранее не было, поэтому, вернул назад
         //$m = $this->helpers[$method];            
         //return $m($args);
-        if (isset($this->helpers[$method]) && is_callable($this->helpers[$method])) { 
-            
+        if (isset($this->helpers[$method]) && is_callable($this->helpers[$method])) {
+
             return call_user_func_array($this->helpers[$method], $args);
         }
 
         // Try to find helper file
         foreach (self::$helpersPath as $helperPath) {
             $_helperPath = $helperPath;
-            $helperPath = realpath($helperPath . '/' . lcfirst($method) . '.php');
+            $helperPath  = realpath($helperPath . '/' . lcfirst($method) . '.php');
             if ($helperPath) {
                 $helperInclude = include $helperPath;
                 if (is_callable($helperInclude)) {
@@ -577,17 +589,17 @@ class View extends Options implements ViewInterface , \JsonSerializable
 
                 return $this->__call($method, $args);
             } else {
-              $helperPath = realpath( $_helperPath . '/' . ucfirst($method) . '.php');
-              if ($helperPath) {
-                $helperInclude = include $helperPath;
-                if (is_callable($helperInclude)) {
-                    $this->helpers[$method] = $helperInclude;
-                } else {
-                    throw new \Exception("Helper '$method' not found in file '$helperPath'");
-                }
+                $helperPath = realpath($_helperPath . '/' . ucfirst($method) . '.php');
+                if ($helperPath) {
+                    $helperInclude = include $helperPath;
+                    if (is_callable($helperInclude)) {
+                        $this->helpers[$method] = $helperInclude;
+                    } else {
+                        throw new \Exception("Helper '$method' not found in file '$helperPath'");
+                    }
 
-                return $this->__call($method, $args);
-              }
+                    return $this->__call($method, $args);
+                }
             }
         }
         throw new \Exception("Helper '$method' not found for '" . __CLASS__ . "'");

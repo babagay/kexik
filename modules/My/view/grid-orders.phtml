@@ -44,7 +44,6 @@
             <th width="50px"><a href="{{ grid.order('orders_id', null, 'desc', false) }}">Id заказа</a></th>
             #}
             <th width="120px"><a href="{{ grid.order('orders_id') }}">Id заказа</a></th>
-            <th width="120px"><a href="{{ grid.order('users_id') }}">Пользователь</a></th>
             <th width="120px"><a href="{{ grid.order('date_added') }}">Дата</a></th>
             <th width="120px"><a href="{{ grid.order('address') }}">Адрес доставки</a></th>
             <th width="120px"><a href="{{ grid.order('total') }}">Сумма</a></th>
@@ -58,7 +57,6 @@
         {% for row in attribute(grid, 'getData') %}
         <tr class="row-highlite-{{  row['order_status'] }} order-type-{{  row['order_type'] }}">
             <td>{{ row['orders_id'] }}</td>
-            <td>{# row['users_id'] #} {{ row['login'] }} ({{ row['email'] }})</td>
             <td>{{ row['date_added']|date("j F G:i ") }}</td>
             <td>{{ row['address'] }}</td>
             <td>{{ row['total']|round(2) }}</td>

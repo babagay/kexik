@@ -53,8 +53,8 @@ final class FilterKeeper2 {
     private $manufacturers_id = null;
     private $productset_hash = null;
 
-    private $entity_types = array("category","vendor","phrase");
-    private $filter_types = array("by_category","origin");
+    private $entity_types = array("category", "vendor", "phrase", "category_to_vendors");
+    private $filter_types = array("by_category", "origin", "manufacturer");
 
     /**
      * @var null|category|vendor|phrase
@@ -64,7 +64,7 @@ final class FilterKeeper2 {
 
     /**
      * Текущий тип фильтра
-     * @var null|by_category|origin
+     * @var null|by_category|origin|manufacturer
      */
     private $type = null;
 
@@ -221,7 +221,8 @@ final class FilterKeeper2 {
 
         switch($this->trigger){
             case 'category':
-                if(is_null($this->categories_id)) throw new \Exception(__CLASS__ . ": необходимо уточнить categories_id");
+            case 'category_to_vendors':
+            if(is_null($this->categories_id)) throw new \Exception(__CLASS__ . ": необходимо уточнить categories_id");
                 $id = $this->categories_id;
                 break;
             case 'vendor':
@@ -239,9 +240,14 @@ final class FilterKeeper2 {
 
         $this->getStorage()->set($hash,$filters);
 
+        // Тэги
         if (is_array($filters)) {
+            if ($this->type == 'origin') $key = 'filters_id';
+            elseif ($this->type == 'by_category') $key = 'categories_id';
+            elseif ($this->type == 'manufacturer') $key = 'manufacturers_id';
+
             foreach ($filters as $filter) {
-                $this->getStorage()->addTag($hash, 'filters_id:' . $filter['filters_id']);
+                $this->getStorage()->addTag($hash, $this->type . ':' . 'filters_id:' . $filter[$key]);
             }
         }
 
@@ -258,12 +264,18 @@ final class FilterKeeper2 {
         return $this->setFilters($filters, 'by_category');
     }
 
+    function setFiltersVendor($filters = [])
+    {
+        return $this->setFilters($filters, 'manufacturer');
+    }
+
     function selectContext($trigger,$key = null)
     {
         $this->selectTrigger($trigger);
 
         if($key !== null)
             switch($trigger){
+                case 'category_to_vendors':
                 case 'category': $this->selectCategoriesId($key);
                     break;
                 case 'vendor': $this->selectVendorId($key);
@@ -359,7 +371,8 @@ final class FilterKeeper2 {
 
             switch($this->trigger){
                 case 'category':
-                    if(is_null($this->categories_id)) throw new \Exception(__CLASS__ . ": необходимо уточнить categories_id");
+                case 'category_to_vendors':
+                if(is_null($this->categories_id)) throw new \Exception(__CLASS__ . ": необходимо уточнить categories_id");
                     $id = $this->categories_id;
                     break;
                 case 'vendor':

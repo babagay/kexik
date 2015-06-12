@@ -1,7 +1,7 @@
 <?php
 
 namespace Application\Manufacturers;
- 
+
 class Table extends \Bluz\Db\Table
 {
 
@@ -27,21 +27,21 @@ class Table extends \Bluz\Db\Table
         $cacheKey = 'manufacturers:all:' . $format;
 
         if (!$data = app()->getCache()->get($cacheKey)) {
-            if($format == "all-cols"){
+            if ($format == "all-cols") {
                 $data = app()->getDb()->fetchAll(
                     "SELECT *
                     FROM {$this->table}
                     ORDER BY manufacturers_name"
                 );
-            } elseif($format == "id-name"){
+            } elseif ($format == "id-name") {
                 $data = app()->getDb()->fetchAll(
                     "SELECT manufacturers_id, manufacturers_name
                     FROM {$this->table}
                     ORDER BY manufacturers_name"
                 );
                 $tmp = array();
-                if(is_array($data)){
-                    foreach($data as $value){
+                if (is_array($data)) {
+                    foreach ($data as $value) {
                         $tmp[$value['manufacturers_id']] = $value['manufacturers_name'];
                     }
                     $data = $tmp;
@@ -54,5 +54,24 @@ class Table extends \Bluz\Db\Table
 
         return $data;
     }
-     
+
+    function getVendorsByCategory($cat_id)
+    {
+        $query = "
+                    SELECT m.manufacturers_id, m.manufacturers_name
+                    FROM products p
+                    JOIN manufacturers m ON m.manufacturers_id = p.manufacturers_id
+                    WHERE products_id IN
+                    (
+                      SELECT products_id
+                      FROM products_to_categories p2c
+                      WHERE categories_id = '$cat_id'
+                    )
+                    GROUP BY p.manufacturers_id
+                    ORDER BY m.manufacturers_name
+        ";
+
+        return app()->getDb()->fetchAll($query);
+    }
+
 }

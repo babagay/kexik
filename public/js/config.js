@@ -46,6 +46,9 @@ require.config({
             exports: '$.jCarousel'
         }
     },
+    moment: {
+        noGlobal: true
+    },
     enforceDefine: true
 });
 

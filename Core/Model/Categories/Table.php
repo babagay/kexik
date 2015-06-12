@@ -95,5 +95,103 @@ class Table extends \Bluz\Db\Table
         return $data;
     }
 
+    /**
+     * Подкатегории
+     * Возвращает только те подкатегории, которые связаны с данными продуктами, если $exact = true
+     * @param array $products
+     * @param int $level
+     * @param boolean $exact
+     * @return array
+     */
+    function getCategoriesByProducts(array $products, $level = 2, $exact = true)
+    {
+        $products_str = implode(",", $products);
+
+        if ($exact === true) {
+            $query = "
+            SELECT cc.*
+            FROM categories cc
+            WHERE cc.categories_id IN(
+                SELECT p2cc.categories_id
+                FROM products_to_categories p2cc
+                WHERE p2cc.categories_id IN(
+                    SELECT p2c.categories_id
+                    FROM products_to_categories p2c
+                    WHERE categories_id IN(
+                           SELECT c.categories_id
+                           FROM categories c
+                           WHERE categories_level = " . app()->getDb()->quote($level) . "
+                           AND parent_id IN(
+                               SELECT categories_id
+                               FROM products_to_categories
+                               WHERE products_id IN ($products_str)
+                               GROUP BY categories_id
+                               )
+                           )
+                           GROUP BY categories_id
+                    )
+                    AND products_id IN($products_str)
+                )
+                        ";
+        } else {
+            $query = " SELECT c.*
+                       FROM categories c
+                       WHERE categories_level = " . app()->getDb()->quote($level) . "
+                       AND parent_id IN(
+                           SELECT categories_id
+                           FROM products_to_categories
+                           WHERE products_id IN ($products_str)
+                           GROUP BY categories_id
+                           )
+                        ";
+        }
+
+        return app()->getDb()->fetchAll($query);
+    }
+
+    /**
+     * Подкатегории
+     * @param $categories_id
+     * @param $level
+     * @return array
+     */
+    function getChildren($categories_id, $level = 2)
+    {
+        $query = "  SELECT  c.*
+                        FROM categories c
+                        WHERE parent_id = " . app()->getDb()->quote($categories_id) . "
+                        AND categories_level = " . app()->getDb()->quote($level);
+
+        return app()->getDb()->fetchAll($query);
+    }
+
+    function filterProductsByCategories(array $products, array $filter_subcategory)
+    {
+        // Взять все продукты , входящие в субкатегории
+        $categories_str  = implode(",", $filter_subcategory);
+        $query           = "
+            SELECT *
+            FROM products_to_categories
+            WHERE categories_id IN($categories_str)
+            GROUP BY products_id
+        ";
+        $subcat_products = app()->getDb()->fetchAll($query);
+
+        // Вычислить пересечение массивов
+        $tmp = [];
+        if (sizeof($subcat_products) AND sizeof($products)) {
+            foreach ($subcat_products as $subcat_product) {
+                $subcat_product['products_id'];
+                foreach ($products as $product) {
+                    if ($product['products_id'] == $subcat_product['products_id']) {
+                        $tmp[] = $product;
+                    }
+                }
+            }
+            $products = $tmp;
+        }
+
+        return $products;
+    }
 
 }

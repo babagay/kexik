@@ -40,6 +40,7 @@ class Table extends AbstractCrud
     public function setTable(Db\Table $table)
     {
         $this->table = $table;
+
         return $this;
     }
 
@@ -52,7 +53,7 @@ class Table extends AbstractCrud
     public function getTable()
     {
         if (!$this->table) {
-            $crudClass = get_called_class();
+            $crudClass  = get_called_class();
             $tableClass = substr($crudClass, 0, strrpos($crudClass, '\\', 1) + 1) . 'Table';
 
             // check class initialization
@@ -67,6 +68,7 @@ class Table extends AbstractCrud
 
             $this->setTable($table);
         }
+
         return $this->table;
     }
 
@@ -117,13 +119,14 @@ class Table extends AbstractCrud
         $this->validateCreate($data);
 
         $err_arr = $this->getErrors();
-        if( is_array($err_arr) AND count($err_arr) > 0 )
+        if (is_array($err_arr) AND count($err_arr) > 0)
             $this->checkErrors();
 
         $row = $this->getTable()->create();
 
         $row->setFromArray($data);
         $id = $row->save();
+
         return $id;
     }
 
@@ -148,11 +151,11 @@ class Table extends AbstractCrud
         $this->validateUpdate($primary, $data);
 
         $err_arr = $this->getErrors();
-        if( is_array($err_arr) AND count($err_arr) > 0 )
+        if (is_array($err_arr) AND count($err_arr) > 0)
             $this->checkErrors();
 
-
         $row->setFromArray($data);
+
         return $row->save();
     }
 
@@ -170,6 +173,7 @@ class Table extends AbstractCrud
         if (!$row) {
             throw new NotFoundException("Record not found");
         }
+
         return $row->delete();
     }
 }

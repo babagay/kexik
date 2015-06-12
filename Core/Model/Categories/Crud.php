@@ -8,6 +8,7 @@
  * @namespace
  */
 namespace Application\Categories;
+
 //namespace Core\Model\Categories;
 
 use Application\Users\Row;
@@ -15,12 +16,12 @@ use Bluz\Crud\Table;
 
 /**
  * Crud based on Db\Table
- * 
+ *
  */
 class Crud extends Table
 {
 
-    protected  $table_name = "categories";
+    protected $table_name = "categories";
 
     /**
      * {@inheritdoc}
@@ -32,7 +33,7 @@ class Crud extends Table
             ->from('categories', 'c');
 
         if ($limit) {
-            $selectPart = $select->getQueryPart('select');
+            $selectPart    = $select->getQueryPart('select');
             $selectPart[0] = 'SQL_CALC_FOUND_ROWS ' . current($selectPart);
             $select->select($selectPart);
 
@@ -50,7 +51,7 @@ class Crud extends Table
 
         if (sizeof($result) < $total) {
             http_response_code(206);
-            header('Content-Range: items '.$offset.'-'.($offset+sizeof($result)).'/'. $total);
+            header('Content-Range: items ' . $offset . '-' . ($offset + sizeof($result)) . '/' . $total);
         }
 
         return $result;
@@ -62,11 +63,11 @@ class Crud extends Table
     public function validateCreate($data)
     {
         // name validator
-        $name = isset($data['categories_name'])?$data['categories_name']:null;
+        $name = isset($data['categories_name']) ? $data['categories_name'] : null;
         $this->checkName($name);
 
         // categories_seo_page_name validator
-        $categories_seo_page_name = isset($data['categories_seo_page_name'])?$data['categories_seo_page_name']:null;
+        $categories_seo_page_name = isset($data['categories_seo_page_name']) ? $data['categories_seo_page_name'] : null;
         $this->checkSeo($categories_seo_page_name);
     }
 
@@ -101,10 +102,11 @@ class Crud extends Table
     {
         if (empty($name)) {
             $this->addError('Name can\'t be empty', 'name');
-        }/* elseif (!preg_match('/^[a-zA-Zа-яА-Я .-]+$/i', $name)) {
-            // TODO
-            $this->addError('Имя содержит толкьо буквы иили точку', 'name');
-        } */
+        }
+        /* elseif (!preg_match('/^[a-zA-Zа-яА-Я .-]+$/i', $name)) {
+                    // TODO
+                    $this->addError('Имя содержит толкьо буквы иили точку', 'name');
+                } */
     }
 
     /**
@@ -131,9 +133,9 @@ class Crud extends Table
 
     protected function checkPriceIndex($index)
     {
-        if((int)$index < 0) $this->addError('Наценка не может быть отрицательной', 'price_index');
+        if ((int)$index < 0) $this->addError('Наценка не может быть отрицательной', 'price_index');
         if ((int)$index == 0) $this->addError('Наценка не может быть нулевой', 'price_index');
-        if((int)$index > 100) $this->addError('Наценка не может быть больше 100 %', 'price_index');
+        if ((int)$index > 100) $this->addError('Наценка не может быть больше 100 %', 'price_index');
     }
 
 
@@ -144,18 +146,19 @@ class Crud extends Table
      */
     private function updateProductPrice($pk, $data)
     {
-        if(isset($pk['categories_id'])) $categories_id = $pk['categories_id'];
+        if (isset($pk['categories_id'])) $categories_id = $pk['categories_id'];
         else {
             $this->addError('Не найден первичный ключ', 'categories_id');
+
             return;
         }
 
-        $price_index = $data['price_index']/100;
+        $price_index = $data['price_index'] / 100;
 
 // TODO обновлять кеш , связанный с продуктами
 
-        if( isset($data['price_index']) ){
-            if( (int)$data['price_index'] > 0 ){
+        if (isset($data['price_index'])) {
+            if ((int)$data['price_index'] > 0) {
 
                 $category = Crud::getInstance()->readOne(['categories_id' => $categories_id]);
 
@@ -199,14 +202,14 @@ class Crud extends Table
      *
      * Перегрузил родительский метод, чтобы добавить фильтрацию столбцов (filterColumns)
      */
-    function updateOne($primary,$data)
+    function updateOne($primary, $data)
     {
         // TODO обновлять кеш , связанный с категорией
 
         // FIXME дата не заносится
         // $data['last_modified'] = date("Y-m-d H:i:s", strtotime("now"));
 
-        $data =  $this->getTable()->filterColumns($data) ;
+        $data = $this->getTable()->filterColumns($data);
 
         $row = $this->getTable()->findRow($primary);
 
@@ -217,10 +220,10 @@ class Crud extends Table
         $this->validate($primary, $data);
         $this->validateUpdate($primary, $data);
 
-        $this->updateProductPrice($primary,$data);
+        $this->updateProductPrice($primary, $data);
 
         $err_arr = $this->getErrors();
-        if( is_array($err_arr) AND count($err_arr) > 0 )
+        if (is_array($err_arr) AND count($err_arr) > 0)
             $this->checkErrors();
 
         $updateBuilder = app()->getDb()
@@ -228,5 +231,16 @@ class Crud extends Table
             ->setArray($data)
             ->where('categories_id = ?', $primary['categories_id']);
         $updateBuilder->execute();
+    }
+
+    function createOne($data)
+    {
+        $tz_object = new \DateTimeZone('Europe/Kiev');
+
+        $datetime = new \DateTime();
+        $datetime->setTimezone($tz_object);
+        $data['date_added'] = $datetime->format('Y\-m\-d\ H:i:s');
+
+        return parent::createOne($data);
     }
 }

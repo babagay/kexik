@@ -115,6 +115,9 @@ return array(
     "logger" => array(
         "enabled" => false,
     ),
+    "datetime" => array( // TODO Можно вставить формат даты по умолчанию
+        "asd" => false,
+    ),
     "translator" => array(
         "domain" => "messages",
         "locale" => "en_US",

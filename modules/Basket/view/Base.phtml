@@ -83,9 +83,67 @@
         <textarea id="address_dostavki">{{ address_dostavki }}</textarea>
     </div>
     <div class="white note">
-        <h4 class="header-4">Пояснения к заказу</h4>
+        <h4 class="header-4">Телефон</h4>
+        <input id="delivery_phone" value="{{ delivery_phone }}">
+    </div>
+    <div class="white note">
+    <h4 class="header-4">Пояснения к заказу</h4>
         <textarea id="order_notes">{{ order_notes }}</textarea>
     </div>
+    <div class="white note">
+        <h4 class="header-4">Дата доставки</h4>
+        <input type="text" name="delivery_date" id="delivery_date" value="{{ delivery_date }}">
+    </div>
+
+    <script>
+        /* require(["bootstrap"],  function (bootstrap) {         }); */
+        require(["jquery", "daterangepicker", "moment"], function ($, daterangepicker, moment) {
+
+            var currentYear = moment().format("YYYY");
+            var nextYear = currentYear * 1 + 1
+            var minDate = '01/01/' + currentYear
+            var maxDate = '31/12/' + nextYear
+
+            $('input[name="delivery_date"]').daterangepicker({
+                    format: 'DD/MM/YYYY H:mm',
+                    singleDatePicker: true,
+                    startDate: moment(),
+                    endDate: moment(),
+                    minDate: minDate,
+                    maxDate: maxDate,
+                    dateLimit: { days: 60 },
+                    showDropdowns: true,
+                    showWeekNumbers: false,
+                    timePicker: true,
+                    timePickerIncrement: 1,
+                    timePicker12Hour: false,
+                    opens: 'right',
+                    drops: 'up',
+                    buttonClasses: ['btn', 'btn-sm'],
+                    applyClass: 'btn-primary',
+                    cancelClass: 'btn-default',
+                    locale: {
+                        applyLabel: 'Выбрать',
+                        cancelLabel: 'Закрыть',
+                        daysOfWeek: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+                        monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                        firstDay: 1
+                    }
+                },function (start, end, label) {
+
+                }
+            ).on('cancel.daterangepicker',function (ev, picker) {
+                    $(this).val(moment().format("DD/MM/YYYY H:mm"));
+                }).on('apply.daterangepicker',function (ev, picker) {
+
+                }).data('daterangepicker'); // .setStartDate('28/08/2016 16:21')
+
+            $('input[name="delivery_date"]').on('keypress', function () {
+                return false;
+            });
+        });
+
+    </script>
     {% elseif(step == 3) %}
 
     <div class="user-order-details">
@@ -215,6 +273,8 @@ require(["jquery", "bluz.notify", "basket", "basic"], function ($, notify, baske
                     var address_dostavki = $("#address_dostavki").val()
                     data["address_dostavki"] = address_dostavki
                     data["order_notes"] = $("#order_notes").val()
+                    data["delivery_phone"] = $("#delivery_phone").val()
+                    data["delivery_date"] = $("#delivery_date").val()
                 }
 
                 if (step == 3) {

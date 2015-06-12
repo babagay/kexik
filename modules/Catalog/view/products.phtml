@@ -15,11 +15,7 @@
 
 {% elseif(products) %}
 
-
-
-
     {{ widget('catalog','manufacturer',{'категория':categories_id,'manufacturers_id':manufacturers_id,'продукты':products_ids, 'порядок_сортировки':order, 'фильтры':actual_filters, 'поисковая_фраза':search_text}) }}
-
 
 <script>
     // TODO вынести код фильтров в отдельный модуль
@@ -31,6 +27,111 @@
         // FIXME Это работает, но не ясно, по какой схеме. Иногда выскакивает, редко.
         // notify.addError("error")
 
+        /* Субкатегории */
+        var filter_subcategory_init_val = $("form[name=state] input[name=filter-subcategory]").val();
+        if (filter_subcategory_init_val == "" || filter_subcategory_init_val == undefined) $("input[type=checkbox].filter-subcategory").prop("checked", false);
+
+        $("input[type=checkbox].filter-subcategory").off().on("click", function (event, data, textStatus, jqXHR) {
+            var setChecked = false
+            var checkbox = $(this)
+            var data_id = checkbox.data("id")
+            var filter_subcategory = $("form[name=state] input[name=filter-subcategory]").val();
+
+            var Re = new RegExp(data_id);
+            var Re1 = new RegExp("^" + data_id + ",");
+            var Re2 = new RegExp("," + data_id + "$");
+            var Re3 = new RegExp("," + data_id + ",");
+
+            if (filter_subcategory == "") {
+                if (checkbox.prop("checked")) {
+                    filter_subcategory = data_id
+                    $("form[name=state] input[name=filter-subcategory]").val(filter_subcategory);
+                    setChecked = true
+                } else {
+                    return false;
+                }
+            } else {
+                if (checkbox.prop("checked")) {
+                    if (Re1.test(filter_subcategory) || Re2.test(filter_subcategory) || Re3.test(filter_subcategory) || filter_subcategory == data_id) {
+                        // "не дописывать, т.к. уже в списке
+                        // console.log("не дописыват")
+                        //$(".filter-subcategory").prop("checked",true) // FIXME не выставляет галочку
+                        return true
+                    } else {
+                        // дописать id, если его не было в списке
+                        /// console.log("дописать")
+                        filter_subcategory = filter_subcategory + "," + data_id
+                        $("form[name=state] input[name=filter-subcategory]").val(filter_subcategory);
+
+                        setChecked = true
+                    }
+                } else {
+                    if (Re.test(filter_subcategory)) {
+                        // убрать id, если он в списке
+                        if (filter_subcategory == data_id) {
+                            $("form[name=state] input[name=filter-subcategory]").val("")
+                        } else {
+                            //Re = new RegExp( "^" + data_id + ",");
+                            if (Re1.test(filter_subcategory)) { // в начале строки
+                                filter_subcategory = filter_subcategory.replace(Re1, "")
+                            } else {
+                                // Re = new RegExp( "," + data_id + "$")
+                                if (Re2.test(filter_subcategory)) { // в конце строки
+                                    filter_subcategory = filter_subcategory.replace(Re2, "")
+                                } else {
+                                    // Re = new RegExp( "," + data_id + "," )
+                                    if (Re3.test(filter_subcategory))  // в середине
+                                        filter_subcategory = filter_subcategory.replace(Re3, ",")
+                                }
+                            }
+
+                            if (filter_subcategory.substr(-1) == ",")
+                                filter_subcategory = filter_subcategory.replace(/,$/, "")
+
+                            $("form[name=state] input[name=filter-subcategory]").val(filter_subcategory)
+                        }
+
+                        setChecked = false
+                    } else {
+                        // не в списке
+                        // FIXME не снимается флажок
+                        //$(".filter-subcategory").prop("checked",false)
+                        return true;
+                    }
+                }
+            }
+
+            var data = {}
+            var state = $("form[name=state]").serialize();
+            var is_search = $("input[name=is_search]").val()
+            var url = "catalog/products" + "?" + state
+
+            if (is_search == 1) {
+                url = "поиск/" + $("input[name=search_text]").val() + "?" + state;
+            }
+
+            $.ajax({
+                type: "POST",
+                data: data,
+                url: url,
+                context: document.body,
+                cache: false,
+                dataType: "html"
+            }).done(function (response, status, responseObj) {
+                    if (status == "success") {
+                        if (responseObj.status != 200) {
+                            notify.addError("Error 404")
+                        }
+
+                        $("#content_box").html(response)
+                    }
+                });
+
+            return true;
+
+        });
+
+        /* Фильтры */
         // Очистка галочек
         var filter_orogin_init_val = $("form[name=state] input[name=filter-origin]").val();
         if(filter_orogin_init_val == "" || filter_orogin_init_val == undefined) $("input[type=checkbox].filter-origin").prop("checked",false);
@@ -46,8 +147,6 @@
             var Re1 = new RegExp( "^" + data_id + ",");
             var Re2 = new RegExp( "," + data_id + "$");
             var Re3 = new RegExp( "," + data_id + "," );
-
-            //var filter_subcategory = $("form[name=state] input.filter-subcategory").val();
 
             if(filter_origin == ""){
                 if( $(this).prop("checked") ){
@@ -114,7 +213,6 @@
             }
 
             //$("form[name=state] input[name=filter-origin]").val(filter_origin);
-
 
             var data = {}
             var state = $("form[name=state]").serialize();
@@ -260,56 +358,69 @@
     });
 </script>
 
-
+{% if(products[0] == 'empty') %}
+{# Выведен ложный продукт, т.к. нет продуктов, удовлетворяющим условиям фильтрации #}
+<div class="mess-12">
+    <h3>Нет продуктов, удовлетворяющих условиям фильтрации</h3>
+</div>
+{% else %}
 <div class="wrapper-goods">
 
     {% for product in products %}
 
-        <div class="goods">
-            {% if( category_parent ) %} {% set parent = '/' ~ category_parent  %}
-            {% else %} {% set parent = '' %} {% endif %}
+    <div class="goods">
+        {% if( category_parent ) %} {% set parent = '/' ~ category_parent %}
+        {% else %} {% set parent = '' %} {% endif %}
 
-            {% if( product.products_seo_page_name ) %} {% set product_link =   product.products_seo_page_name  %}
-            {% else %} {% set product_link = product.products_id %} {% endif %}
-
-
-            {#<div class="name">{{ ahref(  product.products_name, ['каталог' ~ parent ~ '/' ~ category_name, product_link]) }}</div>#}
-            <div class="name">{{  product.products_name }}</div>
-            <div class="image-box">
-                {%  if( product.image_small ) %}
-                    <img src="{{ product.image_small }}">
-                {% else %}
-                    <img src="{{ baseUrl('public/images/stumb.jpg') }}">
-                {% endif %}
-            </div>
-            <div class="description">
-                <div class="weight">{{ product.products_unit }}</div>
-                <div class="cost">{{ product.products_shoppingcart_price|round(2, 'ceil') }}</div>
-                <div class="basket"><a href="JavaScript:void(0);" data-href="ajax/modify_basket" class="push-to-basket" >В корзину</a></div>
-                <div class="number-arrow">
-                    <a class="dec" href="JavaScript:void(0);" data-href=""><img src="public/images/arrow-dec.png"></a>
-                    <input type="number" min="1" value="1" class="num">
-                    <a class="inc" href="JavaScript:void(0);" data-href=""><img src="public/images/arrow-inc.png"></a>
-                </div>
-                <div class="price">{{ product.products_shoppingcart_price|round(2, 'ceil') }}</div>
-            </div>
-
-            <input type="hidden" name="products_id" value="{{ product.products_id }}">
-            <input type="hidden" name="products_barcode" value="{{ product.products_barcode }}">
-            <input type="hidden" name="products_name" value="{{ product.products_name }}">
-            <input type="hidden" name="products_unit" value="{{ product.products_unit }}">
-            <input type="hidden" name="products_departament" value="{{ product.products_departament }}">
-            <input type="hidden" name="products_shoppingcart_price" value="{{ product.products_shoppingcart_price }}">
-            <input type="hidden" name="products_quantity" value="{{ product.products_quantity }}">
-            {# <input type="hidden" name="products_price" value="{{ product.products_price }}"> #}
+        {% if( product.products_seo_page_name ) %} {% set product_link = product.products_seo_page_name %}
+        {% else %} {% set product_link = product.products_id %} {% endif %}
 
 
-
+        {#
+        <div class="name">{{ ahref( product.products_name, ['каталог' ~ parent ~ '/' ~ category_name, product_link])
+            }}
         </div>
+        #}
+        <div class="name">{{ product.products_name }}</div>
+        <div class="image-box">
+            {% if( product.image_small ) %}
+            <img src="{{ product.image_small }}">
+            {% else %}
+            <img src="{{ baseUrl('public/images/stumb.jpg') }}">
+            {% endif %}
+        </div>
+        <div class="description">
+            <div class="weight">{{ product.products_unit }}</div>
+            <div class="cost">{{ product.products_shoppingcart_price|round(2, 'ceil') }}</div>
+            <div class="basket"><a href="JavaScript:void(0);" data-href="ajax/modify_basket" class="push-to-basket">В
+                    корзину</a></div>
+            <div class="number-arrow">
+                <a class="dec" href="JavaScript:void(0);" data-href=""><img src="public/images/arrow-dec.png"></a>
+                <input type="number" min="1" value="1" class="num">
+                <a class="inc" href="JavaScript:void(0);" data-href=""><img src="public/images/arrow-inc.png"></a>
+            </div>
+            <div class="price">{{ product.products_shoppingcart_price|round(2, 'ceil') }}</div>
+        </div>
+
+        <input type="hidden" name="products_id" value="{{ product.products_id }}">
+        <input type="hidden" name="products_barcode" value="{{ product.products_barcode }}">
+        <input type="hidden" name="products_name" value="{{ product.products_name }}">
+        <input type="hidden" name="products_unit" value="{{ product.products_unit }}">
+        <input type="hidden" name="products_departament" value="{{ product.products_departament }}">
+        <input type="hidden" name="products_shoppingcart_price" value="{{ product.products_shoppingcart_price }}">
+        <input type="hidden" name="products_quantity" value="{{ product.products_quantity }}">
+        {# <input type="hidden" name="products_price" value="{{ product.products_price }}"> #}
+
+
+    </div>
 
     {% endfor %}
 </div>
 {% endif %}
+
+
+{% endif %}
+
 
 <script>
 

@@ -128,6 +128,14 @@ class Application
      */
     protected $path;
 
+    /**
+     * @var
+     */
+    protected $date_helper;
+
+    /**
+     * @var
+     */
     protected $core_path;
 
     /**
@@ -597,6 +605,21 @@ class Application
             }
         }
         return $this->registry;
+    }
+
+    /**
+     * @return \Core\Helper\getDate
+     */
+    public function getDate()
+    {
+        if (!$this->date_helper) {
+            $this->date_helper = new \Core\Helper\getDate();
+            if ($conf = $this->getConfigData('datetime')) {
+                $this->date_helper->setData($conf);
+            }
+        }
+
+        return $this->date_helper;
     }
 
     /**
