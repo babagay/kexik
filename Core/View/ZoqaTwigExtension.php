@@ -116,6 +116,7 @@ class ZoqaTwigExtension extends \Twig_Extension{
             'getRequest' => new \Twig_Function_Method($this, 'getRequest'),
             'setGlobalParam' => new \Twig_Function_Method($this, 'setGlobalParam'),
             'cropByWords' => new \Twig_Function_Method($this, 'cropByWords'),
+            'round' => new \Twig_Function_Method($this, 'round'),
             // new \Twig_SimpleFunction('lipsum', 'priceFilter'),
             //'getTest' => new \Twig_Function_Function('test')
         );
@@ -188,6 +189,11 @@ class ZoqaTwigExtension extends \Twig_Extension{
     function _module()
     {
         return app()->getInstance()->getRequest()->getModule();
+    }
+
+    function round($number,$digits = 2)
+    {
+        return round($number,$digits);
     }
 
     /**
