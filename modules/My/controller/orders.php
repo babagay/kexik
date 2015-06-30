@@ -3,7 +3,7 @@
 return
     /**
      * @return \closure
-     *
+     * @privilege Edit
      */
     function () use ($view) {
 
