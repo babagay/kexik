@@ -113,26 +113,45 @@ return
         ";
         $products = $db->fetchAll ($pr_query);
 
+        $search_str = explode(" ",$words_to_search);
+        $search_str = implode("%",$search_str);
+
+        $pr_query = "
+                SELECT p.products_id, products_name, manufacturers_id, products_quantity, products_shoppingcart_price, products_unit, products_seo_page_name,
+                pd.products_description, pd.products_image_small
+
+                FROM products p
+                LEFT JOIN products_description pd ON p.products_id = pd.products_id
+                WHERE   products_name LIKE '%$search_str%'
+
+              AND products_visibility = 1
+              $direction_condition
+
+              ";
+        $products_2 = $db->fetchAll ($pr_query);
+
+        $final_products = [];
         if(is_array($products))
-        if(!sizeof($products)){
+            foreach($products as $product){
+                $final_products[] = $product;
+            }
+        if(is_array($products_2))
+            foreach($products_2 as $product_2){
+                if(is_array($products)){
+                    $product_exists = false;
+                    foreach($products as $product){
+                        if($product['products_id'] == $product_2['products_id']){
+                            $product_exists = true;
+                            break;
+                        }
+                    }
+                }
+                if(!$product_exists)
+                    $final_products[] = $product_2;
+            }
 
-            $search_str = explode(" ",$words_to_search);
-            $search_str = implode("%",$search_str);
-
-            $pr_query = "
-                    SELECT p.products_id, products_name, manufacturers_id, products_quantity, products_shoppingcart_price, products_unit, products_seo_page_name,
-                    pd.products_description, pd.products_image_small
-
-                    FROM products p
-                    LEFT JOIN products_description pd ON p.products_id = pd.products_id
-                    WHERE   products_name LIKE '%$search_str%'
-
-                  AND products_visibility = 1
-                  $direction_condition
-
-                  ";
-            $products = $db->fetchAll ($pr_query);
-        }
+        if(sizeof($final_products))
+            $products = $final_products;
 
         // Составить строку выбранных products_id
         $products_str = "";
