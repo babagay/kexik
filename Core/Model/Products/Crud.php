@@ -183,10 +183,16 @@ class Crud extends Table
 
     function updateOne($primary, $data)
     {
-        $category = app()->getDb()->fetchRow("SELECT * FROM products_to_categories WHERE products_id = '{$data['products_id']}'");
+        $category = $this->getProductCategory($primary['products_id']);
         if(isset($category['categories_id'])){
-
             if(isset($data['categories_id'])){
+
+                $product = \Application\Products\Table::findRow(array('products_id' => $primary['products_id']));
+
+                //FIXME метод не работает, поэтому, используется сброс кэша
+                //app()->getFilterKeeper()->deleteManufacturerSetByVendor($product->manufacturers_id,$category['categories_id']);
+
+                app()->getFilterKeeper()->getStorage()->flush();
 
                 /*
                 if((int)$data['categories_id'] === (int)$category['categories_id']){
@@ -222,5 +228,16 @@ class Crud extends Table
         }
 
         parent::updateOne($primary,$data);
+
+        if(isset($category['categories_id'])){
+            // Обновить кэш списка производителей для данной категории
+            $vendors = \Application\Manufacturers\Table::getInstance()->getVendorsByCategory($category['categories_id']);
+            app()->getFilterKeeper()->clearContext()->selectContext("category_to_vendors", $category['categories_id'])->selectFilterType("manufacturer")->setFiltersVendor($vendors);
+        }
+    }
+
+    function getProductCategory($products_id)
+    {
+        return app()->getDb()->fetchRow("SELECT * FROM products_to_categories WHERE products_id = '$products_id'");
     }
 }

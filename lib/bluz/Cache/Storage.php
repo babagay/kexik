@@ -238,7 +238,6 @@ class Storage extends Options implements CacheInterface, TagableInterface
 
         // array may contain not unique values, but I can't see problem here
         $identifiers[] = $id;
-        fb($tag);
 
         return $this->getTagAdapter()->set($tag, $identifiers);
     }
@@ -255,8 +254,6 @@ class Storage extends Options implements CacheInterface, TagableInterface
         $identifiers = $this->getTagAdapter()->get($tag);
 
         if (!$identifiers) {
-            fb($tag);
-
             return false;
         }
 

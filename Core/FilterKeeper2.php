@@ -43,7 +43,24 @@ namespace Core;
  * а для этого нужно все хэши хранить в базе.
  *
  * [usage]
- * $filterKeeper->deleteFilterSet("5d80c5e75cfb8ccb652463750d2109e4");
+ * $filterKeeper->deleteFilterSet("5d80c5e75cfb8ccb652463750d2109e4"); - не используется
+ *
+ * Обновление списка производителей
+ *      Допустим, мы изменили продукт.
+ *      Мы обнаружили, что он входит в категорию 5 и имеет производителя 400.
+ *      Чтобы удалить кэш списка производителей для категории 5, нужно выполнить:
+ *      app()->getFilterKeeper()->deleteManufacturerSetByVendor(400,5);
+ *
+ * Закэшировать производителей для категории
+ *      $vendors = Manufacturers\Table::getInstance()->getVendorsByCategory($категория);
+ *      $filterKeeper->setFiltersVendor($vendors);
+ *
+ * @todo сделать, чтобы подобным образом обновлялся кэш фильтров (original, subcategory) при изменении фильтра/продукта
+ *
+ * Удаление фильтра
+ *       app()->getFilterKeeper()->getStorage()->deleteByTag('by_category:'.'filters_id:'.'518');
+ *
+ * app()->getFilterKeeper()->clearContext()->selectContext("category_to_vendors", $category['categories_id'])->selectFilterType("manufacturer")->setFiltersVendor($vendors);
  */
 final class FilterKeeper2 {
 
@@ -452,9 +469,32 @@ final class FilterKeeper2 {
         return $this->getStorage()->get($hash);
     }
 
+    /**
+     * [!] Не используется
+     * @param $hash
+     */
     function deleteFilterSet($hash)
     {
         $this->getStorage()->delete($hash);
         $this->clearContext();
+    }
+
+    /**
+     * @param $manufacturers_id
+     * @param $categories_id
+     */
+    function deleteManufacturerSetByVendor($manufacturers_id,$categories_id)
+    {
+        // FIXME
+        // При внесении нового продукта в категорию метод getFilters() возвращает false
+        // При повторном редактировании того же продукта он работает нормально
+
+        $vendors = $this->clearContext()->selectContext("category_to_vendors", $categories_id)->selectFilterType("manufacturer")->getFilters();
+
+        if(is_array($vendors)){
+            foreach($vendors as $vendor){
+                $this->getStorage()->deleteByTag("manufacturer:filters_id:{$vendor['manufacturers_id']}");
+            }
+        }
     }
 }

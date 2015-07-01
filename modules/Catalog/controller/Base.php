@@ -16,8 +16,6 @@ return
         ///fb($статья);
         ///$app_object = Application\Bootstrap::getInstance();
 
-        app()->getFilterKeeper()->getStorage()->deleteByTag('by_category:'.'filters_id:'.'518');
-
         $app_object = app()->getInstance();
 
         $articles_id = null;
@@ -298,7 +296,6 @@ select *
             // TODO: впилить логику вытаскивания статей в \Core\Articles
            $Articles = new \Core\Articles( array('asd' => 2) );
             // fb( $Articles->asd );
-
 
             $frame = 4;
 
