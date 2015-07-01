@@ -113,7 +113,7 @@ return
                     if ($product['products_num'] < 0) continue;
                     $tmp                              = array();
                     $tmp['products_name']             = $product['products_name'];
-                    $tmp['products_num']              = $product['products_num'];
+                    $tmp['products_num']              = round($product['products_num'],2);
                     $tmp['products_unit']             = $product['products_unit'];
                     $tmp['products_shoppingcart_price'] = $product['price']; // Берем зафиксированную цену
                     $tmp['products_price_discounted'] = $product['price'] - ($product['price'] * $discount / 100); // Цена со скидкой
@@ -170,9 +170,9 @@ return
                 $products = array();
                 foreach ($orders_data['products'] as $product) {
                     if ($product['products_num'] < 0) continue;
-                    $tmp                 = array();
+                    $tmp                  = array();
                     $tmp['products_name'] = $product['products_name'];
-                    $tmp['products_num'] = $product['products_num'];
+                    $tmp['products_num']  = round($product['products_num'],2);
                     $tmp['products_unit'] = $product['products_unit'];
 
                     $tmp['products_price_discounted'] = $product['price'] - ($product['price'] * $discount / 100); // Цена со скидкой
@@ -222,7 +222,7 @@ return
                     $tmp['products_price'] = \PHPExcel_Calculation_MathTrig::ROUNDUP($product['products_price'], 2);
                     $tmp['barcode']        = $product['products_barcode'];
                     $tmp['products_id']    = $product['products_id'];
-                    $tmp['number']         = $product['products_num'];
+                    $tmp['number']         = round($product['products_num'],2);
                     $tmp['unit']           = $product['products_unit'];
 
 
