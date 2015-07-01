@@ -42,6 +42,9 @@ return
             case 'заказ':
                 return app()->dispatch('my', 'order', app()->getRequest()->getParams());
                 break;
+            case 'пополнение':
+                $view->popolnenie = 1;
+                break;
             default:
                 break;
         }
