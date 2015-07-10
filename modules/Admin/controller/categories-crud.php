@@ -4,26 +4,25 @@ namespace Application;
 
 use Application\Categories;
 use Bluz\Controller;
-//use Core\Model\Categories;
-//use Core\Model\ArticleGroups\Table;
 
-return function () {
+$_this = $this;
+
+return function ($parent_id = null,$categories_level = null) use($_this,$view) {
+    /**
+     * $_this Application\Bootstrap
+     * app()->getView()->parent_id =  $parent_id; - не сработало [!]
+     */
 
     $crudController = new Controller\Crud();
 
     $crudController->setCrud(Categories\Crud::getInstance());
 
-    /*
-    // TODO Как создать экземпляр таблицы
-    $table =   \Core\Model\Articles\Table();
+    $params = app()->getRequest()->getParams();
 
-    чтобы передать его в  setTable()?
+    if(isset($params['parent_id'])) $parent_id = $params['parent_id'];
 
-    $r = new \Bluz\Crud\Table();
-    $r->setTable();
-    */
-
-
+    $view->parent_id = $parent_id;
+    $view->categories_level = $categories_level;
 
     return $crudController();
 };

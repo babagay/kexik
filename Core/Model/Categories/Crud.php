@@ -204,7 +204,7 @@ class Crud extends Table
      */
     function updateOne($primary, $data)
     {
-        // TODO обновлять кеш , связанный с категорией
+        // TODO обновлять кеш , связанный с категорией или вообще влэшить
 
         // FIXME дата не заносится
         // $data['last_modified'] = date("Y-m-d H:i:s", strtotime("now"));

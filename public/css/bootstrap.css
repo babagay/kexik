@@ -1921,14 +1921,19 @@ select[multiple].input-lg {
   margin-bottom: 0;
 }
 .help-block {
-  display: block;
-  margin-top: 5px;
-  margin-bottom: 10px;
-  color: #737373;
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: #737373;
 }
 .help-block.hb-2 {
-  margin-left: 15px;
+    margin-left: 15px;
     font-size: 80%;
+    clear: both;
+}
+.help-block.hb-3 {
+    margin: 0 0 0 113px;
+    font-size: 60%;
     clear: both;
 }
 @media (min-width: 768px) {
@@ -2124,6 +2129,24 @@ fieldset[disabled] .btn-primary.active {
 .btn-primary .badge {
   color: #428bca;
   background-color: #fff;
+}
+.btn-secondary{
+    color: #ffdd8a;
+    background-color: #d1861a;
+    border-color: #ae7317;
+}
+fieldset[disabled] .btn-secondary.active {
+    background-color: #d1861a;
+    border-color: #ae7317;
+}
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active,
+.btn-secondary.active,
+.open .dropdown-toggle.btn-secondary {
+    color: #fff;
+    background-color: #754414;
+    border-color: #ae7317;
 }
 .btn-success {
   color: #fff;

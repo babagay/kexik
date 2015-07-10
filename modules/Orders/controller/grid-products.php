@@ -31,11 +31,6 @@ return
                 $products_id = $get_params['products_id'];
         }
 
-        if (isset($get_params['gid'])) {
-            if (is_null($gid))
-                $gid = $get_params['gid'];
-        }
-
         # Body
         if (app()->getRequest()->getMethod() == 'DELETE') {
             if (!is_null($orders_id) AND !is_null($products_id)) {

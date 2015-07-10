@@ -834,3 +834,9 @@ a.clone-order {
     color: #444;
     background: #b2ccb1 none repeat scroll 0 0;
 }
+a.category-name {
+    color: #7a8708;
+}
+a.add-item {
+    color: #348736;
+}

@@ -441,6 +441,26 @@ abstract class Grid extends Options
             $params['orders_id'] = $rewrite['orders_id'];
         }
 
+        // categories_id - параметр введен мной
+        if (isset($rewrite['categories_id']) && (int)$rewrite['categories_id'] > 0) {
+            $params['categories_id'] = $rewrite['categories_id'];
+        }
+
+        // catid - параметр введен мной
+        if (isset($rewrite['catid']) && (int)$rewrite['catid'] > 0) {
+            $params['catid'] = $rewrite['catid'];
+        }
+
+        // products_id - параметр введен мной
+        if (isset($rewrite['products_id']) && (int)$rewrite['products_id'] > 0) {
+            $params['products_id'] = $rewrite['products_id'];
+        }
+
+        // gid (Grid's ID) - параметр введен мной
+        if (isset($rewrite['gid']) && is_string($rewrite['gid'])) {
+            $params['gid'] = $rewrite['gid'];
+        }
+
         // change page
         if (isset($rewrite['page']) && (int)$rewrite['page'] > 1) {
             $params[$this->prefix . 'page'] = $rewrite['page'];

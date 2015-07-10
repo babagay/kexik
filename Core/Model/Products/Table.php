@@ -70,6 +70,9 @@ class Table extends \Bluz\Db\Table
             else
                 $index = $this->getMinPriceProduct($products);
 
+            if(is_null($index))
+                return $products;
+
             $tmp[] = $products[$index];
             unset($products[$index]);
         }
@@ -86,6 +89,9 @@ class Table extends \Bluz\Db\Table
         $max = 0;
 
         foreach ($products as $ind => $product) {
+            if(!isset($product['products_shoppingcart_price']))
+                return null;
+
             if ($i == 0) {
                 $max = $product['products_shoppingcart_price'];
                 $i++;
@@ -105,12 +111,13 @@ class Table extends \Bluz\Db\Table
     private function getMinPriceProduct(array $products)
     {
         $index = null;
-
         $i = 0;
-
         $min = 0;
 
         foreach ($products as $ind => $product) {
+            if(!isset($product['products_shoppingcart_price']))
+                return null;
+
             if ($i == 0) {
                 $min = $product['products_shoppingcart_price'];
                 $i++;

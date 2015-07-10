@@ -21,7 +21,7 @@
 
 
 <div class="input-group">
-    <a href="{{ url('admin', 'categories-crud') }}" class="btn btn-primary pull-left dialog" data-ajax-method="get">Создать</a>
+    <a href="{{ url('admin', 'categories-crud') }}{% if(parent_id) %}/parent_id/{{ parent_id }}{% endif %}/categories_level/{{ categories_level }}" class="btn btn-primary pull-left dialog" data-ajax-method="get">Создать</a>
 </div>
   
     {# grid.getUrl() #}
@@ -40,9 +40,25 @@
     </tr>
     </thead>
     <tbody>
+    {% if(parent_id > 0) %}
+        <tr>
+            <td colspan="6">
+                <a href="{{ url('admin', 'grid-categories') }}/sql-filter-parent_id/{{ prev_parent_id }}" class="filter ajax category-name" data-ajax-method="get">...</a>
+            </td>
+        </tr>
+    {% endif %}
+
     {% for row in attribute(grid, 'getData') %}
     <tr>
-        <td>{{ row['categories_name'] }}</td>
+        <td>
+            {% if(categories_level) < 2 %}
+                <a href="{{ url('admin', 'grid-categories', {  'sql-filter-parent_id': row['categories_id']}) }}" class="filter ajax category-name" data-ajax-method="get">
+                     {{ row['categories_name'] }}
+                </a>
+            {% else %}
+                 {{ row['categories_name'] }}
+            {% endif %}
+        </td>
         <td>{{ row['sort_order'] }}</td>
         <!--td>{{ row['date_added']|date("j F G:i ") }}</td-->
         <td>
@@ -53,7 +69,7 @@
         <td>{{ row['categories_status'] }}</td>
         <td>{{ row['categories_seo_page_name'] }}</td>
         <td class="controls">
-            <a href="{{ url('admin', 'categories-crud', {'categories_id' : row['categories_id']}) }}" class="btn btn-xs btn-primary dialog" data-ajax-method="get">
+            <a href="{{ url('admin', 'categories-crud', {'categories_id' : row['categories_id']}) }}{% if(parent_id) %}/parent_id/{{ parent_id }}{% endif %}/categories_level/{{ categories_level }}" title="Редактировать" class="btn btn-xs btn-primary dialog" data-ajax-method="get">
                 <i class="fa fa-pencil"></i>
             </a>
             <!--a href="{{ url('admin', 'categories-crud', {'categories_id' : row['categories_id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
@@ -61,14 +77,17 @@
             </a-->
             {# set asd = grid.getUid ~ '-filter-parent_id' #}
             {% if(row['parent_id'] == 0) %}
-                <a href="{{ url('admin', 'grid-categories', {  'sql-filter-parent_id': row['categories_id']}) }}" class="confirm filter btn btn-xs btn-default ajax" data-ajax-method="get">
+                <!--a href="{{ url('admin', 'grid-categories', {  'sql-filter-parent_id': row['categories_id']}) }}" class="confirm filter btn btn-xs btn-default ajax" data-ajax-method="get">
                     <i class="fa fa-table"></i>
-                </a>
+                </a-->
             {% else %}
-                <a href="{{ url('admin', 'grid-categories') }}" class="confirm filter btn btn-xs btn-default ajax" data-ajax-method="get">
+                <!--a href="{{ url('admin', 'grid-categories') }}" class="confirm filter btn btn-xs btn-default ajax" data-ajax-method="get">
                     <i class="fa fa-table"></i>
-                </a>
+                </a-->
             {% endif %}
+            <a href="{{ url('admin', 'categories') }}/categories-to-products/categories_id/{{ row['categories_id'] }}" title="Привязать продукты" class="btn btn-xs btn-secondary">
+                <i class="fa fa-chain"></i>
+            </a>
         </td>
     </tr>
     {% endfor %}

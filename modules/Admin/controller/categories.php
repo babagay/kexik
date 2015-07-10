@@ -22,12 +22,12 @@
 
     return
         /**
-         * @param string $asd
+         * @param integer $categories_id
          * @return \closure
          * @privilege Management
          *
          */
-        function (  $asd = null ) use ($view) {
+        function (  $categories_id = null ) use ($view) {
             /**
              * @var Вместо Application $this используй $app_object = Application\Bootstrap::getInstance();
              * или так: app()->getRequest();
@@ -45,8 +45,8 @@
                 )
             );
 
-
-            // TODO
+            if(is_null($categories_id))
+                $categories_id = $app_object->getRequest()->getParam('categories_id');
 
             $user = app()->getAuth()->getIdentity();
 
@@ -57,6 +57,12 @@
             if($access_is_open !== true)
             //    $app_object->redirectTo('', '');
                 throw new \Bluz\Application\Exception\ApplicationException("Такой страницы нет",404);
+
+
+            $param_3 = $app_object->getRequest()->get(3);
+
+            if($param_3 == 'categories-to-products')
+                return $app_object->dispatch('products','categories-to-products',['categories_id'=>$categories_id]);
 
 
 

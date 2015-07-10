@@ -7,7 +7,6 @@ namespace Application\Categories;
 
 class Table extends \Bluz\Db\Table
 {
-
     /**
      * Table without prefixe
      *

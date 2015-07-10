@@ -1,0 +1,25 @@
+<h3>{{ categories_name }}</h3>
+<br>
+
+{{ dispatch('products','grid-categories-to-products', {'categories_id':categories_id,'gid':'category-products'}) }}
+
+<input name="categories_id" value="{{ categories_id }}" type="hidden"/>
+
+{{ dispatch('products','grid-categories-to-products', {'catid':categories_id,'gid':'add-products'}) }}
+
+<script>
+    require(["jquery"], function($) {
+
+        $("div[data-grid=add-products-sql]").on("item-added",function(){
+            $("div[data-grid=category-products-sql]").find("a.show-all").click()
+        })
+
+        $("div[data-grid=category-products-sql]").on("item-deleted",function(){
+            $("div[data-grid=category-products-sql]").find("a.show-all").click()
+        })
+
+    });
+
+
+</script>
+

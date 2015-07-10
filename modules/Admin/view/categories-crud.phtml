@@ -4,6 +4,8 @@
 {# action="{{ url('admin', 'categories-crud')  }}" #}
 <form id="{{ uid }}" action="{{ url('admin', 'categories-crud') }}" class="form-horizontal ajax" method="{{ method }}">
     <input type="hidden" name="categories_id" value="{{ row.categories_id }}"/>
+    <input type="hidden" name="parent_id" value="{{ parent_id }}"/>
+    <input type="hidden" name="categories_level" value="{{ categories_level }}"/>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h3 class="modal-title">Категория товаров</h3>
@@ -14,18 +16,28 @@
             <div class="col-lg-10">
                 <input type="text" class="form-control" id="categories_name" name="categories_name" value="{{ row.categories_name }}" required />
             </div>
+            <p class="help-block hb-3">Произвольное значение</p>
         </div>
         <div class="form-group">
             <label class="control-label col-lg-2" for="categories_seo_page_name">{{ __('СЕО-имя') }}</label>
-            <div class="col-lg-10">
+            <div class="controls col-lg-10">
                 <input type="text" class="form-control" id="categories_seo_page_name" name="categories_seo_page_name" value="{{ row.categories_seo_page_name }}" required />
             </div>
+            <p class="help-block hb-3">Уникальное значение</p>
         </div>
         <div class="form-group">
-            <label class="control-label col-lg-2" for="categories_seo_page_name">{{ __('Наценка (%)') }}</label>
+            <label class="control-label col-lg-2" for="categories_seo_page_name">{{ __('Наценка') }}</label>
             <div class="col-lg-10">
                 <input type="text" class="form-control" id="price_index" name="price_index" value="{{ row.price_index }}" required />
             </div>
+            <p class="help-block hb-3">Число больше нуля от 1 до 100</p>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="sort_order">{{ __('Порядок') }}</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="sort_order" name="sort_order" value="{{ row.sort_order }}"  />
+            </div>
+            <p class="help-block hb-3">Порядок вывода кнопки категории</p>
         </div>
         <!--div class="form-group">
             <label class="control-label col-lg-2" for="status">{{ __('Status') }}</label>

@@ -1,0 +1,133 @@
+<script>
+    require(["bluz.grid"]);
+</script>
+
+{% set grid_path = 'products/grid-categories-to-products' %}
+
+{% if(gid == 'category-products') %}
+    <div class="clearfix" data-spy="grid" data-grid="{{ gid }}-{{ attribute(grid_products, 'getUid')  }}"
+         data-url="products/grid-categories-to-products/categories_id/{{ categories_id }}/gid/{{ gid }}">
+    {% set grid_path_postfix = '/categories_id/' ~ categories_id ~ '/gid/' ~ gid %}
+    {% set grid_fullpath_with_params = grid_products.getUrl({'gid':gid,'categories_id':categories_id}) %}
+{% else %}
+    <div class="clearfix" data-spy="grid" data-grid="{{ gid }}-{{ attribute(grid_products, 'getUid')  }}"
+         data-url="products/grid-categories-to-products/gid/{{ gid }}/catid/{{ catid }}">
+    {% set grid_path_postfix = '/catid/' ~ catid ~ '/gid/' ~ gid %}
+    {% set grid_fullpath_with_params = grid_products.getUrl({'gid':gid,'catid':catid}) %}
+{% endif %}
+
+{# Путь без дополнительных параметров, таких как sql-limit, например. #}
+{% set grid_fullpath = grid_path ~ grid_path_postfix %}
+
+
+    <form class="filter-form" action="{{ grid_fullpath_with_params }}">
+        <div class="input-group-btn grid-filter-search">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Наименование <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li><a href="#" data-filter="{{ grid.getUid }}-filter-products_id"> Артикул </a></li>
+                <li><a href="#" data-filter="{{ grid.getUid }}-filter-products_barcode"> Штрихкод </a></li>
+                <li><a href="#" data-filter="{{ grid.getUid }}-filter-products_name"> Наименование </a></li>
+            </ul>
+        </div><!-- /btn-group -->
+        <input name="grid-filter-" class="grid-filter-search-input" value="" type="hidden"/>
+        {% if(gid == 'category-products') %}
+        <input name="categories_id"  value="{{ categories_id }}" type="hidden"/>
+        {% endif %}
+
+        <input name="search-like" type="search" class="form-control" value="" required />
+    </form>
+
+
+
+    {# partial('grid/limit.phtml', {'grid': grid_products}) #}
+
+    <table class="table grid_products">
+        <thead>
+        <tr>
+            <th width="60px"><a href="{{ grid_products.order('products_id', null, 'desc', false) }}{{ grid_path_postfix }}">Артикул</a></th>
+            <th width="120px"><a href="{{ grid_products.order('products_barcode') }}{{ grid_path_postfix }}">Штрихкод</a></th>
+            <th width="120px"><a href="{{ grid_products.order('products_name') }}{{ grid_path_postfix }}">Наименование</a></th>
+            <th width="20px">
+                Картинка
+            </th>
+            <th width="120px">
+                {#
+                FIXME метод order() не подхватывает текущий фильтр
+                Нужно, чтобы он добавлял к ссылке, напр, /?search-like=mars
+                <a href="{{ grid_products.order('products_shoppingcart_price') }}/gid/{{ gid }}"> Цена розн </a>
+                #}
+                <a href="{{ grid_products.order('products_shoppingcart_price') }}{{ grid_path_postfix }}"> Цена розн </a>
+            </th>
+            <th width="120px">
+                <a href="{{ grid_products.order('products_price') }}{{ grid_path_postfix }}"> Цена опт </a>
+            </th>
+            <th width="120px">
+                <a href="{{ grid_products.order('products_quantity') }}{{ grid_path_postfix }}">Количество</a>
+            </th>
+            <th width="120px">{# Controls #}Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in attribute(grid_products, 'getData') %}
+        <tr>
+            <td class="grid-text">{{ row['products_id'] }}</td>
+            <td class="grid-text">{{ row['products_barcode'] }}</td>
+            <td class="grid-text">{{ row['products_name'] }}</td>
+            <td  class="grid-text">
+                <img src="{{ row['image_small'] }}" class="grid-image">
+            </td>
+            <td class="grid-text">
+                {{ row.products_shoppingcart_price|round(2) }}
+            </td>
+            <td class="grid-text">
+                {{ row.products_price|round(2) }}
+            </td>
+            <td class="grid-text">
+                {{ row.products_quantity }}
+            </td>
+            <td class="controls">
+                <!--a href="{{ url('admin', 'products-crud', {'products_id' : row['products_id']}) }}" class="btn btn-xs btn-primary dialog" data-ajax-method="get">
+                    <i class="fa fa-pencil"></i> edit
+                </a-->
+                {% if(gid == 'category-products') %}
+                <a href="{{ grid_fullpath_with_params }}/products_id/{{ row['products_id'] }}" onclick="javascript:return false" class="drop-item confirm btn btn-xs btn-danger" data-ajax-method="delete" data-ajax-type="html" data-id="{{ row['products_id'] }}"><i class="fa fa-times"></i></a>
+                {% elseif(gid == 'add-products') %}
+                <a href="{{ grid_fullpath_with_params }}/categories_id/{{ catid }}/products_id/{{ row['products_id'] }}" onclick="javascript:return false"   class="add-item" data-id="{{ row['products_id'] }}"><i class="fa fa-plus"></i> </a>
+                {% endif %}
+                <!--a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
+                    <i class="fa fa-times"></i>
+                </a-->
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+    {{ partial('grid/empty-rows.phtml', {'grid': grid_products}) }}
+    {# partial('grid/pagination.phtml', {'grid': grid_products}) #}
+    {# partial('grid/total.phtml', {'grid': grid_products}) #}
+    <ul class="pager pull-left">
+        <li>
+            {# <a href="{{ baseUrl('orders') }}/grid-products/orders_id/{{ orders_id }}/gid/{{gid}}" class="filter">{{ __('Показать все продукты') }}
+                <!--strong>{{ grid_products.total }}</strong--> </a> #}
+            {% if(gid == 'category-products') %}
+            <a href="products/grid-categories-to-products/categories_id/{{ categories_id }}/gid/{{ gid }}" class="filter show-all">{{ __('Показать все продукты') }} </a>
+            {% endif %}
+        </li>
+        <li>
+        </li>
+    </ul>
+
+
+
+</div>
+
+
+
+
+
+
+

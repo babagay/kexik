@@ -22,6 +22,8 @@ class SqlGrid extends \Bluz\Grid\Grid
     protected $table_name = 'products';
     protected $fulltext_search = false;
     protected $orders_id = null;
+    protected $categories_id = null;
+    protected $gid = null;
 
     /**
      * init
@@ -33,6 +35,10 @@ class SqlGrid extends \Bluz\Grid\Grid
         $adapter = new \Bluz\Grid\Source\SqlSource();
 
         $key = null;
+
+        if( isset($this->options['gid']) ){
+            $this->gid = $this->options['gid'];
+        }
 
         if( isset($this->options['search-like']) ){
             // TODO если вызван серч, то нужен альтернативный init()
@@ -119,6 +125,30 @@ class SqlGrid extends \Bluz\Grid\Grid
 
             }
 
+        } elseif(isset($this->options['categories_id'])) {
+            $this->categories_id = $this->options['categories_id'];
+
+            $categories_query = "SELECT p.*
+                                      FROM {$this->table_name} p
+                                      LEFT JOIN products_to_categories p2c ON p2c.products_id = p.products_id
+                                      WHERE p2c.categories_id = '{$this->options['categories_id']}'";
+            if( isset( $this->options['search']) AND isset( $this->options['search-column']) ){
+                $key = $this->options['search'];
+                switch($this->options['search-column']){
+                    case 'products_id':
+                        $categories_query .= " AND p.products_id = '$key' ";
+                        break;
+                    case 'products_name':
+                        $categories_query .= " AND p.products_name LIKE '%$key%' ";
+                        break;
+                    case 'products_barcode':
+                        $categories_query .= " AND p.products_barcode = '$key' ";
+                        break;
+                }
+            } else {
+               // $adapter->setSource( $categories_query );
+            }
+            $adapter->setSource( $categories_query );
         } else {
 
             // Параметры поиска переданы вручную - провести поиск
