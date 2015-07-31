@@ -16,7 +16,7 @@ return
         ///fb($статья);
         ///$app_object = Application\Bootstrap::getInstance();
 
-
+        app()->getFilterKeeper()->getStorage()->deleteByTag('by_category:'.'filters_id:'.'518');
 
         $app_object = app()->getInstance();
 
