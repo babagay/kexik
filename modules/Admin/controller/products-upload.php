@@ -41,7 +41,7 @@
              */
 
             //$id = 586059;
-fb(2222);return null;
+
             if( (int)$id === 0) $id = null;
 
             $operate_the_product = false;
