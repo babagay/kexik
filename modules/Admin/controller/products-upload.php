@@ -128,35 +128,35 @@
                 ->from('products', 'p');
             $products_exist = $selectBuilder->execute();
             $logger->products("Existing Products have been fetched");
-
+            $logger->products("00");
             $tmp = array();
             if(is_array($products_exist)) {
-                foreach( $products_exist as $products_exist_item ) {
+                foreach( $products_exist as $products_exist_item ) {$logger->products("001");
                     $tmp[] = $products_exist_item['products_id'];
                 }
                 if( count( $tmp ) > 0 )
                     $products_exist = $tmp;
             }
-
+            $logger->products("01");
             $objReader = \PHPExcel_IOFactory::createReader('Excel2007');
             //$objPHPExcel = $objReader->load(PUBLIC_PATH . "/data/files/products1.xlsx");
             $objPHPExcel = $objReader->load($path.$filename);
             $logger->products("File loaded " . $path.$filename);
 
             $new_products_arr = array();
-            $logger->products(1);
+            $logger->products("1");
             foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
                 // Проход по листам документа
                 ///fb( 'Worksheet - ' . $worksheet->getTitle() ); - название листа
-                $logger->products(2);
+                $logger->products("2");
                 $ind = 1;
 
                 $header_skipped = false;
 
                 foreach( $worksheet->getRowIterator() as $row ) {
                     // Проход по строкам листа
-                    $logger->products(13);
-                    $logger->products($row);
+                    $logger->products("3");
+                    //$logger->products($row);
                     $row_xls = array();
                     $category_arr = array();
 
