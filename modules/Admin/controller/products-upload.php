@@ -207,12 +207,12 @@
                             ->update('products')
                             ->setArray(
                                 array(
-                                    'products_shoppingcart_price' => $products_shoppingcart_price,
+                                     // 'products_shoppingcart_price' => $products_shoppingcart_price,
                                     'products_price' => $products_price,
                                     'products_quantity' => $products_quantity,
                                     'products_name' => $products_name,
                                     'products_unit' => $products_unit,
-                                    'products_last_modified' => date('Y-m-d H:i:s'),
+                                    'products_last_modified' => app()->getDate()->today(), // date('Y-m-d H:i:s'),
                                 )
                             )
                             ->where('products_barcode = ?', $products_barcode);
