@@ -143,6 +143,11 @@
             //$objPHPExcel = $objReader->load(PUBLIC_PATH . "/data/files/products1.xlsx");
             $objPHPExcel = $objReader->load($path.$filename);
             $logger->products("01b");
+            if( !is_object($objPHPExcel) )
+                $logger->products("objPHPExcel не является объектом вообще");
+            if( !($objPHPExcel instanceof \PHPExcel) )
+                $logger->products("objPHPExcel не является объектом PHPExcel");
+
             $logger->products("File loaded " . $path.$filename);
 
             $new_products_arr = array();
