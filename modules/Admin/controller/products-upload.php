@@ -131,7 +131,7 @@
             $logger->products("00");
             $tmp = array();
             if(is_array($products_exist)) {
-                foreach( $products_exist as $products_exist_item ) {$logger->products("001");
+                foreach( $products_exist as $products_exist_item ) {//$logger->products("001");
                     $tmp[] = $products_exist_item['products_id'];
                 }
                 if( count( $tmp ) > 0 )
