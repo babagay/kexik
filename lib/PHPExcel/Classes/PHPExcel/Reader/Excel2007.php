@@ -341,7 +341,7 @@ class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPE
 	 * @throws 	PHPExcel_Reader_Exception
 	 */
 	public function load($pFilename)
-	{fb(343434);
+	{
 		// Check if file exists
 		if (!file_exists($pFilename)) {
 			throw new PHPExcel_Reader_Exception("Could not open " . $pFilename . " for reading! File does not exist.");
