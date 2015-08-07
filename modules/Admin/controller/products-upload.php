@@ -144,18 +144,19 @@
             $logger->products("File loaded " . $path.$filename);
 
             $new_products_arr = array();
-
+fb(1);
             foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
                 // Проход по листам документа
                 ///fb( 'Worksheet - ' . $worksheet->getTitle() ); - название листа
-
+                fb(2);
                 $ind = 1;
 
                 $header_skipped = false;
 
                 foreach( $worksheet->getRowIterator() as $row ) {
                     // Проход по строкам листа
-
+                    fb(13);
+                    fb($row);
                     $row_xls = array();
                     $category_arr = array();
 
