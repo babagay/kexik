@@ -128,19 +128,21 @@
                 ->from('products', 'p');
             $products_exist = $selectBuilder->execute();
             $logger->products("Existing Products have been fetched");
-            $logger->products("00");
+
             $tmp = array();
             if(is_array($products_exist)) {
-                foreach( $products_exist as $products_exist_item ) {//$logger->products("001");
+                foreach( $products_exist as $products_exist_item ) {
                     $tmp[] = $products_exist_item['products_id'];
                 }
                 if( count( $tmp ) > 0 )
                     $products_exist = $tmp;
             }
-            $logger->products("01");
+
             $objReader = \PHPExcel_IOFactory::createReader('Excel2007');
+            $logger->products("01a");
             //$objPHPExcel = $objReader->load(PUBLIC_PATH . "/data/files/products1.xlsx");
             $objPHPExcel = $objReader->load($path.$filename);
+            $logger->products("01b");
             $logger->products("File loaded " . $path.$filename);
 
             $new_products_arr = array();
