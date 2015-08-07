@@ -188,7 +188,7 @@ class PHPExcel_IOFactory
 	 * @throws	PHPExcel_Reader_Exception
 	 */
 	public static function load($pFilename) {
-		$reader = self::createReaderForFile($pFilename);fb(555);
+		$reader = self::createReaderForFile($pFilename);
 		return $reader->load($pFilename);
 	}	//	function load()
 
