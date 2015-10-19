@@ -19,6 +19,14 @@ function () use ($bootstrap, $view) {
      * @var \closure $bootstrap
      * @var Bluz\View\View $view
      */
+     $a = new \Core\Helper\Asd();
+
+    foreach($a() as $item){
+        fb($item);
+    }
+
+
+
     $view->title('Test Module');
     $view->title('Append', $view::POS_APPEND);
     $view->title('Prepend', $view::POS_PREPEND);
