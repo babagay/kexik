@@ -466,7 +466,7 @@ abstract class Grid extends Options
             $params['search'] = $rewrite['search'];
         }
 
-        // search-like - параметр введен мной
+        // search-like - параметр введен мной Добавили в тестбранч
         if (isset($rewrite['search-like']) && is_string($rewrite['search-like'])) {
             $params['search-like'] = $rewrite['search-like'];
         }

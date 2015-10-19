@@ -19,6 +19,8 @@ function () use ($bootstrap, $view) {
      * @var \closure $bootstrap
      * @var Bluz\View\View $view
      */
+
+    /* Добавили код */
      $a = new \Core\Helper\Asd();
 
     foreach($a() as $item){
