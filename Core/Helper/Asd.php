@@ -13,4 +13,8 @@ class Asd {
     fb(__CLASS__);
   }
 
+  function __invoke(){
+            return [1=>2];
+    }
+
 }
