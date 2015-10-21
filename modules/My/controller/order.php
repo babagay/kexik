@@ -30,6 +30,10 @@ return
             case 'edit':
                 //TODO
                 break;
+            case 'add-product':
+                //TODO
+                fb('add-product 456454665456');
+                break;
             case 'clone':
                 if(is_null($orders_id))
                     return false;
