@@ -316,6 +316,9 @@ class Crud extends \Bluz\Crud\Table
     {
         $total  = 0;
 
+        if(!isset($data['user_discount']))
+            $data['user_discount'] = 0;
+
         $selectBuilder = app()->getDb()
             ->select('op.*')
             ->from('order_products', 'op')
