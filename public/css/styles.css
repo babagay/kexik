@@ -840,3 +840,14 @@ a.category-name {
 a.add-item {
     color: #348736;
 }
+#order_total {
+    margin-bottom: 20px;
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+and (max-width : 320px) {
+	#main-navigation li >  img {
+		display:none;
+	}
+}
