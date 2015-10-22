@@ -2,6 +2,8 @@
     require(["bluz.grid"]);
 </script>
 
+<a class="btn btn-default show-addproduct-grid-btn" href="#" onclick="javascript: return false;">Добавить продукт</a>
+
 <div class="clearfix" data-spy="grid" data-grid="{{ attribute(grid, 'getUid')  }}" data-url="my/grid-products/orders_id/{{ orders_id }}/operation/{{ operation }}" name="order_products_grid">
 
     {% if(operation == 'clone') %}
@@ -92,11 +94,22 @@
         </tbody>
     </table>
 
+    <ul class="pager pull-left" style="display: none">
+          <li>
+              <a href="my/grid-products/orders_id/{{ orders_id }}/operation/{{ operation }}" class="filter show-all">{# __('Показать все продукты') #} </a>
+          </li>
+          <li>
+          </li>
+    </ul>
+
     <div id="order_total">
         Сумма: <span class="summ"></span> грн
     </div>
 
     {% if(operation == 'clone') %}
+
+        <div style="clear: both;"></div>
+
         <div class="white note">
             <h4 class="header-4">Адрес доставки</h4>
             <textarea id="address_dostavki" name="address_dostavki">{{ address_dostavki }}</textarea>
@@ -279,3 +292,22 @@
 {% endif %}
 
 <div id="load"></div>
+
+<script>
+   require(["jquery", "bluz.notify"], function($, notify) {
+
+              $("a.show-addproduct-grid-btn").on("click",function(){
+                        if($(this).hasClass("visible")){
+                               $(this).removeClass("visible")
+                               $(this).text("Добавить продукт")
+                               $("div.add-products-grid").hide()
+                           } else {
+                               $("div.add-products-grid").show()
+                               $(this).addClass("visible")
+                               $(this).text("Скрыть")
+                           }
+                   });
+
+               $("div.add-products-grid").hide()
+       });
+</script>
