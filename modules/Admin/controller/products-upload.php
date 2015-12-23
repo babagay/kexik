@@ -33,43 +33,53 @@
      *
      * ALTERNATE:
      * Происходит только обновление свойств существующих продуктов ($do_update_only = true;)
+     *
+     * @param null|int $parse_category - если = 1, задействуется парсинг категорий
+     * @param null|int $id - последний успешно внесенный продукт. Если указан id, данные в базу пойдут, начиная с id+1
+     * @param null|int $package_size - размер пачки вгружаемых данных     *
+     * @param bool $do_update_only - Только обновлять существующие продукты
+     * @throws \PHPExcel_Calculation_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @internal param Bootstrap $this
+     * @internal param Bluz\View\View $view
+     * @internal param Bootstrap $_this
+     *
+     * TODO обнулять $id при рефрэше страницы
+     *      По завершении обработки сохранять $id в базу
+     *      Передавать $id в качестве параметра метода или здесь же выгребать из базы
+     *      $package_size хранить в базе или в конфиге
+     *      Если выход из цикла произошел раньше, чем $current_item == $package_size,
+     *          считать, что это была финальная пачка. Сгенерить сообщение (напр, в лог)
      */
-
     return
 
-        /**
-         * @param $parse_category
-         * @param $id - последний успешно внесенный продукт
-         */
-        function (  $parse_category = null, $id = null ) use ($_this) {
+        function (  $parse_category = null,
+                    $id = null,
+                    $package_size = null,
+                    $do_update_only = true)
+        use ($_this) {
+
+            // Test
+            // total: 31 640
+            // $id = 74;
+            $package_size = 5000;
 
             /**
-             * @var \Application\Bootstrap $this
-             * @var \Bluz\View\View $view
-             * fb($_this); // Application\Bootstrap
+             * Сколько ячеек вытягивать из одной строки эксель-файла
              */
-
-            /**
-             * Если указан id, данные в базу пойдут, начиная с id+1
-             */
-            // $id = 586059;
-
             $CELL_COUNT = 12;
-
-            if( (int)$id === 0) $id = null;
 
             $operate_the_product = false;
 
+            /**
+             * Сколько строк обработано
+             */
             $number_of_operatedproducts = -1;
-            $products_updated = 0;
 
             /**
-             * Только обновлять существующие продукты
+             * Сколько продуктов реально обновлено
              */
-            $do_update_only = true;
-
-            $_this->resetLayout();
-            // $_this->useJson(true);
+            $products_updated = 0;
 
             /**
              * Массив категорий продукта
@@ -81,16 +91,32 @@
              */
             $manufacturers_noname_id = null;
 
+            /**
+             * Счетчик айтемов в пачке
+             */
+            $current_item = 1;
+
+            $package_size *= 1;
+
+            $app_object = app()->getInstance();
+
+            $db =  app()->getDb();
+
+            $path = PATH_DATA . '/files/' ;
+
+            $logger = new \Bluz\Logger\MyLogger();
+
+            $_this->resetLayout();
+            // $_this->useJson(true);
+
+            if( (int)$id === 0) $id = null;
+
             if( !isset($_FILES['products_list'] )) return;
 
             $filename = $_FILES['products_list']['name'];
             $filetype = $_FILES['products_list']['type']; // application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
             $tmp_name = $_FILES['products_list']['tmp_name'];
             $size = $_FILES['products_list']['size'];
-
-            $app_object = app()->getInstance();
-
-            $db =  app()->getDb();
 
             $selectBuilder = app()->getDb()
                 ->select('*')
@@ -119,11 +145,8 @@
                 return;
             }
 
-            $path = PATH_DATA . '/files/' ;
-
             @copy($tmp_name,$path.$filename);
 
-            $logger = new \Bluz\Logger\MyLogger();
             $logger->products("Import started at " . date('Y-m-d H:i:s'));
 
             if($parse_category == 1){
@@ -173,12 +196,13 @@
             foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
                 // Проход по листам документа
                 ///fb( 'Worksheet - ' . $worksheet->getTitle() ); - название листа
-                $logger->products("Start walking by product items");
+                $logger->products("Start walking throw product items");
                 $ind = 1;
 
                 $header_skipped = false;
 
                 foreach( $worksheet->getRowIterator() as $row ) {
+
                     // Проход по строкам листа
                     //$logger->products($row);
                     $row_xls = array();
@@ -224,7 +248,7 @@
                             }
                         }
 
-                        // [!]:ALTERNATE
+                        // [!]:ALTERNATE scheme of product update
                         $number_of_operatedproducts  = $row_xls[0]; // Номер по порядку
                         $products_id                 = $row_xls[1]; // Артикул
                         $products_name               = $row_xls[2]; // Название продукта
@@ -254,6 +278,12 @@
                         } else
                             $logger->products("Product not found: $products_id (barcode: $products_barcode) ");
 
+                        $current_item++;
+
+                        if( $package_size > 0  AND $current_item > $package_size )
+                            break;
+
+                        // [!]
                         continue;
 
                         $current_manufacturer = trim($products_vendor);
@@ -665,6 +695,7 @@
 
             $logger->products("Products operated: " . $number_of_operatedproducts);
             $logger->products("Products updated: " . $products_updated);
+            $logger->products("Last operated product_id: " . $products_id);
             $logger->products("Import ended at " . date('Y-m-d H:i:s'));
 
             /**
