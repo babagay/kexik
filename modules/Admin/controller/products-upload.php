@@ -8,12 +8,23 @@
 
     /**
      * Загрузка продуктов
-     * Активный вариант: загруждаются только те продукты , у которых есть категория
-     * Вариант: загружаются все продукты
      *
-     * Ограничения:
-     * - имя файла на английском
-     * - первая строка файла - заголовок
+     * Формт файла: xlsx
+     * Название файла: латиница
+     * Формат таблицы в эксель-файле:
+     * первая строка таблицы - заголовок
+     * поля:
+     *      Артикул
+     *      Наименование
+     *      Ед.изм
+     *      Цена розн
+     *      Цена опт
+     *      Остаток
+     *      Бренд
+     *      Штрихкод
+     *
+     * Активный вариант: загруждются только те продукты , у которых есть категория
+     * Вариант: загружаются все продукты
      *
      * Использование:
      * - можно указать последний удачно загруженный продукт ($id)
@@ -21,13 +32,17 @@
      * - если $do_update_only = true, тогда модифицируются только существующие продукты, новые не добавляются
      *
      * ALTERNATE:
-     * Обработка альтернативного формата исходного файла
-     * Происходит только обновление свойств продуктов
+     * Происходит только обновление свойств существующих продуктов ($do_update_only = true;)
      */
 
     return
 
+        /**
+         * @param $parse_category
+         * @param $id - последний успешно внесенный продукт
+         */
         function (  $parse_category = null, $id = null ) use ($_this) {
+
             /**
              * @var \Application\Bootstrap $this
              * @var \Bluz\View\View $view
@@ -35,18 +50,18 @@
              */
 
             /**
-             * Если id = int, начинать вносить в базу продукты, начиная с данного id
-             * id = 51, тогда запись начнется с 52-го
-             * Т.о., надо указать последний успешно внесенный продукт
+             * Если указан id, данные в базу пойдут, начиная с id+1
              */
+            // $id = 586059;
 
-            //$id = 586059;
-            fb(343434);return null;
+            $CELL_COUNT = 12;
+
             if( (int)$id === 0) $id = null;
 
             $operate_the_product = false;
 
             $number_of_operatedproducts = -1;
+            $products_updated = 0;
 
             /**
              * Только обновлять существующие продукты
@@ -54,7 +69,7 @@
             $do_update_only = true;
 
             $_this->resetLayout();
-           // $_this->useJson(true);
+            // $_this->useJson(true);
 
             /**
              * Массив категорий продукта
@@ -82,9 +97,12 @@
                 ->from('manufacturers', 'm')
                 ->where('m.manufacturers_name = ?',"noname");
             $m = $selectBuilder->execute();
+
             if(isset( $m[0]['manufacturers_id'])){
                 $manufacturers_noname_id = $m[0]['manufacturers_id'];
+
             } else {
+
                 $insertBuilder        = app()->getDb()
                     ->insert( 'manufacturers' )
                     ->set( 'manufacturers_name', 'noname' )
@@ -93,13 +111,13 @@
                 $manufacturers_noname_id = $insertBuilder->execute();
             }
 
-
             $arr = explode(".",$filename);
 
-
-            if($arr[1] != 'xlsx')
+            if($arr[1] != "xlsx")
+                if($arr[1] != "xls") {
                 // throw new Bluz\Application\Exception\ApplicationException("Неверное расширение");
                 return;
+            }
 
             $path = PATH_DATA . '/files/' ;
 
@@ -139,10 +157,10 @@
             }
 
             $objReader = \PHPExcel_IOFactory::createReader('Excel2007');
-            $logger->products("01a");
+
             //$objPHPExcel = $objReader->load(PUBLIC_PATH . "/data/files/products1.xlsx");
             $objPHPExcel = $objReader->load($path.$filename);
-            $logger->products("01b");
+
             if( !is_object($objPHPExcel) )
                 $logger->products("objPHPExcel не является объектом вообще");
             if( !($objPHPExcel instanceof \PHPExcel) )
@@ -151,18 +169,17 @@
             $logger->products("File loaded " . $path.$filename);
 
             $new_products_arr = array();
-            $logger->products("1");
+
             foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
                 // Проход по листам документа
                 ///fb( 'Worksheet - ' . $worksheet->getTitle() ); - название листа
-                $logger->products("2");
+                $logger->products("Start walking by product items");
                 $ind = 1;
 
                 $header_skipped = false;
 
                 foreach( $worksheet->getRowIterator() as $row ) {
                     // Проход по строкам листа
-                    $logger->products("3");
                     //$logger->products($row);
                     $row_xls = array();
                     $category_arr = array();
@@ -178,17 +195,23 @@
                         $cellIterator->setIterateOnlyExistingCells(false); // Loop all cells, even if it is not set
                         $row_xls[] = $ind;
                         $ind++;
-                        // Преобразуем строку в массив
+
+                        // Формируем массив полей текущего продукта
+                        $t = 0;
                         foreach ($cellIterator as $cell) {
                             if (!is_null($cell)) {
                                 $row_xls[] =  $cell->getCalculatedValue();
                                 ///$cell->getCoordinate() - A1
+                                $t++;
                             }
+
+                            if($t > $CELL_COUNT)
+                                break;
                         }
 
                         /**
                          * Если задан id,
-                         * тогда начинать вносить продукты только после того, как флаг ($operate_the_product) = true
+                         * тогда начинать вносить продукты только после того, как флаг $operate_the_product станет true
                          */
                         if(!is_null($id)){
                             if((int)trim($row_xls[1]) == $id){
@@ -201,16 +224,17 @@
                             }
                         }
 
-                        $number_of_operatedproducts = $row_xls[0];
+                        // [!]:ALTERNATE
+                        $number_of_operatedproducts  = $row_xls[0]; // Номер по порядку
+                        $products_id                 = $row_xls[1]; // Артикул
+                        $products_name               = $row_xls[2]; // Название продукта
+                        $products_unit               = $row_xls[3]; // кг
+                        $products_shoppingcart_price = $row_xls[4]; // Розница
+                        $products_price              = $row_xls[5]; // Оптовая цена
+                        $products_quantity           = $row_xls[6]; // Остаток
+                        $products_vendor             = $row_xls[7]; // Брэнд
+                        $products_barcode            = $row_xls[8]; // Штрихкод
 
-                        // [!]:ALTERNATE Обработка продуктов , взятых из файла с сокращенным форматом
-                        $products_id = $row_xls[1];
-                        $products_name = $row_xls[2];
-                        $products_unit = $row_xls[3];
-                        $products_shoppingcart_price = $row_xls[5];
-                        $products_price = $row_xls[6]; // Оптовая
-                        $products_quantity = $row_xls[7];
-                        $products_barcode = $row_xls[9];
                         $updateBuilder = $db
                             ->update('products')
                             ->setArray(
@@ -224,14 +248,15 @@
                                 )
                             )
                             ->where('products_barcode = ?', $products_barcode);
-                        if( $updateBuilder->execute() )
+                        if( $updateBuilder->execute() ) {
+                            $products_updated++;
                             $logger->products("Product updated: $products_id (barcode: $products_barcode) ");
-                        else
+                        } else
                             $logger->products("Product not found: $products_id (barcode: $products_barcode) ");
-                        continue;
-                        //
 
-                        $current_manufacturer = trim($row_xls[8]);
+                        continue;
+
+                        $current_manufacturer = trim($products_vendor);
 
                         if( (int)$row_xls[1] != 0 AND trim($row_xls[9]) != '' ){
                             $manufacturers_id = null;
@@ -295,7 +320,7 @@
                               }
 
                               if(count($category_arr) == 0){
-                                  // Пропускать продукты , у которых категория пустая
+                                  // Пропускать продукты, у которых категория пустая
                                   $logger->products("Product skipped (category is empty): $products_id ");
                                   continue;
                               }
@@ -324,8 +349,7 @@
                                 $logger->products("Product updated: $products_id ");
 
                             } else {
-                                // Вставить продукт 
-
+                                // Вставить продукт
                                 if(!$do_update_only){
                                     $insertBuilder        = $db
                                         ->insert( 'products' )
@@ -639,7 +663,8 @@
 
                    // }
 
-            $logger->products("Products operated number: " . $number_of_operatedproducts);
+            $logger->products("Products operated: " . $number_of_operatedproducts);
+            $logger->products("Products updated: " . $products_updated);
             $logger->products("Import ended at " . date('Y-m-d H:i:s'));
 
             /**
