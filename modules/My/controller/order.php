@@ -7,9 +7,11 @@ return
      * @return \closure
      * @param string operation
      * @param integer orders_id
-     * privilege Edit
+     * @privilege Edit
+     *
+     * FIXME привилегии
      */
-    function ($operation = 'view',$orders_id = null) use ($view) {
+    function ($operation = 'view',$orders_id = null,$products_id = null) use ($view) {
 
         $title = 'Личный кабинет';
 
@@ -30,10 +32,22 @@ return
             case 'edit':
                 //TODO
                 break;
+
             case 'add-product':
-                //TODO
-                fb('add-product 456454665456');
+                if( $orders_id AND $products_id ){
+                    $order = Application\Orders\Crud::getInstance()->readOne(['orders_id' => $orders_id]);
+                    $order->addProduct($products_id);
+                }
                 break;
+
+            case 'delete-product':
+                // Удалить продукт из заказа
+                if( $orders_id AND $products_id ) {
+                    $order = Application\Orders\Crud::getInstance()->readOne([ 'orders_id' => $orders_id ]);
+                    $order->deleteProduct($products_id);
+                }
+                break;
+
             case 'clone':
                 if(is_null($orders_id))
                     return false;

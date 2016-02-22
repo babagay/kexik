@@ -2,12 +2,12 @@
      
      return
              function($categories_id = null,$catid = null,$gid = null,$products_id = null) use ($view) {
-     
+
                  $products_grid_options = array();
                  $products_grid_options['categories_id'] = $categories_id;
      
                  $search = null;
-     
+
                  $params = app()->getRequest()->getParams();
                  $get_params = app()->getRequest()->get;
      
@@ -49,29 +49,33 @@
              }
  
              if (app()->getRequest()->getMethod() == 'DELETE') {
-                         if (!is_null($categories_id) AND !is_null($products_id)) {
-                                 // Удалить связь продукта с категорией
-                                 app()->dispatch('products', 'categories-to-products', ['categories_id' => $categories_id, 'products_id' => $products_id, 'operation' => 'delete']);
-                             }
+                 if (!is_null($categories_id) AND !is_null($products_id)) {
+                 // Удалить связь продукта с категорией
+                         app()->dispatch('products', 'categories-to-products', ['categories_id' => $categories_id, 'products_id' => $products_id, 'operation' => 'delete']);
+                     }
              }
  
              if (app()->getRequest()->getMethod() == 'ADD') {
-                         if (!is_null($products_id)) {
-                                 app()->dispatch('my', 'order', [ 'products_id' => $products_id, 'operation' => 'add-product']);
-                             }
+                 if (!is_null($products_id)) {
+
+                        $orders_id = app()->getRequest()->getParam('orders_id');
+
+                        app()->dispatch('my', 'order', [ 'products_id' => $products_id, 'operation' => 'add-product', 'orders_id' => $orders_id]);
+                     }
              }
  
              // Грида продуктов категории
              $grid_products = new \Core\Model\Products\SqlGrid($products_grid_options);
              $grid_products->setModule('my');
              $grid_products->setController('grid-add-products');
- 
- 
-                 $grid_products->setLimit(5);
+
+             $grid_products->setLimit(5);
  
              $view->grid_products = $grid_products;
              $view->gid = $gid;
              $view->categories_id = $categories_id;
              $view->catid = $catid;
- 
+
+             $view->orders_id = app()->getRequest()->getParam('orders_id');
+
          };

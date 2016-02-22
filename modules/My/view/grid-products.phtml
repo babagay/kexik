@@ -25,11 +25,11 @@
             {#<th width="60px"><a href="{{ grid.order('products_id', null, 'desc', false) }}">Артикул</a></th>#}
             <th width="100px"><a href="{{ grid.order('products_barcode') }}/orders_id/{{ orders_id }}/operation/{{ operation }}">Штрихкод</a></th>
             <th width="120px"><a href="{{ grid.order('products_name') }}/orders_id/{{ orders_id }}/operation/{{ operation }}">Наименование</a></th>
-            <th width="20px"> <!--Картинка--> </th>
+            {#<th width="20px"> <!--Картинка--> </th>#}
             <th width="80px"><a href="{{ grid.order('products_shoppingcart_price') }}/orders_id/{{ orders_id }}/operation/{{ operation }}">Цена, грн</a></th>
             <th width="120px"><a href="{{ grid.order('products_price') }}/orders_id/{{ orders_id }}/operation/{{ operation }}"> Количество </a></th>
             <th width="60px"><a href="{{ grid.order('products_quantity') }}/orders_id/{{ orders_id }}/operation/{{ operation }}">Сумма, грн</a></th>
-            {#<th width="120px"></th>#}
+            <th width="60px"></th>
         </tr>
         </thead>
         <tbody>
@@ -38,18 +38,20 @@
             {#<td class="grid-text">{{ row['products_id'] }}</td>#}
             <td class="grid-text">{{ row['products_barcode'] }}</td>
             <td class="grid-text">{{ row['products_name'] }}</td>
-            <td>
+            {# <td>
                 {% if(row['image_small']) %}
                 <img src="{{ row['image_small'] }}" class="grid-image">
                 {% endif %}
-            </td>
+            </td> #}
             <td class="grid-text">
+
                 {% if(operation == 'clone') %}
                     <span name="price">{{ round(row['products_shoppingcart_price']) }}</span>
                 {% else %}
 
                 {% endif %}
                 <input class="product_price" type="hidden" name="product_price[{{ row['products_id'] }}]" value="{{ round(row['products_shoppingcart_price']) }}">
+
             </td>
             <td class="grid-text">
                 {% if(operation == 'clone') %}
@@ -67,7 +69,9 @@
 
                 {% endif %}
             </td>
-            {#<td class="controls">
+            <td class="controls">
+
+                {#
                 <a href="{{ url('admin', 'products-crud', {'products_id' : row['products_id']}) }}" class="btn btn-xs btn-primary dialog" data-ajax-method="get">
                     <i class="fa fa-pencil"></i> Img
                 </a>
@@ -87,8 +91,12 @@
                 <!--a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
                     <i class="fa fa-times"></i>
                 </a-->
+                #}
+
+                {% if( operation == 'clone' ) %}
+                    <a href="{{ url('my','grid-products',{'orders_id':orders_id, 'products_id':row.products_id, 'operation':operation },true) }}" onclick="javascript:return false" class="drop-item confirm btn btn-xs btn-danger ajax" data-ajax-method="delete" data-ajax-type="html" data-id="{{ row.products_id }}"><i class="fa fa-times"></i></a>
+                {% endif %}
             </td>
-            #}
         </tr>
         {% endfor %}
         </tbody>
