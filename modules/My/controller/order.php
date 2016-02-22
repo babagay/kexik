@@ -7,7 +7,7 @@ return
      * @return \closure
      * @param string operation
      * @param integer orders_id
-     * @privilege Edit
+     * privilege Edit
      */
     function ($operation = 'view',$orders_id = null) use ($view) {
 

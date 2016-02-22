@@ -3,7 +3,9 @@
 return
     /**
      * @return \closure
-     * @privilege Edit
+     * privilege Edit
+     *
+     * FIXME проблема с привилегиями
      */
     function () use ($view) {
 
