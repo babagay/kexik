@@ -16,7 +16,7 @@ $.post(basePath+"my/Base/вопрос/78", {asd: 'asd'}, function (res) {
 return
     /**
      * @return \closure
-     * @privilege Edit
+     * privilege Edit
      */
     function () use ($view) {
         /**
@@ -24,7 +24,10 @@ return
          * или так: app()->getRequest();
          * @var View $view
          */
+
         //$app_object = Application\Bootstrap::getInstance();
+
+
         $app = app()->getInstance();
 
         $uri_param_2 = app()->getRequest()->get(2);
