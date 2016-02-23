@@ -91,8 +91,17 @@ return
                 break;
             case 'update-order':
                 // TODO Изменить параметры заказа
+
+                $params = [];
+
                 fb('update-order');
+                var_dump('update-order-58963');die;
+
+                $order = Application\Orders\Crud::getInstance()->readOne(['orders_id' => $orders_id]);
+                //$order->updateOrder($params);
+
                 ///Application\Orders\Table::getInstance()->updateProduct($products_id, $params);
+
                 return null;
                 break;
             default:

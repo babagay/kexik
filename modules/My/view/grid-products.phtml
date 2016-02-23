@@ -55,8 +55,15 @@
             </td>
             <td class="grid-text">
                 {% if(operation == 'clone') %}
-                    {#<input class="form-control grid-edit-field-1 update-item" type="text" value="{{ row['products_num']|round(2) }}" name="products_num" data-url="{{ url('orders','grid-products',{'orders_id':orders_id, 'gid':gid, 'products_id':row.products_id },true) }}" data-ajax-method="update" data-ajax-type="html" data-id="{{ row.products_id }}" data-fileld-name="products_num"> ({{ row['products_unit'] }})#}
-                    <input class="form-control grid-edit-field-1 products_number_field" type="text" value="{{ row['products_num']|round(2) }}" name="products_num[{{ row['products_id'] }}]" >
+                    {# <input class="form-control grid-edit-field-1 update-item" type="text" value="{{ row['products_num']|round(2) }}" name="products_num" data-url="{{ url('orders','grid-products',{'orders_id':orders_id, 'gid':gid, 'products_id':row.products_id },true) }}" data-ajax-method="update" data-ajax-type="html" data-id="{{ row.products_id }}" data-fileld-name="products_num"> ({{ row['products_unit'] }}) #}
+
+                    <input class="form-control grid-edit-field-2 products_number_field update-item" type="text"
+                           data-fileld-name="products_num" data-id="25"
+                           data-ajax-type="html" data-ajax-method="update"
+                           data-url="my/grid-products/orders_id/{{ orders_id }}/operation/{{ operation }}/products_id/{{ row['products_id'] }}"
+                           name="products_num[{{ row['products_id'] }}]"
+                           value="{{ row['products_num']|round(2) }}" >
+
                     <br/>({{ row['products_unit'] }})
                 {% else %}
 
