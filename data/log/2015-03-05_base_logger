@@ -1,6 +1,0 @@
-[2015-03-05 12:20:54] base_logger.ERROR: Такой страницы нет [] []
-[2015-03-05 12:26:04] base_logger.ERROR: Такой страницы нет [] []
-[2015-03-05 12:27:40] base_logger.ERROR: Такой страницы нет [] []
-[2015-03-05 12:27:54] base_logger.ERROR: Controller not found 'index.html/Base' [C:\wamp2\www\kex/modules/Index.html/controller/Base.php] [] []
-[2015-03-05 12:30:49] base_logger.ERROR: Controller not found 'index.html/Base' [C:\wamp2\www\kex/modules/Index.html/controller/Base.php] [] []
-[2015-03-05 12:31:11] base_logger.ERROR: Controller not found 'index.html/Base' [C:\wamp2\www\kex/modules/Index.html/controller/Base.php] [] []

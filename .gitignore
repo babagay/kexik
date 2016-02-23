@@ -1,0 +1,16 @@
+access.log
+keks.sql
+error.log
+.idea/
+.htaccess
+lib/PHPExcel/
+lib/FirePHP/
+lib/monolog/
+lib/twig/
+data/data/
+data/cache/
+data/files/
+data/log/
+data/sessions/
+data/tmp/
+

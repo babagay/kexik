@@ -77,6 +77,7 @@ register_shutdown_function('errorDisplay');
 try {
     /**
      * @var \Composer\Autoload\ClassLoader $loader
+     * var \Core\Bootstrap $core
      * @see http://getcomposer.org/apidoc/master/Composer/Autoload/ClassLoader.html
      */
     //require PATH_VENDOR . '/autoload.php';
@@ -98,16 +99,12 @@ try {
     // Environment
     $env = getenv('ZOQA_ENV') ?: 'production'; // testing
 
-    /**
-     * @var \Core\Bootstrap $core
-     */
     $core = \Application\Bootstrap::getInstance();
     //fb($core instanceof \Application\Bootstrap ); true
  
     // test
     //$a = new \Zoqa\Testspace\zxc();
     //$a->Z('index','mindex',array(1=>234));
-
 
 
     $core->init($env)
