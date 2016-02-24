@@ -12,5 +12,11 @@ data/cache/
 data/files/
 data/log/
 data/sessions/
+data/locale/
+data/styles/
+data/uploads/
 data/tmp/
+Core/configs/base.php
+Core/configs/localhost.base.php
+
 
