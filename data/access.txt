@@ -10,3 +10,5 @@ drwxr-xr-x  2 babagay babagay    4096 May 21  2015 uploads
 sudo chmod 755 -R cache
 sudo chmod 777  cache
 sudo chmod 755 -R cache/storage
+
+#
