@@ -22,10 +22,10 @@ data/log/
 data/sessions/
 data/tmp/
 
-#data/data/
-#data/locale/
-#data/styles/
-#data/uploads/
+data/data/
+data/locale/
+data/styles/
+data/uploads/
 
 # Configs
 Core/configs/app.debug.php
