@@ -1,3 +1,6 @@
+# Root
+.htaccess
+.idea/
 access.log
 keks.sql
 keks_26_mar.sql
@@ -5,9 +8,9 @@ testfile.txt
 int.php
 error.php
 error.log
-.idea/
 таблицы.sql
-#.htaccess
+
+# Folders
 lib/PHPExcel/
 lib/FirePHP/
 lib/monolog/
@@ -21,8 +24,11 @@ data/locale/
 data/styles/
 data/uploads/
 data/tmp/
-Core/configs/base.php
-Core/configs/localhost.base.php
+
+# Configs
+Core/configs/app.debug.php
+Core/configs/app.production.php
+Core/configs/app.testing.php
 Core/configs/local.php
 
 ### Eclipse template

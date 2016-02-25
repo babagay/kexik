@@ -73,9 +73,9 @@ return array(
         "connect" => array(
             "type" => "mysql",
             "host" => "localhost",
-            "name" => "keks", //"keksik_ukr", //"keks",
+            "name" => "keks", //"keksik_ukr",      //"keks",
             "user" => "root", //"keksik_ukr_user", //"keks_user",
-            "pass" => "", //"zXcRTy8_cVlkJD", //"zxVo_Ipk",
+            "pass" => "",     //"zXcRTy8_cVlkJD",  //"zxVo_Ipk",
             "options" => array(\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''),
         ),
     ),
