@@ -15,15 +15,17 @@ lib/PHPExcel/
 lib/FirePHP/
 lib/monolog/
 lib/twig/
-data/data/
+
 data/cache/
 data/files/
 data/log/
 data/sessions/
-data/locale/
-data/styles/
-data/uploads/
 data/tmp/
+
+#data/data/
+#data/locale/
+#data/styles/
+#data/uploads/
 
 # Configs
 Core/configs/app.debug.php
