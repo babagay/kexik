@@ -1,1 +1,10 @@
+{{ dispatch('my','grid-add-products', {'gid':'add-products'}) }}
 {{ dispatch('my','grid-products', {'orders_id':orders_id,'operation':operation}) }}
+
+<script>
+    require(["jquery", "bluz.notify"], function($, notify) {
+            $("div[data-grid=add-products-sql]").on("item-added",function(){
+              $("div[data-grid=sql]").find("a.show-all").click()
+              })
+        });
+</script>

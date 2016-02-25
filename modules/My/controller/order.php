@@ -7,9 +7,9 @@ return
      * @return \closure
      * @param string operation
      * @param integer orders_id
-     * privilege Edit
+     * @privilege Edit
      */
-    function ($operation = 'view',$orders_id = null) use ($view) {
+    function ($operation = 'view',$orders_id = null,$products_id = null,$products_num = null) use ($view) {
 
         $title = 'Личный кабинет';
 
@@ -27,9 +27,31 @@ return
             case 'view':
                 //TODO
                 break;
-            case 'edit':
-                //TODO
+
+            case 'update-product':
+                // Изменить харакетристики продукта в заказе
+                $params = [];
+                $params['products_num'] = $products_num;
+                $order = Application\Orders\Crud::getInstance()->readOne(['orders_id' => $orders_id]);
+                $order->updateProduct($products_id,$params,$orders_id);
                 break;
+
+            case 'add-product':
+                // Присоединить продукт к заказу
+                if( $orders_id AND $products_id ){
+                    $order = Application\Orders\Crud::getInstance()->readOne(['orders_id' => $orders_id]);
+                    $order->addProduct($products_id);
+                }
+                break;
+
+            case 'delete-product':
+                // Удалить продукт из заказа
+                if( $orders_id AND $products_id ) {
+                    $order = Application\Orders\Crud::getInstance()->readOne([ 'orders_id' => $orders_id ]);
+                    $order->deleteProduct($products_id);
+                }
+                break;
+
             case 'clone':
                 if(is_null($orders_id))
                     return false;

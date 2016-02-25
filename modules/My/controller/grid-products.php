@@ -11,21 +11,46 @@ namespace Application;
 use Bluz;
 use Application\Admin;
 
+/**
+ * @var \Application\Bootstrap $_this
+ */
 $_this = $this;
 
+/**
+ * @var Bluz\View\View $view
+ * @var String $module
+ * @var String $controller
+ * @privilege Edit
+ *
+ */
 return
 
-    function ($orders_id = null,$operation = null) use ($view, $module, $controller, $_this) {
+    function ($orders_id = null,$products_id = null,$operation = null,$products_num = null) use ($view, $module, $controller, $_this) {
 
         $options = array();
 
-        //$params = $_this->getRequest()->getParams();
-        //$get_params = $_this->getRequest()->get;
+        ////$params = $_this->getRequest()->getParams();
+        ////$get_params = $_this->getRequest()->get;
 
         if(!is_null($orders_id))
             $options['orders_id'] = $orders_id;
 
         $user = app()->getAuth()->getIdentity();
+
+        if (app()->getRequest()->getMethod() == 'DELETE') {
+            // Удалить продукт
+            if (!is_null($orders_id) AND !is_null($products_id)) {
+                app()->dispatch('my', 'order', [ 'products_id' => $products_id, 'operation' => 'delete-product', 'orders_id' => $orders_id]);
+            }
+        }
+
+        if (app()->getRequest()->getMethod() == 'POST') {
+            // Изменить продукт
+            if (!is_null($orders_id) AND !is_null($products_id) AND !is_null($products_num) ) {
+
+                app()->dispatch('my', 'order', ['orders_id' => $orders_id, 'products_id' => $products_id, 'products_num' => $products_num, 'operation' => 'update-product']);
+            }
+        }
 
         $grid = new \Core\Model\Products\SqlGrid($options);
         $grid->setModule($module);
@@ -57,6 +82,7 @@ return
                 }
             }
         }
+
 
         $payment_types = PaymentTypes\Table::getInstance()->getPaymentTypes();
 

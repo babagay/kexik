@@ -1,8 +1,16 @@
+# Root
+.htaccess
+.idea/
 access.log
 keks.sql
+keks_26_mar.sql
+testfile.txt
+int.php
+error.php
 error.log
-.idea/
-.htaccess
+таблицы.sql
+
+# Folders
 lib/PHPExcel/
 lib/FirePHP/
 lib/monolog/
@@ -16,7 +24,51 @@ data/locale/
 data/styles/
 data/uploads/
 data/tmp/
-Core/configs/base.php
-Core/configs/localhost.base.php
 
+# Configs
+Core/configs/app.debug.php
+Core/configs/app.production.php
+Core/configs/app.testing.php
+Core/configs/local.php
+
+### Eclipse template
+*.pydevproject
+.metadata
+.gradle
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+
+# Eclipse Core
+.project
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
+
+# Java annotation processor (APT)
+.factorypath
+
+# PDT-specific
+.buildpath
+
+# sbteclipse plugin
+.target
+
+# TeXlipse plugin
+.texlipse
 
