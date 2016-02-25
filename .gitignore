@@ -16,13 +16,13 @@ lib/FirePHP/
 lib/monolog/
 lib/twig/
 
-data/cache/
-data/files/
-data/log/
-data/sessions/
-data/tmp/
+#data/cache/
+#data/files/
+#data/log/
+#data/sessions/
+#data/tmp/
 
-data/data/
+#data/data/
 data/locale/
 data/styles/
 data/uploads/
