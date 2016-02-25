@@ -21,10 +21,10 @@ lib/twig/
 #data/sessions/
 #data/tmp/
 #data/data/
-data/cache/
-data/locale/
-data/styles/
-data/uploads/
+#data/cache/
+#data/locale/
+#data/styles/
+#data/uploads/
 
 # Configs
 Core/configs/app.debug.php
