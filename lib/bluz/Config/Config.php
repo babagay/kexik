@@ -56,7 +56,7 @@ class Config extends \Bluz\Common\Options
      * load
      *
      * Если есть файл local.php, взять за основу его; если нет - base.php
-     * Далее проверить наличие дополнительных конфигов и смёрджить
+     * Далее проверить наличие дополнительных конфигов и смёрджить с первым
      *
      * @param string $environment
      * @throws ConfigException
