@@ -1,8 +1,12 @@
 access.log
 keks.sql
 keks_26_mar.sql
+testfile.txt
+int.php
+error.php
 error.log
 .idea/
+таблицы.sql
 #.htaccess
 lib/PHPExcel/
 lib/FirePHP/
