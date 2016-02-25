@@ -3,7 +3,7 @@ keks.sql
 keks_26_mar.sql
 error.log
 .idea/
-.htaccess
+#.htaccess
 lib/PHPExcel/
 lib/FirePHP/
 lib/monolog/
@@ -19,6 +19,7 @@ data/uploads/
 data/tmp/
 Core/configs/base.php
 Core/configs/localhost.base.php
+Core/configs/local.php
 
 ### Eclipse template
 *.pydevproject
