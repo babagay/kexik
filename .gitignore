@@ -1,5 +1,5 @@
 # Root
-.htaccess
+#.htaccess
 .idea/
 access.log
 keks.sql
@@ -11,10 +11,12 @@ error.log
 таблицы.sql
 
 # Folders
-lib/PHPExcel/
-lib/FirePHP/
-lib/monolog/
-lib/twig/
+# lib/PHPExcel/
+# lib/FirePHP/
+lib/monolog/monolog/doc/
+lib/monolog/monolog/tests/
+lib/twig/doc/
+lib/twig/test/
 
 #data/files/
 #data/log/
