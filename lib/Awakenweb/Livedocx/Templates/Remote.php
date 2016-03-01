@@ -47,11 +47,10 @@ class Remote extends Template
 
     /**
      * Set the remote template as active to be used when generating the final document
-     *
      * @return Remote
-     *
      * @throws ActiveException
-     * @throws InvalidException
+     * @throws FileExistException
+     * @throws StatusException
      */
     public function setAsActive()
     {
@@ -165,6 +164,13 @@ class Remote extends Template
         } catch ( SoapException $ex ) {
             throw new DeleteException('Error while deleting the remote template from Livedocx service' , $ex);
         }
+    }
+
+    public function setName($template_name)
+    {
+        $this->templateName = $template_name;
+
+        return $this;
     }
 
 }
