@@ -1,4 +1,7 @@
 <?php
+/**
+ *
+ */
 
 use Application\PaymentTypes;
 
@@ -64,7 +67,8 @@ return
                             $products = array();
 
                             foreach ($basket['products'] as $products_id => $products_num) {
-                                /*$selectBuilder = $db
+                                /*
+                                $selectBuilder = $db
                                     ->select('p.*')
                                     ->from('products', 'p')
                                     ->where("products_id = '$products_id'");

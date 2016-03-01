@@ -7,7 +7,7 @@
 
  {% if(gid == 'category-products') %}
  <div class="clearfix asd" data-spy="gridasd" data-id="" data-grid="{{ gid }}-{{ attribute(grid_products, 'getUid')  }}"
-            data-url="products/grid-categories-to-products/gid/{{ gid }}">
+            data-url="products/grid-categories-to-products/gid/{{ gid }}" name="add_products_grid">
          {% set grid_path_postfix = '/categories_id/' ~ categories_id ~ '/gid/' ~ gid %}
          {% set grid_fullpath_with_params = grid_products.getUrl({'gid':gid,'categories_id':categories_id}) %}
          {% else %}
@@ -82,7 +82,7 @@
                                          {% if(gid == 'category-products') %}
                                          <a href="{{ grid_fullpath_with_params }}/products_id/{{ row['products_id'] }}" onclick="javascript:return false" class="drop-item confirm btn btn-xs btn-danger" data-ajax-method="delete" data-ajax-type="html" data-id="{{ row['products_id'] }}"><i class="fa fa-times"></i></a>
                                          {% elseif(gid == 'add-products') %}
-                                         <a href="{{ grid_fullpath_with_params }}/products_id/{{ row['products_id'] }}/orders_id/{{ orders_id }}" onclick="javascript:return false"   class="add-item" data-id="{{ row['products_id'] }}"><i class="fa fa-plus"></i> </a>
+                                         <a href="{{ grid_fullpath_with_params }}/products_id/{{ row['products_id'] }}/orders_id/{{ orders_id }}" onclick="javascript:return false"   class="add-item" data-id="{{ row['products_id'] }}" data-refresh="order_products_grid"><i class="fa fa-plus"></i> </a>
                                          {% endif %}
                                          <!--a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
                          <i class="fa fa-times"></i>

@@ -35,6 +35,7 @@ use Bluz\Session\Session;
 use Bluz\Translator\Translator;
 use Bluz\View\Layout;
 use Bluz\View\View;
+use \Zoqa\Basket\Basket as Basket;
 
 //use Core\FilterKeeper;
 use \Core\Helper\Registry as AppRegistry;
@@ -1719,7 +1720,7 @@ class Application
 
     /**
      * Создает объект Yandex для общения с сервисами yandex
-     * @return Yandex
+     * @return \Yandex
      */
     function getYandex()
     {
@@ -1734,6 +1735,14 @@ class Application
        }
 
         return AppRegistry::getInstance()->yandex;
+    }
+
+    /**
+     * @return \Zoqa\Basket\Basket
+     */
+    public function getBasket (  )
+    {
+        return Basket::getInstance();
     }
 
 

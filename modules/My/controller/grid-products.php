@@ -10,6 +10,7 @@ namespace Application;
 
 use Bluz;
 use Application\Admin;
+use \Core\Model\Products\CurrentOrderGrid;
 
 /**
  * @var \Application\Bootstrap $_this
@@ -22,6 +23,11 @@ $_this = $this;
  * @var String $controller
  * @privilege Edit
  *
+ *
+ * TODO попробовать реализовать гриду на основе альтернативного адаптера,
+ * который будет брать данные из сессии (из корзины), а не из базы
+ *
+ * TODO при обновлении продуктов клонируемого ордера, сбрасываются текстовые поля
  */
 return
 
@@ -52,7 +58,17 @@ return
             }
         }
 
-        $grid = new \Core\Model\Products\SqlGrid($options);
+//        if (app()->getRequest()->getMethod() == 'ADD')
+//            app()->dispatch('my', 'order', [ 'products_id' => $products_id, 'operation' => 'add-product', 'orders_id' => $orders_id]);
+
+
+
+
+        $grid = new CurrentOrderGrid();
+
+
+
+        // $grid = new \Core\Model\Products\SqlGrid($options);
         $grid->setModule($module);
         $grid->setController($controller);
 

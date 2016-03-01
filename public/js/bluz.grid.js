@@ -60,6 +60,7 @@ define(['jquery', 'bluz'], function ($, bluz) {
                 var id = $(this).attr("data-id")
                 var href = $(this).attr('href');
                 var extrafield_name = $(this).data('extrafield-name')
+                var refreshItem = $(this).data('refresh')
                 var extrafield_value = undefined
 
                 if(extrafield_name != undefined) {
@@ -69,18 +70,40 @@ define(['jquery', 'bluz'], function ($, bluz) {
                 if(extrafield_value != undefined)
                     href += "/" + extrafield_name + "/" + extrafield_value
 
-                $.ajax({
-                    url: href,
-                    type: 'add',
-                    dataType: 'html',
-                    success: function (html) {
-                        //$grid.data('url', href);
-                        $grid.html($(html).children().unwrap());
+                    $.ajax({
+                        url: href,
+                        type: 'add',
+                        dataType: 'html',
+                        success: function (html) {
+                            //$grid.data('url', href);
+                            $grid.html($(html).children().unwrap());
 
-                        $grid.trigger("item-added");
-                        $grid.trigger("reload");
-                    }
-                });
+                            $grid.trigger("item-added");
+                            $grid.trigger("reload");
+                        }
+                    }).then(
+
+                        function(){
+
+                            var $grid = $("div[name="+ refreshItem +"]")
+
+                            // Обновить вторую гриду
+                            if( $grid.data('url') != undefined )
+                                $.ajax({
+                                    url: $grid.data('url'),
+                                    type: 'get',
+                                    dataType: 'html',
+                                    beforeSend: function () {
+                                        $grid.find('a, .btn').addClass('disabled');
+                                    },
+                                    success: function (html) {
+                                        $grid.html($(html).children().unwrap());
+                                        $grid.trigger("reload");
+                                    }
+                                });
+                        }
+                    );
+
                 return false;
             });
 
@@ -94,7 +117,7 @@ define(['jquery', 'bluz'], function ($, bluz) {
                     var fileld_name = $(this).data('fileld-name')
                     var data = {}
                     data["operation"] = "update"
-                    data[fileld_name] = $(this).val()
+                    data[fileld_name] = $(this).val() * 1
 
                     $.ajax({
                         url: url,
@@ -107,7 +130,14 @@ define(['jquery', 'bluz'], function ($, bluz) {
                             $grid.trigger("item-updated");
                             $grid.trigger("reload");
                         }
-                    });
+                    }).then(
+                        function(){
+                            if( data[fileld_name] == 0 ){
+                                $("a.drop-item[data-id="+ id +"]").click()
+                            }
+                        }
+                    );
+
                     return false;
                 }
             });

@@ -50,7 +50,7 @@
  
              if (app()->getRequest()->getMethod() == 'DELETE') {
                  if (!is_null($categories_id) AND !is_null($products_id)) {
-                 // Удалить связь продукта с категорией
+                 // [?]:зачем здесь - Удалить связь продукта с категорией
                          app()->dispatch('products', 'categories-to-products', ['categories_id' => $categories_id, 'products_id' => $products_id, 'operation' => 'delete']);
                      }
              }
@@ -60,7 +60,7 @@
 
                         $orders_id = app()->getRequest()->getParam('orders_id');
 
-                        app()->dispatch('my', 'order', [ 'products_id' => $products_id, 'operation' => 'add-product', 'orders_id' => $orders_id]);
+                        app()->dispatch('my', 'order', [ 'products_id' => $products_id, 'operation' => 'add-product', 'orders_id' => $orders_id, 'products_num' => 1]);
                      }
              }
  

@@ -14,6 +14,10 @@ $.post(basePath+"my/Base/вопрос/78", {asd: 'asd'}, function (res) {
     }, "json");
  */
 
+//TODO доставать продукты из сессии
+
+// TODO очистить сессию
+
 use Application\PaymentTypes;
 
 return
@@ -30,7 +34,7 @@ return
         //$app_object = Application\Bootstrap::getInstance();
         $app_object = app()->getInstance();
 
-        //$uri_param_2 = app()->getRequest()->get(2);
+        // $uri_param_2 = app()->getRequest()->get(2);
 
         // change layout
         // $app_object->useLayout('front_end.phtml');
@@ -40,6 +44,13 @@ return
         $params = $app_object->getRequest()->getParams();
 
         $tmp = array();
+
+        $products = app()->getBasket()->getItems();
+
+        if( sizeof($products) < 1 )
+            throw new \Exception('Корзина пуста');
+
+
 
         if(sizeof($params)){
             foreach($params as $key => $val){
@@ -79,8 +90,9 @@ return
             $data['delivery_date'] = $app_object->getDate()->prepare($params['delivery_date']);
         }
 
-        if (!sizeof($data['products']))
-            throw new \Application\Exception("Нет товаров в корзине");
+
+        var_dump($data);
+        die;
 
         try {
 

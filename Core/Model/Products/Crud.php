@@ -23,6 +23,8 @@ use Application\FiltersToProducts;
  */
 class Crud extends Table
 {
+    public static $minProductNum = 0.001;
+
     /**
      * Example
      * {@inheritdoc}

@@ -27,8 +27,8 @@
             <th width="120px"><a href="{{ grid.order('products_name') }}/orders_id/{{ orders_id }}/operation/{{ operation }}">Наименование</a></th>
             {#<th width="20px"> <!--Картинка--> </th>#}
             <th width="80px"><a href="{{ grid.order('products_shoppingcart_price') }}/orders_id/{{ orders_id }}/operation/{{ operation }}">Цена, грн</a></th>
-            <th width="120px"><a href="{{ grid.order('products_price') }}/orders_id/{{ orders_id }}/operation/{{ operation }}"> Количество </a></th>
-            <th width="60px"><a href="{{ grid.order('products_quantity') }}/orders_id/{{ orders_id }}/operation/{{ operation }}">Сумма, грн</a></th>
+            <th width="120px"><a href="{{ grid.order('products_quantity') }}/orders_id/{{ orders_id }}/operation/{{ operation }}"> Количество </a></th>
+            <th width="60px"><a href="{{ grid.order('products_num') }}/orders_id/{{ orders_id }}/operation/{{ operation }}">Сумма, грн</a></th>
             <th width="60px"></th>
         </tr>
         </thead>
@@ -58,7 +58,7 @@
                     {# <input class="form-control grid-edit-field-1 update-item" type="text" value="{{ row['products_num']|round(2) }}" name="products_num" data-url="{{ url('orders','grid-products',{'orders_id':orders_id, 'gid':gid, 'products_id':row.products_id },true) }}" data-ajax-method="update" data-ajax-type="html" data-id="{{ row.products_id }}" data-fileld-name="products_num"> ({{ row['products_unit'] }}) #}
 
                     <input class="form-control grid-edit-field-2 products_number_field update-item" type="text"
-                           data-fileld-name="products_num" data-id="25"
+                           data-fileld-name="products_num" data-id="{{ row.products_id }}"
                            data-ajax-type="html" data-ajax-method="update"
                            data-url="my/grid-products/orders_id/{{ orders_id }}/operation/{{ operation }}/products_id/{{ row['products_id'] }}"
                            name="products_num[{{ row['products_id'] }}]"
@@ -296,7 +296,14 @@
             });
         }
 
+        $("div[data-grid=add-products-sql]").on("reload",function(){
+            // Обновилась грида добавления продуктов
+            ////console.log("add_products_grid")
+        });
+
         $("div[name=order_products_grid]").on("reload",function(){
+            // Грида нового заказа обновилась
+
             recalcSumm()
             initGrid()
             initBtn()

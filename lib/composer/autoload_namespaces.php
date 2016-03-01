@@ -10,10 +10,21 @@ return array(
     'Monolog' => array($vendorDir . '/monolog/monolog/src'),
     'Core' => array($baseDir . '/Core'),
     'Zoqa' => array($baseDir . '/Core'),
+    'Yandex' => array($baseDir . '/Core/Model/Yandex'), //  работает
+
+    // Basket.php лежит в /Core/Model/Basket и не содержит привязки к пространству имён
+    // 'Basket' => array($baseDir . '/Core/Model/Basket'), // работает:   $b = new Basket();
+
+    // Basket.php лежит в /Core/Model/Basket привязан к пространтству Application\Basket
+    //'Application\\Basket' => array($baseDir . '/Core/Model/Basket'), // не работает
+
+    // Basket.php лежит в /Core/Model/Basket, namespace Zoqa\Basket
+    // 'Zoqa\\Basket\\Basket' => array($baseDir . '/Core/Model/Basket'), // не работает
+
+
     //'Application\Users' => array($baseDir . '/Core/Model/Users'),
     //'Testspace' => array($baseDir . '/Core/Helper'), // не работает
     //'Yandex' => array($vendorDir . '/Yandex'), // не работает
-    'Yandex' => array($baseDir . '/Core/Model/Yandex'), //  работает
     //'Application\Categories' => array($baseDir . '/Core/Model/Categories'), // не работает
     //'Application\Config' => $baseDir . '/Core/Model/Config', // не работает
 
