@@ -49,11 +49,13 @@ class Local extends Template
      *
      * @param string $template_name
      * @param string $path
+     * @return $this|void
      */
     public function setName($template_name , $path = null)
     {
         parent::setName($template_name);
         $this->directory = $path;
+        return $this;
     }
 
     /**
