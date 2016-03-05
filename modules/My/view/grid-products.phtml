@@ -127,19 +127,19 @@
 
         <div class="white note">
             <h4 class="header-4">Адрес доставки</h4>
-            <textarea id="address_dostavki" name="address_dostavki">{{ address_dostavki }}</textarea>
+            <textarea id="address_dostavki" name="address_dostavki" data-store="true">{{ address_dostavki }}</textarea>
         </div>
         <div class="white note">
             <h4 class="header-4">Телефон</h4>
-            <input id="delivery_phone" name="delivery_phone" type="tel" value="{{ delivery_phone }}">
+            <input id="delivery_phone" name="delivery_phone" data-store="true" type="tel" value="{{ delivery_phone }}">
         </div>
         <div class="white note">
             <h4 class="header-4">Пояснения к заказу</h4>
-            <textarea id="order_notes" name="order_notes">{{ order_notes }}</textarea>
+            <textarea id="order_notes" name="order_notes" data-store="true">{{ order_notes }}</textarea>
         </div>
         <div class="white note">
             <h4 class="header-4">Дата доставки</h4>
-            <input type="text" name="delivery_date" id="delivery_date" value="{{ delivery_date }}">
+            <input type="text" name="delivery_date" id="delivery_date" data-store="true" value="{{ delivery_date }}">
         </div>
 
         {{ checkbox_group }}
@@ -174,57 +174,17 @@
 
 {% if(operation == 'clone') %}
 <script>
-    require(["jquery", "daterangepicker", "moment"], function ($, daterangepicker, moment) {
 
-        var currentYear = moment().format("YYYY");
-        var nextYear = currentYear * 1 + 1
-        var minDate = "01/01/" + currentYear
-        var maxDate = "31/12/" + nextYear
+    require(["jquery","basic", "daterangepicker", "moment"],  function ($,basic,daterangepicker,moment) {
 
-        $("input[name=delivery_date]").daterangepicker({
-                format: "DD/MM/YYYY H:mm",
-                singleDatePicker: true,
-                startDate: moment(),
-                endDate: moment(),
-                minDate: minDate,
-                maxDate: maxDate,
-                dateLimit: { days: 60 },
-                showDropdowns: true,
-                showWeekNumbers: false,
-                timePicker: true,
-                timePickerIncrement: 1,
-                timePicker12Hour: false,
-                opens: "right",
-                drops: "up",
-                buttonClasses: ["btn", "btn-sm"],
-                applyClass: "btn-primary",
-                cancelClass: "btn-default",
-                locale: {
-                    applyLabel: "Выбрать",
-                    cancelLabel: "Закрыть",
-                    daysOfWeek: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-                    monthNames: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-                    firstDay: 1
-                }
-            },function (start, end, label) {
-
-            }
-        ).on("cancel.daterangepicker",function (ev, picker) {
-                $(this).val(moment().format("DD/MM/YYYY H:mm"));
-            }).on("apply.daterangepicker",function (ev, picker) {
-
-            }).data("daterangepicker"); // .setStartDate("28/08/2016 16:21")
-
-        $("input[name=delivery_date]").on("keypress", function () {
-            return false;
-        });
-    });
-
-    require(["jquery","basic"],  function ($,basic) {
-
+        readStoredParams()
+        initDatePicker()
         recalcSumm()
         initGrid()
+        initOnce()
         initBtn()
+        init()
+
 
         function recalcSumm(){
             var grid = $("div[name=order_products_grid]");
@@ -296,40 +256,141 @@
             });
         }
 
+        function readStoredParams(){
+            $("#address_dostavki").val( localStorage.getItem("address_dostavki") )
+            $("#delivery_phone").val( localStorage.getItem("delivery_phone") )
+            $("#order_notes").val( localStorage.getItem("order_notes") )
+            $("#delivery_date").val( localStorage.getItem("delivery_date") )
+        }
+
+        function initDatePicker(){
+            var currentYear = moment().format("YYYY");
+            var nextYear = currentYear * 1 + 1
+            var minDate = "01/01/" + currentYear
+            var maxDate = "31/12/" + nextYear
+
+            $("input[name=delivery_date]").daterangepicker({
+                    format: "DD/MM/YYYY H:mm",
+                    singleDatePicker: true,
+                    startDate: moment(),
+                    endDate: moment(),
+                    minDate: minDate,
+                    maxDate: maxDate,
+                    dateLimit: { days: 60 },
+                    showDropdowns: true,
+                    showWeekNumbers: false,
+                    timePicker: true,
+                    timePickerIncrement: 1,
+                    timePicker12Hour: false,
+                    opens: "right",
+                    drops: "up",
+                    buttonClasses: ["btn", "btn-sm"],
+                    applyClass: "btn-primary",
+                    cancelClass: "btn-default",
+                    locale: {
+                        applyLabel: "Выбрать",
+                        cancelLabel: "Закрыть",
+                        daysOfWeek: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                        monthNames: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+                        firstDay: 1
+                    }
+                },function (start, end, label) {
+
+                }
+            ).on("cancel.daterangepicker",function (ev, picker) {
+                    $(this).val(moment().format("DD/MM/YYYY H:mm"));
+                }).on("apply.daterangepicker",function (ev, picker) {
+                    localStorage.setItem("delivery_date", $(this).val() )
+                }).data("daterangepicker"); // .setStartDate("28/08/2016 16:21")
+
+            $("input[name=delivery_date]").on("keypress", function () {
+                return false;
+            });
+        }
+
+        function init(){
+            $("*[data-store=true]").on("keyup",function(){
+                localStorage.setItem( $(this).attr("id"), $(this).val() );
+            })
+        }
+
+        function initOnce(){
+            $("a.show-addproduct-grid-btn").on("click",function(){
+                if($(this).hasClass("visible")){
+                    $(this).removeClass("visible")
+                    $(this).text("Добавить продукт")
+                    $("div.add-products-grid").hide()
+                } else {
+                    $("div.add-products-grid").show()
+                    $(this).addClass("visible")
+                    $(this).text("Скрыть")
+                }
+            });
+
+            $("div.add-products-grid").hide();
+        }
+
+        /**
+         * Обновилась грида добавления продуктов
+         */
         $("div[data-grid=add-products-sql]").on("reload",function(){
-            // Обновилась грида добавления продуктов
-            ////console.log("add_products_grid")
+
+            // Обновить гриду продуктов ордера
+            $("div[data-grid=CurrentOrderGrid]").trigger("refresh")
+
         });
 
-        $("div[name=order_products_grid]").on("reload",function(){
-            // Грида нового заказа обновилась
-
+        /**
+         * Грида нового заказа обновилась
+         */
+        $("div[data-grid=CurrentOrderGrid]").on("reload",function(){
+            readStoredParams()
+            initDatePicker()
             recalcSumm()
             initGrid()
             initBtn()
+            init()
         });
 
+
+
     });
+
+
 </script>
 {% endif %}
 
 <div id="load"></div>
 
-<script>
-   require(["jquery", "bluz.notify"], function($, notify) {
 
-              $("a.show-addproduct-grid-btn").on("click",function(){
-                        if($(this).hasClass("visible")){
-                               $(this).removeClass("visible")
-                               $(this).text("Добавить продукт")
-                               $("div.add-products-grid").hide()
-                           } else {
-                               $("div.add-products-grid").show()
-                               $(this).addClass("visible")
-                               $(this).text("Скрыть")
-                           }
-                   });
 
-               $("div.add-products-grid").hide()
-       });
-</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

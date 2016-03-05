@@ -80,4 +80,7 @@ function () use ($view) {
     $view->res1 = $this->getEventManager()->trigger('testevent', 1);
     $view->res2 = $this->getEventManager()->trigger('testspace:event', 1);
     $view->res3 = $this->getEventManager()->trigger('testspace:event2', 1);
+
+
+    $this->useLayout('small.phtml');
 };

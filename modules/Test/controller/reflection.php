@@ -12,7 +12,7 @@ namespace Application;
 return
 /**
  * @key Example of custom key-value
- * @key Array also supported
+ * @key [Array, also, supported]
  * @param int $id
  * @return \closure
  */
@@ -47,5 +47,5 @@ function ($id = 0, $other = "default value") use ($view) {
 
     $view->reflectionData = $a;
 
-    $_this->useLayout('front_end.phtml');
+    $_this->useLayout('small.phtml');
 };

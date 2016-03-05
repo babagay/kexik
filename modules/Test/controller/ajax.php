@@ -43,5 +43,5 @@ function ($messages = false, $asd = null) use ($view,$_this) {
 
     sleep(2);
 
-
+    return function(){ return ['a' => "asd"]; };
 };

@@ -14,9 +14,6 @@ $.post(basePath+"my/Base/вопрос/78", {asd: 'asd'}, function (res) {
     }, "json");
  */
 
-//TODO доставать продукты из сессии
-
-// TODO очистить сессию
 
 use Application\PaymentTypes;
 
@@ -48,28 +45,32 @@ return
         $products = app()->getBasket()->getItems();
 
         if( sizeof($products) < 1 )
-            throw new \Exception('Корзина пуста');
+            throw new \Application\Exception('Корзина пуста');
+
+        if(sizeof($params) < 1)
+            throw new \Exception('Нет товаров в корзине');
+
+        // [!] Продукты можно доставать и из сессии
+        app()->getBasket()->flush();
 
 
-
-        if(sizeof($params)){
-            foreach($params as $key => $val){
-                if($key == "product_price"){
-                    if(is_array($val)){
-                        // foreach($val as $products_id => $product_shoppingcart_price){  }
-                    }
-                } elseif($key == "products_num"){
-                    if(is_array($val)){
-                        foreach($val as $products_id => $product_num){
-                            if($product_num > 0){
-                                $tmp[$products_id] = $product_num;
-                            }
+        foreach($params as $key => $val){
+            if($key == "product_price"){
+                if(is_array($val)){
+                    // foreach($val as $products_id => $product_shoppingcart_price){  }
+                }
+            } elseif($key == "products_num"){
+                if(is_array($val)){
+                    foreach($val as $products_id => $product_num){
+                        if($product_num > 0){
+                            $tmp[$products_id] = $product_num;
                         }
                     }
                 }
             }
-            $data['products'] = $tmp;
         }
+        $data['products'] = $tmp;
+
 
         @$payment_types_id          = (int)$params['payment_types_id'];
         if($payment_types_id <= 0){
@@ -91,8 +92,6 @@ return
         }
 
 
-        var_dump($data);
-        die;
 
         try {
 
@@ -126,18 +125,6 @@ return
         $view->alert_class = $alert_class;
 
 
-        //$title = 'Личный кабинет';
-
-        //$app_object->getLayout()->title($title);
-
-        /*
-        $crumbs_arr = array(
-            $view->ahref('Автор', array('автор', '') ),
-            __($title)
-        );
-        */
-
-        //$app_object->getLayout()->breadCrumbs($crumbs_arr);
 
 
         return 'clone.phtml';

@@ -17,6 +17,24 @@ define(['jquery', 'bluz'], function ($, bluz) {
                 $grid.data('url', window.location.pathname);
             }
 
+            $grid.refresh = function(){
+                $.ajax({
+                    url: $grid.data('url'),
+                    type: 'get',
+                    dataType: 'html',
+                    beforeSend: function () {
+                        $grid.find('a, .btn').addClass('disabled');
+                    },
+                    success: function (html) {
+                        $grid.html($(html).children().unwrap());
+                        $grid.trigger("reload");
+                    }
+                });
+            }
+
+            // Необходимо сделать рефреш
+            $grid.bind("refresh");
+
             $grid.bind("reload", function() {
                 // ГРида перегрузилась
                 // console.log("reload fired")
@@ -56,7 +74,11 @@ define(['jquery', 'bluz'], function ($, bluz) {
 
             // Add item
             $grid.on('click.bluz.ajax', 'a.add-item', function () {
-                //console.log($grid.data('url')) // Выводит текущий урл, напр /kex/orders/edit/orders_id/89
+                /**
+                 * console.log($grid.data('url')) Выводит текущий урл, напр /kex/orders/edit/orders_id/89
+                 *
+                 * @type {*|jQuery}
+                 */
                 var id = $(this).attr("data-id")
                 var href = $(this).attr('href');
                 var extrafield_name = $(this).data('extrafield-name')
@@ -70,18 +92,30 @@ define(['jquery', 'bluz'], function ($, bluz) {
                 if(extrafield_value != undefined)
                     href += "/" + extrafield_name + "/" + extrafield_value
 
-                    $.ajax({
-                        url: href,
-                        type: 'add',
-                        dataType: 'html',
-                        success: function (html) {
-                            //$grid.data('url', href);
-                            $grid.html($(html).children().unwrap());
 
-                            $grid.trigger("item-added");
-                            $grid.trigger("reload");
-                        }
-                    }).then(
+
+                $.ajax({
+                    url: href,
+                    type: 'add',
+                    dataType: 'html',
+                    success: function (html) {
+                        //$grid.data('url', href);
+                        $grid.html($(html).children().unwrap());
+
+                        $grid.trigger("item-added");
+                        $grid.trigger("reload");
+
+
+                    }
+                });
+
+
+
+
+
+
+
+                    /*.then(
 
                         function(){
 
@@ -102,7 +136,7 @@ define(['jquery', 'bluz'], function ($, bluz) {
                                     }
                                 });
                         }
-                    );
+                    );*/
 
                 return false;
             });
@@ -191,6 +225,8 @@ define(['jquery', 'bluz'], function ($, bluz) {
                 return false;
             });
 
+            $grid.on('refresh', $grid.refresh);
+
             // refresh grid if form was success sent
             $grid.on('complete.ajax.bluz', 'a.dialog', function () {
                 $.ajax({
@@ -249,6 +285,7 @@ define(['jquery', 'bluz'], function ($, bluz) {
                 });
                 return false;
             });
+
             // magic control for like plugin
             $grid.on('click.bluz.grid', '.grid-filter-search a', function (e) {
                 var $a = $(this);
@@ -257,6 +294,11 @@ define(['jquery', 'bluz'], function ($, bluz) {
 
                 e.preventDefault();
             });
+
+            $grid.reload = function(){
+                console.log(12)
+            };
+
         });
 
     });
