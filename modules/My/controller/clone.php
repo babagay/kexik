@@ -50,8 +50,8 @@ return
         if(sizeof($params) < 1)
             throw new \Exception('Нет товаров в корзине');
 
-        // [!] Продукты можно доставать и из сессии
-        app()->getBasket()->flush();
+        if( app()->getDate()->isInThePast($params['delivery_date']) )
+            throw new \Exception('Нужно выставить дату доставки правильно');
 
 
         foreach($params as $key => $val){
@@ -88,10 +88,8 @@ return
         $data['parent_id']         = $params['orders_id'];
 
         if (isset($params['delivery_date'])) {
-            $data['delivery_date'] = $app_object->getDate()->prepare($params['delivery_date']);
+            $data['delivery_date'] = app()->getDate()->prepare($params['delivery_date']);
         }
-
-
 
         try {
 
@@ -109,6 +107,9 @@ return
         }
 
         $new_orders_id = app()->getRegistry()->new_orders_id;
+
+        // [!] Продукты можно доставать и из сессии
+        app()->getBasket()->flush();
 
         if ((int)$new_orders_id > 0) {
             $message = "Заказ №$new_orders_id создан";

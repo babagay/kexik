@@ -153,6 +153,29 @@ class getDate
     }
 
     /**
+     * Is the date already in the Past
+     * @param $date in format 2016-03-12 21:10:32
+     * @return bool (returns true if the date is in the Past)
+     */
+    public function isInThePast ( $date )
+    {
+        $isPast = false;
+
+        $date = $this->prepare($date);
+        $now = $this->now();
+
+        $d =  date_create($date);
+        $n =  date_create($now);
+        $d_stamp = date_timestamp_get($d);
+        $n_stamp = date_timestamp_get($n);
+
+        if( ($d_stamp - $n_stamp) < 0 )
+            $isPast = true;
+
+        return $isPast;
+    }
+
+    /**
      * TODO присоединить функцию ниже
      */
     /* function ($dateline) {
