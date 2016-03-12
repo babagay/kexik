@@ -8,7 +8,7 @@
 
 
         /**
-         * Массив колбэков, который надо собирать вручную
+         * Массив тасков, который надо собирать вручную
          * [!] Имена полей строго соблюдать
          * @type {*[]}
          */
@@ -116,28 +116,7 @@
 
             //waterfall.processParallel();
 
-            var id;
 
-            id = waterfall.push({
-                url: "test/ajax/sleep",
-                type: "post",
-                dataType: "html",
-                parentId: null,
-                success: function (data) {
-                    console.log("call - 20")
-                }});
-
-
-            id = waterfall.push({
-                url: "my/grid-products/orders_id/118/operation/clone",
-                type: "post",
-                dataType: "html",
-                parentId: id,
-                success: function (data) {
-                    console.log("call - 21")
-                }});
-
-            console.log(id)
         }
 
         /**
@@ -147,7 +126,67 @@
 
 
 
+            /*
+        var arr = [
+            function () {
+                console.log(arguments)
+            },
+            function () {
+                console.log(arguments.length)
+            }
+        ]
 
+        function asd(a){
+            var i
+            return function () {
+                for(i=0; i < a.length; i++){
+                    a[i]()
+                }
+            }
+        }
+
+        var closur = asd(arr)
+        closur()
+        */
+
+        // [!] Водопад, вариант 2
+        waterfall.queue = []
+        waterfall.counter = 0;
+        waterfall.onDone = function () {
+            console.log("seqental Done!")
+        }
+
+        var id, firstId;
+
+        id = waterfall.push({
+            url: "test/ajax/sleep",
+            type: "post",
+            dataType: "html",
+            parentId: null,
+            success: function (data) {
+                console.log("call - 20")
+            }});
+        firstId = id;
+
+        id = waterfall.push({
+            url: "my/grid-products/orders_id/118/operation/clone",
+            type: "post",
+            dataType: "html",
+            parentId: null,
+            success: function (data) {
+                console.log("call - 21")
+            }});
+
+        id = waterfall.push({
+            url: "my/grid-products/orders_id/117/operation/clone",
+            type: "post",
+            dataType: "html",
+            parentId: firstId,
+            success: function (data) {
+                console.log("call - 22")
+            }});
+
+        waterfall.processSequental()
 
 
 
