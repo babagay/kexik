@@ -42,6 +42,13 @@ class Crud extends \Bluz\Crud\Table
          throw new \Exception("Not Implemented " . __METHOD__ . " in " . __FILE__);
     }
 
+    // TODO
+    public function readSet ( $offset = 0, $limit = self::DEFAULT_LIMIT, $params = [] )
+    {
+        return $this->readOne(['orders_id' => 118]);
+
+    }
+
     /**
      * @param array $data
      * @return int|void
@@ -315,6 +322,9 @@ class Crud extends \Bluz\Crud\Table
     function updateOne($primary, $data)
     {
         $total  = 0;
+
+        if(!isset($data['user_discount']))
+            $data['user_discount'] = 0;
 
         $selectBuilder = app()->getDb()
             ->select('op.*')

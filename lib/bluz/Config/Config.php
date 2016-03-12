@@ -9,7 +9,6 @@
  */
 namespace Bluz\Config;
 
-//FIXME use меняем на  extends \Bluz\Common\Options и каментим use Options; в теле класса
 //use Bluz\Common\Options;
 
 
@@ -56,6 +55,9 @@ class Config extends \Bluz\Common\Options
     /**
      * load
      *
+     * Если есть файл local.php, взять за основу его; если нет - base.php
+     * Далее проверить наличие дополнительных конфигов и смёрджить с первым
+     *
      * @param string $environment
      * @throws ConfigException
      * @return bool
@@ -66,11 +68,10 @@ class Config extends \Bluz\Common\Options
             throw new ConfigException('Configuration directory is not setup');
         }
 
-        if($_SERVER['SERVER_NAME'] == 'localhost')
-            $configFile = $this->path . '/localhost.base.php';
+        if( is_file($this->path . '/local.php') )
+            $configFile = $this->path . '/local.php';
         else
             $configFile = $this->path . '/base.php';
-
 
         if (!is_file($configFile) or !is_readable($configFile)) {
             throw new ConfigException('Configuration file is not found');

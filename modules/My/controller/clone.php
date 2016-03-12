@@ -14,6 +14,7 @@ $.post(basePath+"my/Base/вопрос/78", {asd: 'asd'}, function (res) {
     }, "json");
  */
 
+
 use Application\PaymentTypes;
 
 return
@@ -30,7 +31,7 @@ return
         //$app_object = Application\Bootstrap::getInstance();
         $app_object = app()->getInstance();
 
-        //$uri_param_2 = app()->getRequest()->get(2);
+        // $uri_param_2 = app()->getRequest()->get(2);
 
         // change layout
         // $app_object->useLayout('front_end.phtml');
@@ -41,24 +42,35 @@ return
 
         $tmp = array();
 
-        if(sizeof($params)){
-            foreach($params as $key => $val){
-                if($key == "product_price"){
-                    if(is_array($val)){
-                        // foreach($val as $products_id => $product_shoppingcart_price){  }
-                    }
-                } elseif($key == "products_num"){
-                    if(is_array($val)){
-                        foreach($val as $products_id => $product_num){
-                            if($product_num > 0){
-                                $tmp[$products_id] = $product_num;
-                            }
+        $products = app()->getBasket()->getItems();
+
+        if( sizeof($products) < 1 )
+            throw new \Application\Exception('Корзина пуста');
+
+        if(sizeof($params) < 1)
+            throw new \Exception('Нет товаров в корзине');
+
+        if( app()->getDate()->isInThePast($params['delivery_date']) )
+            throw new \Exception('Нужно выставить дату доставки правильно');
+
+
+        foreach($params as $key => $val){
+            if($key == "product_price"){
+                if(is_array($val)){
+                    // foreach($val as $products_id => $product_shoppingcart_price){  }
+                }
+            } elseif($key == "products_num"){
+                if(is_array($val)){
+                    foreach($val as $products_id => $product_num){
+                        if($product_num > 0){
+                            $tmp[$products_id] = $product_num;
                         }
                     }
                 }
             }
-            $data['products'] = $tmp;
         }
+        $data['products'] = $tmp;
+
 
         @$payment_types_id          = (int)$params['payment_types_id'];
         if($payment_types_id <= 0){
@@ -76,11 +88,8 @@ return
         $data['parent_id']         = $params['orders_id'];
 
         if (isset($params['delivery_date'])) {
-            $data['delivery_date'] = $app_object->getDate()->prepare($params['delivery_date']);
+            $data['delivery_date'] = app()->getDate()->prepare($params['delivery_date']);
         }
-
-        if (!sizeof($data['products']))
-            throw new \Application\Exception("Нет товаров в корзине");
 
         try {
 
@@ -99,6 +108,9 @@ return
 
         $new_orders_id = app()->getRegistry()->new_orders_id;
 
+        // [!] Продукты можно доставать и из сессии
+        app()->getBasket()->flush();
+
         if ((int)$new_orders_id > 0) {
             $message = "Заказ №$new_orders_id создан";
             $message_type = "Ok";
@@ -114,18 +126,6 @@ return
         $view->alert_class = $alert_class;
 
 
-        //$title = 'Личный кабинет';
-
-        //$app_object->getLayout()->title($title);
-
-        /*
-        $crumbs_arr = array(
-            $view->ahref('Автор', array('автор', '') ),
-            __($title)
-        );
-        */
-
-        //$app_object->getLayout()->breadCrumbs($crumbs_arr);
 
 
         return 'clone.phtml';

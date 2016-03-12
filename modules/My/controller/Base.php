@@ -12,6 +12,8 @@
  * var basePath = 'http://127.0.0.1/zoqa/'
 $.post(basePath+"my/Base/вопрос/78", {asd: 'asd'}, function (res) {
     }, "json");
+
+    FIXME проблема с привилегиями
  */
 return
     /**

@@ -1,0 +1,14 @@
+drwxrwxrwx 50 babagay babagay    4096 Oct 26 12:25 cache
+drwxr-xr-x  6 babagay babagay    4096 May 21  2015 data
+drwxr-xr-x  2 babagay babagay    4096 Dec 23 18:09 files
+drwxr-xr-x  3 babagay babagay    4096 May 21  2015 locale
+drwxr-xr-x  2 babagay babagay   12288 Feb 25 06:09 log
+drwxr-xr-x  2 babagay babagay   69632 Feb 25 15:34 sessions
+drwxr-xr-x  2 babagay babagay    4096 May 21  2015 styles
+drwxr-xr-x  2 babagay babagay    4096 May 21  2015 uploads
+
+sudo chmod 755 -R cache
+sudo chmod 777  cache
+sudo chmod 755 -R cache/storage
+
+#

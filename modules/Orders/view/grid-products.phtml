@@ -115,7 +115,7 @@
             {% if(gid == 'order-products') %}
             <a href="{{ url('orders','grid-products',{'orders_id':orders_id, 'gid':gid, 'products_id':row.products_id },true) }}" onclick="javascript:return false" class="drop-item confirm btn btn-xs btn-danger ajax" data-ajax-method="delete" data-ajax-type="html" data-id="{{ row.products_id }}"><i class="fa fa-times"></i></a>
             {% elseif(gid == 'add-products') %}
-            <a href="{{ url('orders','grid-products',{'orders_id':orders_id, 'gid':gid, 'products_id':row.products_id },true) }}" onclick="javascript:return false" data-extrafield-name="orders_id" class="add-item" data-id="{{ row.products_id }}"><i class="fa fa-plus"></i> </a>
+            <a href="{{ url('orders','grid-products',{'gid':gid, 'products_id':row.products_id },true) }}" onclick="javascript:return false" data-extrafield-name="orders_id" class="add-item" data-id="{{ row.products_id }}"><i class="fa fa-plus"></i> </a>
             {% endif %}
             <!--a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
                 <i class="fa fa-times"></i>

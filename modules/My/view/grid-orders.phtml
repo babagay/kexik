@@ -35,6 +35,12 @@
     </div>
     #}
 
+    <?php
+    /**
+     * @var Application\Orders\SqlGrid $grid
+     */
+    ?>
+
     {{ partial('grid/limit.phtml', {'grid': grid}) }}
 
     <table class="table grid">

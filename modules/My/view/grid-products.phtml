@@ -2,6 +2,8 @@
     require(["bluz.grid"]);
 </script>
 
+<a class="btn btn-default show-addproduct-grid-btn" href="#" onclick="javascript: return false;">Добавить продукт</a>
+
 <div class="clearfix" data-spy="grid" data-grid="{{ attribute(grid, 'getUid')  }}" data-url="my/grid-products/orders_id/{{ orders_id }}/operation/{{ operation }}" name="order_products_grid">
 
     {% if(operation == 'clone') %}
@@ -23,11 +25,11 @@
             {#<th width="60px"><a href="{{ grid.order('products_id', null, 'desc', false) }}">Артикул</a></th>#}
             <th width="100px"><a href="{{ grid.order('products_barcode') }}/orders_id/{{ orders_id }}/operation/{{ operation }}">Штрихкод</a></th>
             <th width="120px"><a href="{{ grid.order('products_name') }}/orders_id/{{ orders_id }}/operation/{{ operation }}">Наименование</a></th>
-            <th width="20px"> <!--Картинка--> </th>
+            {#<th width="20px"> <!--Картинка--> </th>#}
             <th width="80px"><a href="{{ grid.order('products_shoppingcart_price') }}/orders_id/{{ orders_id }}/operation/{{ operation }}">Цена, грн</a></th>
-            <th width="120px"><a href="{{ grid.order('products_price') }}/orders_id/{{ orders_id }}/operation/{{ operation }}"> Количество </a></th>
-            <th width="60px"><a href="{{ grid.order('products_quantity') }}/orders_id/{{ orders_id }}/operation/{{ operation }}">Сумма, грн</a></th>
-            {#<th width="120px"></th>#}
+            <th width="120px"><a href="{{ grid.order('products_quantity') }}/orders_id/{{ orders_id }}/operation/{{ operation }}"> Количество </a></th>
+            <th width="60px"><a href="{{ grid.order('products_num') }}/orders_id/{{ orders_id }}/operation/{{ operation }}">Сумма, грн</a></th>
+            <th width="60px"></th>
         </tr>
         </thead>
         <tbody>
@@ -36,23 +38,32 @@
             {#<td class="grid-text">{{ row['products_id'] }}</td>#}
             <td class="grid-text">{{ row['products_barcode'] }}</td>
             <td class="grid-text">{{ row['products_name'] }}</td>
-            <td>
+            {# <td>
                 {% if(row['image_small']) %}
                 <img src="{{ row['image_small'] }}" class="grid-image">
                 {% endif %}
-            </td>
+            </td> #}
             <td class="grid-text">
+
                 {% if(operation == 'clone') %}
                     <span name="price">{{ round(row['products_shoppingcart_price']) }}</span>
                 {% else %}
 
                 {% endif %}
                 <input class="product_price" type="hidden" name="product_price[{{ row['products_id'] }}]" value="{{ round(row['products_shoppingcart_price']) }}">
+
             </td>
             <td class="grid-text">
                 {% if(operation == 'clone') %}
-                    {#<input class="form-control grid-edit-field-1 update-item" type="text" value="{{ row['products_num']|round(2) }}" name="products_num" data-url="{{ url('orders','grid-products',{'orders_id':orders_id, 'gid':gid, 'products_id':row.products_id },true) }}" data-ajax-method="update" data-ajax-type="html" data-id="{{ row.products_id }}" data-fileld-name="products_num"> ({{ row['products_unit'] }})#}
-                    <input class="form-control grid-edit-field-1 products_number_field" type="text" value="{{ row['products_num']|round(2) }}" name="products_num[{{ row['products_id'] }}]" >
+                    {# <input class="form-control grid-edit-field-1 update-item" type="text" value="{{ row['products_num']|round(2) }}" name="products_num" data-url="{{ url('orders','grid-products',{'orders_id':orders_id, 'gid':gid, 'products_id':row.products_id },true) }}" data-ajax-method="update" data-ajax-type="html" data-id="{{ row.products_id }}" data-fileld-name="products_num"> ({{ row['products_unit'] }}) #}
+
+                    <input class="form-control grid-edit-field-2 products_number_field update-item" type="text"
+                           data-fileld-name="products_num" data-id="{{ row.products_id }}"
+                           data-ajax-type="html" data-ajax-method="update"
+                           data-url="my/grid-products/orders_id/{{ orders_id }}/operation/{{ operation }}/products_id/{{ row['products_id'] }}"
+                           name="products_num[{{ row['products_id'] }}]"
+                           value="{{ row['products_num']|round(2) }}" >
+
                     <br/>({{ row['products_unit'] }})
                 {% else %}
 
@@ -65,7 +76,9 @@
 
                 {% endif %}
             </td>
-            {#<td class="controls">
+            <td class="controls">
+
+                {#
                 <a href="{{ url('admin', 'products-crud', {'products_id' : row['products_id']}) }}" class="btn btn-xs btn-primary dialog" data-ajax-method="get">
                     <i class="fa fa-pencil"></i> Img
                 </a>
@@ -85,33 +98,48 @@
                 <!--a href="{{ url('test', 'crud', {'id' : row['id']}) }}" class="confirm btn btn-xs btn-danger ajax" data-ajax-method="delete">
                     <i class="fa fa-times"></i>
                 </a-->
+                #}
+
+                {% if( operation == 'clone' ) %}
+                    <a href="{{ url('my','grid-products',{'orders_id':orders_id, 'products_id':row.products_id, 'operation':operation },true) }}" onclick="javascript:return false" class="drop-item confirm btn btn-xs btn-danger ajax" data-ajax-method="delete" data-ajax-type="html" data-id="{{ row.products_id }}"><i class="fa fa-times"></i></a>
+                {% endif %}
             </td>
-            #}
         </tr>
         {% endfor %}
         </tbody>
     </table>
+
+    <ul class="pager pull-left" style="display: none">
+          <li>
+              <a href="my/grid-products/orders_id/{{ orders_id }}/operation/{{ operation }}" class="filter show-all">{# __('Показать все продукты') #} </a>
+          </li>
+          <li>
+          </li>
+    </ul>
 
     <div id="order_total">
         Сумма: <span class="summ"></span> грн
     </div>
 
     {% if(operation == 'clone') %}
+
+        <div style="clear: both;"></div>
+
         <div class="white note">
             <h4 class="header-4">Адрес доставки</h4>
-            <textarea id="address_dostavki" name="address_dostavki">{{ address_dostavki }}</textarea>
+            <textarea id="address_dostavki" name="address_dostavki" data-store="true">{{ address_dostavki }}</textarea>
         </div>
         <div class="white note">
             <h4 class="header-4">Телефон</h4>
-            <input id="delivery_phone" name="delivery_phone" type="tel" value="{{ delivery_phone }}">
+            <input id="delivery_phone" name="delivery_phone" data-store="true" type="tel" value="{{ delivery_phone }}">
         </div>
         <div class="white note">
             <h4 class="header-4">Пояснения к заказу</h4>
-            <textarea id="order_notes" name="order_notes">{{ order_notes }}</textarea>
+            <textarea id="order_notes" name="order_notes" data-store="true">{{ order_notes }}</textarea>
         </div>
         <div class="white note">
             <h4 class="header-4">Дата доставки</h4>
-            <input type="text" name="delivery_date" id="delivery_date" value="{{ delivery_date }}">
+            <input type="text" name="delivery_date" id="delivery_date" data-store="true" value="{{ delivery_date }}">
         </div>
 
         {{ checkbox_group }}
@@ -146,57 +174,17 @@
 
 {% if(operation == 'clone') %}
 <script>
-    require(["jquery", "daterangepicker", "moment"], function ($, daterangepicker, moment) {
 
-        var currentYear = moment().format("YYYY");
-        var nextYear = currentYear * 1 + 1
-        var minDate = "01/01/" + currentYear
-        var maxDate = "31/12/" + nextYear
+    require(["jquery","basic", "daterangepicker", "moment"],  function ($,basic,daterangepicker,moment) {
 
-        $("input[name=delivery_date]").daterangepicker({
-                format: "DD/MM/YYYY H:mm",
-                singleDatePicker: true,
-                startDate: moment(),
-                endDate: moment(),
-                minDate: minDate,
-                maxDate: maxDate,
-                dateLimit: { days: 60 },
-                showDropdowns: true,
-                showWeekNumbers: false,
-                timePicker: true,
-                timePickerIncrement: 1,
-                timePicker12Hour: false,
-                opens: "right",
-                drops: "up",
-                buttonClasses: ["btn", "btn-sm"],
-                applyClass: "btn-primary",
-                cancelClass: "btn-default",
-                locale: {
-                    applyLabel: "Выбрать",
-                    cancelLabel: "Закрыть",
-                    daysOfWeek: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-                    monthNames: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-                    firstDay: 1
-                }
-            },function (start, end, label) {
-
-            }
-        ).on("cancel.daterangepicker",function (ev, picker) {
-                $(this).val(moment().format("DD/MM/YYYY H:mm"));
-            }).on("apply.daterangepicker",function (ev, picker) {
-
-            }).data("daterangepicker"); // .setStartDate("28/08/2016 16:21")
-
-        $("input[name=delivery_date]").on("keypress", function () {
-            return false;
-        });
-    });
-
-    require(["jquery","basic"],  function ($,basic) {
-
+        readStoredParams()
+        initDatePicker()
         recalcSumm()
         initGrid()
+        initOnce()
         initBtn()
+        init()
+
 
         function recalcSumm(){
             var grid = $("div[name=order_products_grid]");
@@ -268,14 +256,141 @@
             });
         }
 
-        $("div[name=order_products_grid]").on("reload",function(){
+        function readStoredParams(){
+            $("#address_dostavki").val( localStorage.getItem("address_dostavki") )
+            $("#delivery_phone").val( localStorage.getItem("delivery_phone") )
+            $("#order_notes").val( localStorage.getItem("order_notes") )
+            $("#delivery_date").val( localStorage.getItem("delivery_date") )
+        }
+
+        function initDatePicker(){
+            var currentYear = moment().format("YYYY");
+            var nextYear = currentYear * 1 + 1
+            var minDate = "01/01/" + currentYear
+            var maxDate = "31/12/" + nextYear
+
+            $("input[name=delivery_date]").daterangepicker({
+                    format: "DD/MM/YYYY H:mm",
+                    singleDatePicker: true,
+                    startDate: moment(),
+                    endDate: moment(),
+                    minDate: minDate,
+                    maxDate: maxDate,
+                    dateLimit: { days: 60 },
+                    showDropdowns: true,
+                    showWeekNumbers: false,
+                    timePicker: true,
+                    timePickerIncrement: 1,
+                    timePicker12Hour: false,
+                    opens: "right",
+                    drops: "up",
+                    buttonClasses: ["btn", "btn-sm"],
+                    applyClass: "btn-primary",
+                    cancelClass: "btn-default",
+                    locale: {
+                        applyLabel: "Выбрать",
+                        cancelLabel: "Закрыть",
+                        daysOfWeek: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                        monthNames: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+                        firstDay: 1
+                    }
+                },function (start, end, label) {
+
+                }
+            ).on("cancel.daterangepicker",function (ev, picker) {
+                    $(this).val(moment().format("DD/MM/YYYY H:mm"));
+                }).on("apply.daterangepicker",function (ev, picker) {
+                    localStorage.setItem("delivery_date", $(this).val() )
+                }).data("daterangepicker"); // .setStartDate("28/08/2016 16:21")
+
+            $("input[name=delivery_date]").on("keypress", function () {
+                return false;
+            });
+        }
+
+        function init(){
+            $("*[data-store=true]").on("keyup",function(){
+                localStorage.setItem( $(this).attr("id"), $(this).val() );
+            })
+        }
+
+        function initOnce(){
+            $("a.show-addproduct-grid-btn").on("click",function(){
+                if($(this).hasClass("visible")){
+                    $(this).removeClass("visible")
+                    $(this).text("Добавить продукт")
+                    $("div.add-products-grid").hide()
+                } else {
+                    $("div.add-products-grid").show()
+                    $(this).addClass("visible")
+                    $(this).text("Скрыть")
+                }
+            });
+
+            $("div.add-products-grid").hide();
+        }
+
+        /**
+         * Обновилась грида добавления продуктов
+         */
+        $("div[data-grid=add-products-sql]").on("reload",function(){
+
+            // Обновить гриду продуктов ордера
+            $("div[data-grid=CurrentOrderGrid]").trigger("refresh")
+
+        });
+
+        /**
+         * Грида нового заказа обновилась
+         */
+        $("div[data-grid=CurrentOrderGrid]").on("reload",function(){
+            readStoredParams()
+            initDatePicker()
             recalcSumm()
             initGrid()
             initBtn()
+            init()
         });
 
+
+
     });
+
+
 </script>
 {% endif %}
 
 <div id="load"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -801,6 +801,15 @@ select[name=categories_id] {
     width: 42px;
     height: 23px;
 }
+.form-control.grid-edit-field-2 {
+    display: inline-block;
+    margin: 0 auto;
+    text-align: center;
+    width: 40px;
+    height: 23px;
+    padding:0;
+    font-size: 80%;
+}
 table.grid th {
     text-align: center;
 }
@@ -839,4 +848,15 @@ a.category-name {
 }
 a.add-item {
     color: #348736;
+}
+#order_total {
+    margin-bottom: 20px;
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+and (max-width : 320px) {
+	#main-navigation li >  img {
+		display:none;
+	}
 }

@@ -2,14 +2,18 @@
 
 use Application\Orders;
 
+//TODO при выходе со страницы через кнопку Клонировать, очищать корзину
+
+//TODO при добавлении продукта к клонированному ордеру - обнвлять гриду
+
 return
     /**
      * @return \closure
      * @param string operation
      * @param integer orders_id
-     * privilege Edit
+     * @privilege Edit
      */
-    function ($operation = 'view',$orders_id = null) use ($view) {
+    function ($operation = 'view',$orders_id = null,$products_id = null,$products_num = null) use ($view) {
 
         $title = 'Личный кабинет';
 
@@ -27,12 +31,53 @@ return
             case 'view':
                 //TODO
                 break;
-            case 'edit':
-                //TODO
+
+            case 'update-product':
+                // Изменить харакетристики продукта в заказе
+                //$params = [];
+                //$params['products_num'] = $products_num;
+                //$order = Application\Orders\Crud::getInstance()->readOne(['orders_id' => $orders_id]);
+                //$order->updateProduct($products_id,$params,$orders_id);
+
+                if( $products_num == 0 )
+                    app()->getBasket()->removeProduct($products_id);
+                else
+                    app()->getBasket()->updateProduct($products_id,$products_num);
+
                 break;
+
+            case 'add-product':
+
+                // Присоединить продукт к заказу
+                if( $orders_id AND $products_id ){
+                    //$order = Application\Orders\Crud::getInstance()->readOne(['orders_id' => $orders_id]);
+                    //$order->addProduct($products_id);
+
+                    app()->getBasket()->putProduct($products_id,$products_num);
+                }
+                break;
+
+            case 'delete-product':
+                // Удалить продукт из заказа
+                if( $orders_id AND $products_id ) {
+                    //$order = Application\Orders\Crud::getInstance()->readOne([ 'orders_id' => $orders_id ]);
+                    //$order->deleteProduct($products_id);
+
+                    app()->getBasket()->removeProduct($products_id);
+                }
+                break;
+
             case 'clone':
                 if(is_null($orders_id))
                     return false;
+
+                $order = Application\Orders\Crud::getInstance()->readOne([ 'orders_id' => $orders_id ]);
+
+                $basket = app()->getBasket();
+
+                $basket->flush();
+
+                $basket->set( $order->getData()['products'] );
 
                 $check_orders_id = Orders\Table::getInstance()->findRow(['orders_id' => $orders_id]);
                 if(!$check_orders_id)

@@ -162,4 +162,36 @@ class Table extends \Bluz\Db\Table
 
         return $vendors;
     }
+
+    /**
+     * @param string|array $ids
+     * @return array
+     */
+    public function readSetIn ( $ids )
+    {
+        if( is_array($ids) ){
+
+            $ids = array_reduce(
+                $ids,
+                function ($e = '',$i){
+                    $e .= $i . ",";
+                    return $e;
+                }
+            );
+
+            $ids = substr($ids,0,-1);
+        }
+
+        $query = "
+            SELECT p.*
+            FROM {$this->table} p
+            WHERE p.products_id IN ($ids)
+            ORDER BY p.products_name
+        ";
+
+
+        $result = app()->getDb()->fetchAll($query);
+
+        return $result;
+    }
 }

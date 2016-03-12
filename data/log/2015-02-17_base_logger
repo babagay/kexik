@@ -1,3 +1,0 @@
-[2015-02-17 12:09:11] base_logger.ERROR: Controller not found '01simple.php/Base' [C:\wamp\www\kex/modules/01simple.php/controller/Base.php] [] []
-[2015-02-17 12:09:24] base_logger.ERROR: Controller not found 'Examples/01simple.php' [C:\wamp\www\kex/modules/Examples/controller/01simple.php.php] [] []
-[2015-02-17 12:09:34] base_logger.ERROR: Controller not found 'PHPExcel/Examples' [C:\wamp\www\kex/modules/PHPExcel/controller/Examples.php] [] []

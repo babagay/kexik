@@ -9,37 +9,33 @@
 TODO
  * Проверять, если запрос пришел НЕ через аджакс, блокировать или редиректить
  * Такую защиту имеет смысл ставить на все замыкания, обрабатываемые ссылками (ссылка содержит href)
-
+ * TODO перенести логику в модель (сейчас это "толстый контроллер")
  */
 namespace Application;
 
 use Bluz;
+use \Bluz\Application\Exception\ApplicationException as AppEx;
 
+/**
+ * @var \Application\Bootstrap $_this
+ */
 $_this = $this;
 
 return
 
     /**
      * mode: add|remove|clear|update
+     *
+     * @var Bluz\View\View $view
+     *
+     * Если здесь эхнуть var_dump($articles);
+     * И потом вернуть шаблон  return 'getheaders.phtml';
+     * То ошибки не будет
+     *
+     * if (app()->getInstance()->getRequest()->getHeader('X-Requested-With') != 'XMLHttpRequest') {}
      */
-    function ($products_id = null,$products_num = null,$mode = 'add') use ($view, $_this) {
-        /**
-         * @var \Application\Bootstrap $this
+    function ($products_id = null,$products_num = null,$mode = 'add',$products = []) use ($view, $_this) {
 
-        fb($view); //  Bluz\View\View
-         * fb($_this); //  Application\Bootstrap
-         *
-         * @var \Bluz\View\View $view
-         *
-         * Если здесь эхнуть var_dump($articles);
-         * И потом вернуть шаблон  return 'getheaders.phtml';
-         * То ошибки не будет
-         *
-         *  if (app()->getInstance()->getRequest()->getHeader('X-Requested-With') != 'XMLHttpRequest') {
-
-                *
-* }
-         */
         $response = 'ok';
         $error = false;
 
@@ -68,6 +64,13 @@ return
                     $_this->getSession()->basket = $basket;
                 }
 
+                //TODO протестить
+//                try {
+//                    app()->getBasket()->putProduct($products_id,$products_num);
+//                } catch (AppEx $e) {
+//
+//                }
+
                 break;
 
             case 'remove':
@@ -78,6 +81,9 @@ return
                     unset($basket['products'][$products_id]);
 
                 $_this->getSession()->basket = $basket;
+
+                //TODO протестить
+                //app()->getBasket()->removeProduct($products_id);
 
                 if(count($basket['products']) == 0)
                     $redir = "clear";
@@ -91,6 +97,9 @@ return
                 if($products_num == 0)
                     app()->dispatch("Basket","ajax/modify_basket",['products_id'=>$products_id,'mode'=>'remove']);
 
+                //TODO протестить
+                //app()->getBasket()->updateProduct($products_id,$products_num);
+
                 $basket['products'][$products_id] = $products_num;
                 $_this->getSession()->basket = $basket;
 
@@ -98,28 +107,22 @@ return
 
             case 'clear':
                 // Очистить корзину
-                //app()->useLayout(false);
 
-                unset( $_this->getSession()->basket );
+                ////app()->useLayout(false);
+
+                app()->getBasket()->flush();
 
                 break;
 
-            case 'test':
-                fb( "R");
+            case 'set':
+                // Загрузить набор продуктов
+
+                app()->getBasket()->set($products);
+
                 break;
         }
 
-
-
-
-
-
-
-
-
         return function () use($redir,$response) {
-
-
 
             $result = array('response' => $response, 'redir' => $redir );
 

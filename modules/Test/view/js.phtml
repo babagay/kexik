@@ -1,0 +1,197 @@
+<h2 style="margin:100px">JS practice</h2>
+
+<script>
+    require(["jquery", "waterfall", "waterfall"], function($, waterfall, wf) {
+
+
+        var count = 1;
+
+
+        /**
+         * Массив тасков, который надо собирать вручную
+         * [!] Имена полей строго соблюдать
+         * @type {*[]}
+         */
+        var callbackArr = [
+            {
+                url: "my/grid-products/orders_id/117/operation/clone",
+                type: "get",
+                dataType: "html",
+                success: function (data) {
+                    console.log("call - 01")
+                }
+            },
+            {
+                url: "my/grid-products/orders_id/118/operation/clone",
+                type: "get",
+                dataType: "html",
+                success: function (data) {
+                    console.log("call - 02")
+                }
+            },
+            {
+                url: "my/grid-products/orders_id/118/operation/clone",
+                type: "get",
+                dataType: "html",
+                success: function (data) {
+                    console.log("call - 03")
+                }
+            },
+            {
+                url: "my/grid-products/orders_id/118/operation/clone",
+                type: "get",
+                dataType: "html",
+                success: function (data) {
+                    console.log("call - 04")
+                }
+            },
+            {
+                url: "my/grid-products/orders_id/118/operation/clone",
+                type: "get",
+                dataType: "html",
+                success: function (data) {
+                    console.log("call - 05", waterfall.counter)
+                }
+            },
+            {
+                url: "my/grid-products/orders_id/118/operation/clone",
+                type: "get",
+                dataType: "html",
+                success: function (data) {
+                    console.log("call - 06")
+                }
+            },
+            {
+                url: "my/grid-products/orders_id/118/operation/clone",
+                type: "get",
+                dataType: "html",
+                success: function (data) {
+                    console.log("call - 07")
+                }
+            },
+            {
+                url: "my/grid-products/orders_id/118/operation/clone",
+                type: "get",
+                dataType: "html",
+                success: function (data) {
+                    console.log("call - 08")
+                }
+            },
+            {
+                url: "my/grid-products/orders_id/118/operation/clone",
+                type: "get",
+                dataType: "html",
+                success: function (data) {
+                    console.log("call - 09")
+                }
+            }
+        ];
+
+        /**
+         * [1] Формируем очередь
+         */
+        waterfall.queue = callbackArr;
+
+        /**
+         * [2] Задаем Финальный колбэк
+         */
+        waterfall.onDone = function () {
+            console.log("onDone procesed", waterfall.counter,  wf.queue.length)
+
+            // Новый водопад
+            waterfall.add({
+                url: "my/grid-products/orders_id/118/operation/clone",
+                type: "post",
+                dataType: "html",
+                success: function (data) {
+                    console.log("call - 11")
+                }})
+                .add({
+                    url: "test/ajax/sleep",
+                    type: "post",
+                    dataType: "html",
+                    success: function (data) {
+                        console.log("call - 12")
+                    }});
+
+            //waterfall.processParallel();
+
+
+        }
+
+        /**
+         * [3] Запускаем водопад
+         */
+        //waterfall.processParallel();
+
+
+
+            /*
+        var arr = [
+            function () {
+                console.log(arguments)
+            },
+            function () {
+                console.log(arguments.length)
+            }
+        ]
+
+        function asd(a){
+            var i
+            return function () {
+                for(i=0; i < a.length; i++){
+                    a[i]()
+                }
+            }
+        }
+
+        var closur = asd(arr)
+        closur()
+        */
+
+        // [!] Водопад, вариант 2
+        waterfall.queue = []
+        waterfall.counter = 0;
+        waterfall.onDone = function () {
+            console.log("seqental Done!")
+        }
+
+        var id, firstId;
+
+        id = waterfall.push({
+            url: "test/ajax/sleep",
+            type: "post",
+            dataType: "html",
+            parentId: null,
+            success: function (data) {
+                console.log("call - 20")
+            }});
+        firstId = id;
+
+        id = waterfall.push({
+            url: "my/grid-products/orders_id/118/operation/clone",
+            type: "post",
+            dataType: "html",
+            parentId: null,
+            success: function (data) {
+                console.log("call - 21")
+            }});
+
+        id = waterfall.push({
+            url: "my/grid-products/orders_id/117/operation/clone",
+            type: "post",
+            dataType: "html",
+            parentId: firstId,
+            success: function (data) {
+                console.log("call - 22")
+            }});
+
+        waterfall.processSequental()
+
+
+
+
+    });
+
+
+</script>

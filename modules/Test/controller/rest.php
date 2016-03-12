@@ -9,11 +9,16 @@
  */
 namespace Application;
 
-use Application\Test;
+use Application\Orders;
 use Bluz\Controller;
 
 return function () {
     $restController = new Controller\Rest();
-    $restController->setCrud(Test\Crud::getInstance());
+    $restController->setCrud(Orders\Crud::getInstance());
+
+    app()->useLayout('small.phtml');
+
+
+
     return $restController();
 };

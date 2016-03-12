@@ -262,8 +262,8 @@ return
         $livedocx->assign('total', $total_recalculated_discounted /*$orders_data['total']*/);
         $livedocx->assign('total_cache', $total_cache);
 
-
         $remoteTemplate = $livedocx->createRemoteTemplate();
+
         $remoteTemplate->setName($remoteTemplateName)
             ->setAsActive();
 
