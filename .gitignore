@@ -1,0 +1,49 @@
+# Root
+#.htaccess
+.idea/
+access.log
+keks.sql
+keks_26_mar.sql
+testfile.txt
+int.php
+error.php
+error.log
+таблицы.sql
+
+# Folders
+# lib/PHPExcel/
+# lib/FirePHP/
+lib/monolog/monolog/doc/
+lib/monolog/monolog/tests/
+lib/twig/doc/
+lib/twig/test/
+
+#data/files/
+#data/log/
+#data/sessions/
+#data/tmp/
+#data/data/
+#data/cache/
+#data/locale/
+#data/styles/
+#data/uploads/
+
+# Configs
+Core/configs/app.debug.php
+Core/configs/app.production.php
+Core/configs/app.testing.php
+Core/configs/local.php
+
+### Eclipse template
+*.pydevproject
+.metadata
+.gradle
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
