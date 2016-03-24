@@ -6,6 +6,29 @@
 
 console.log(1)
 
+/**
+
+i - текущий айтем
+$.ajax({url, type, success: callbackConstructor(i) })
+
+function callbackConstructor(i){
+
+	return function(){
+		queue[i],success()
+		// сконструировать аджакс для айтемов, у которых parentId = i
+		arr = getItemsDependentOf(i)
+		foreach(a in arr)
+			arr.push( getAjax()  )
+
+		arr[0]()
+		arr[1]()
+		...
+	}
+}
+
+
+*/
+
         var count = 1;
 
 
