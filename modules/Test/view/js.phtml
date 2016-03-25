@@ -3,8 +3,7 @@
 <script>
     require(["jquery", "waterfall", "waterfall"], function($, waterfall, wf) {
 
-
-console.log(1)
+        $("footer .center").hide();
 
 /**
 
@@ -211,7 +210,128 @@ function callbackConstructor(i){
                 console.log("call - 22")
             }});
 
-        waterfall.processSequental()
+        //waterfall.processSequental()
+
+
+        // --------------------------
+
+        /**
+         * Фабричный метод (его можно исполльзовтаь с new и без.. Он всегда продуцрует объект). В них нельзя использовтаь прототипы
+         * [!] прототипное наследование
+         * Наследование
+         * множественное наследование
+         * Паттерн для реализации наследования
+         *
+         * Константы - через название класса
+         * Отделение логики от поведения
+         */
+
+        var i = 10;
+        var arr = new Array();
+
+        for(i; i<15; i++)
+            arr.push(i)
+
+        //console.log(arr)
+
+        var obj = {a:1}
+
+        obj.__proto__ = {a:12, b:34,  pow: function () {
+            return this.c + 10
+        }}
+
+        obj.__proto__.__proto__ = {c:33}
+
+        //console.log(obj.b) // 34
+
+        //delete obj.a // убить а из __proto__
+
+        //console.log(obj.pow())
+
+        //--------------------------
+
+        foo.a = 15
+        foo()
+
+        function foo(param) {
+            foo.a = 10
+        }
+
+        //console.log(foo.a)
+
+        //--------------------------
+
+
+        function A() {
+            return this.a++
+        }
+
+        A.prototype = {a:10} // аналогично перезаписи свойства __proto__
+
+        var a = new A()
+
+        //console.log(a)
+
+        /**
+         * Методы пихаем в prototype, а поля в сам объект
+         * Тогда, у всех новых объектов будет ОДИН и тот же прототип
+         */
+
+        function Bar() {
+             // здесь поля
+            this.a = 12;
+
+            this.bar = function () {
+                console.log(this)
+            }
+
+            function zxc() {
+                console.log(this)
+            }
+        }
+
+        Bar.prototype = {
+            // здесь методы
+            method:function () {
+                this.a++
+            }
+        }
+
+
+        //--------------------------
+
+        /**
+         * [!] extend-тип наследования
+         * @constructor
+         */
+        function Asd() {
+            Bar.call(this)  // extend. Взяли методы класса Bar и присоединили их к Asd. Однако, Bar.prototype НЕ пронаследовался
+        }
+
+        var asd = new Asd;
+
+        // asd.method() == undefined // Error
+        // asd.bar() // Ok
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
